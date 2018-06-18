@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimTower", "KimTower\KimTower.csproj", "{AB0F99BE-3ACA-44EC-8A5D-CC8F8215121E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimTower.UnitTests", "KimTower.UnitTests\KimTower.UnitTests.csproj", "{869752FE-6EFE-413E-A16C-34C9019A7C84}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB0F99BE-3ACA-44EC-8A5D-CC8F8215121E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB0F99BE-3ACA-44EC-8A5D-CC8F8215121E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB0F99BE-3ACA-44EC-8A5D-CC8F8215121E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB0F99BE-3ACA-44EC-8A5D-CC8F8215121E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{869752FE-6EFE-413E-A16C-34C9019A7C84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{869752FE-6EFE-413E-A16C-34C9019A7C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{869752FE-6EFE-413E-A16C-34C9019A7C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{869752FE-6EFE-413E-A16C-34C9019A7C84}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9183D0E-82F4-42A8-A5B3-4E7409EE3CA9}
+	EndGlobalSection
+EndGlobal
