@@ -11,6 +11,12 @@ namespace KimTower
         public int Money { get; set; }
 
         public Time Time { get; set; }
+
+        public MapWindow MapWindow { get; set; }
+
+        public int Rating { get; set; }
+
+        public int Population { get; set; }
         
     }
 }
