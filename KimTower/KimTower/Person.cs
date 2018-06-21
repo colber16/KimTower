@@ -9,21 +9,13 @@ namespace KimTower
 
         public string Name { get; set; }
 
-        public Location Location { get; set; }
+        public Position Position { get; set; }
     }
-    // multiples of all of these. . .
-    public enum Location
-    {
-        OutsideTower,
-        WaitingForElevator,
-        WaitingForEscaltor,
-        WaitingForStairs,
-        OnStairs,
-        OnElevator,
-        OnEscaltor,
-        Office,
-        Condo,
-        Restaurant
 
+    public class Position
+    {
+        public int X { get; set; }
+
+        public int Y { get; set; }
     }
 }
