@@ -45,6 +45,9 @@
     <Compile Include="Time.cs" />
     <Compile Include="MapWindow.cs" />
     <Compile Include="Person.cs" />
+    <Compile Include="Position.cs" />
+    <Compile Include="Floor.cs" />
+    <Compile Include="Room.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
