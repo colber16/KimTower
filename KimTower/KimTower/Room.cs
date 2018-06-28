@@ -21,6 +21,8 @@ namespace KimTower
         int Floor { get; set; }
 
         int Revenue { get; set; }
+
+        int Segements { get; set; }
        
 
     }
@@ -36,6 +38,7 @@ namespace KimTower
         public Position Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Floor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Revenue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int Segements { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
     public class Condo : IRoom
     {
@@ -48,6 +51,6 @@ namespace KimTower
         public Position Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Floor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Revenue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+        public int Segements { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
