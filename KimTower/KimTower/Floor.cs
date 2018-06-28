@@ -3,8 +3,8 @@ namespace KimTower
 {
     public interface IFloor
     {
-        
-        Position Position { get; set; }
+
+        Range Range { get; set; }
 
         int ParentFloor { get; set; }
 
@@ -13,21 +13,16 @@ namespace KimTower
         int MaintenanceCost { get; }
 
         int Segments { get; set; }
-        //total width of the floor
-        int TotalSegments { get; }
 
         bool IsBelowGround { get; set; }
-
-        int Cost { get; }
 
     }
     public class Floor : IFloor
     {
-        public readonly int cost = 500;
 
         private int _segment;
 
-        public Position Position { get; set; }
+        public Range Range { get; set; }
 
         public int ParentFloor { get; set; }
 
@@ -72,55 +67,63 @@ namespace KimTower
 
         public bool IsBelowGround { get; set; }
 
-        public int Cost { get { return - cost * this.Segments; } }
 
-        public Floor(int startingPosition, int parentFloor, int segments, int totalSegments, bool isBelowGround)
+        public Floor(Range range, int parentFloor, int segments, bool isBelowGround)
         {
-            this.Position = new Position(startingPosition, startingPosition + segments);
-            this.TotalSegments = segments + totalSegments;
+            this.Range = new Range(range.XCoordinate, range.XSecondCoordinate);
             this.ParentFloor = parentFloor;
             this.Segments = segments;
             this.IsBelowGround = isBelowGround;
         }
         public Floor()
         {
-            
+
         }
 
-        public Floor ExtendFloorToTheRight(int segments)
+        public void ExtendFloorToTheRight(int segments)
         {
-            var newX = this.Position.XSecondCoordinate + segments;
-            this.Position = new Position(this.Position.XCoordinate, newX);
-            this.TotalSegments += segments;
-            return new Floor();
+            var newX = this.Range.XSecondCoordinate + segments;
+            this.Range = new Range(this.Range.XCoordinate, newX);
+            this.Segments += segments;
         }
         //TODO: Need an origin somewhere. Max and min position
-        public Floor ExtendFloorToTheLeft(int segments)
+        public void ExtendFloorToTheLeft(int segments)
         {
-            var newX = this.Position.XCoordinate - segments;
-            this.Position = new Position(newX, this.Position.XSecondCoordinate);
-            this.TotalSegments += segments;
-            return new Floor();
+            var newX = this.Range.XCoordinate - segments;
+            this.Range = new Range(newX, this.Range.XSecondCoordinate);
+            this.Segments += segments;
         }
     }
-    /// <summary>
-    /// Lobbies can only be placed on the 1st floor
-    /// </summary>
-    //public class Lobby : IFloor
-    //{
-    //    public Lobby()
-    //    {
-    //    }
 
-    //    public Position Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //    public int ParentFloor { get { return 0; } }
-    //    public int MaintenanceCost { get;  }
-    //    public int Segments { get => throw new NotImplementedException();  }
-    //    public bool IsBelowGround { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //    public int Cost { get => throw new NotImplementedException();  }
-    //    public int FloorNumber { get => throw new NotImplementedException(); }
-    //    int IFloor.ParentFloor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //    int IFloor.MaintenanceCost { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //}
+    public class ConstructFloor 
+    {
+        public readonly int cost = 500;
+
+        public Range Range { get; set; }
+
+        public int ParentFloor { get; set; }
+
+        public int FloorNumber { get; }
+
+        public int Segments { get; set; }
+
+        public bool IsBelowGround { get; set; }
+
+        public int Cost { get { return -cost * this.Segments; } }
+
+        public ConstructFloor(int startingPosition, int parentFloor, int segments, bool isBelowGround) 
+        {
+            this.Range = new Range(startingPosition, startingPosition + segments);
+            this.ParentFloor = parentFloor;
+            this.Segments = segments;
+            this.IsBelowGround = isBelowGround;
+            CreateMaintainableFloor(this.Range, parentFloor, segments, isBelowGround);
+        }
+
+        public Floor CreateMaintainableFloor(Range range, int parentFloor, int segments, bool isBelowGround)
+        {
+            return new Floor(range, parentFloor,segments,isBelowGround);
+        }
+    }
 
 }
