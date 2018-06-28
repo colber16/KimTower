@@ -45,7 +45,7 @@
     <Compile Include="Time.cs" />
     <Compile Include="MapWindow.cs" />
     <Compile Include="Person.cs" />
-    <Compile Include="Position.cs" />
+    <Compile Include="Range.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Room.cs" />
   </ItemGroup>

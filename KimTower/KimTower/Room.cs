@@ -16,7 +16,7 @@ namespace KimTower
 
         int ConstructionCost { get; set; }
 
-        Position Position { get; set; }
+        Range Position { get; set; }
 
         int Floor { get; set; }
 
@@ -35,7 +35,7 @@ namespace KimTower
         public int Population { get => 3; set => throw new NotImplementedException(); }
         public int IsLit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int ConstructionCost { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Position Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Range Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Floor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Revenue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Segements { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -48,7 +48,7 @@ namespace KimTower
         public int Population { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int IsLit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int ConstructionCost { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Position Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Range Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Floor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Revenue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int Segements { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
