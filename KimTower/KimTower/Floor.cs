@@ -6,74 +6,30 @@ namespace KimTower
 
         Range Range { get; set; }
 
-        int ParentFloor { get; set; }
-
         int FloorNumber { get; }
 
         int MaintenanceCost { get; }
 
         int Segments { get; set; }
 
-        bool IsBelowGround { get; set; }
-
     }
+    //floors can not be deleted
     public class Floor : IFloor
     {
-
-        private int _segment;
-
         public Range Range { get; set; }
 
-        public int ParentFloor { get; set; }
-
-        public int FloorNumber
-        {
-            get
-            {
-                if (!IsBelowGround)
-                {
-                    return this.ParentFloor + 1;
-                }
-                else
-                {
-                    if (this.ParentFloor == 1)
-                    {
-                        return -1;
-                    }
-                    return this.ParentFloor - 1;
-                }
-            }
-        }
+        public int FloorNumber { get; }
 
         public int MaintenanceCost { get { return 0; } }
 
-        public int Segments
-        {
-            get { return _segment; }
-            set
-            {
-                if (value <= 0)
-                {
-                    _segment = 1;
-                }
-                else
-                {
-                    _segment = value;
-                }
-            }
-        }
-
-        public int TotalSegments { get; private set; }
-
-        public bool IsBelowGround { get; set; }
+        public int Segments { get; set; }
 
 
-        public Floor(Range range, int parentFloor, int segments, bool isBelowGround)
+        public Floor(Range range, int floorNumber, int segments)
         {
             this.Range = new Range(range.XCoordinate, range.XSecondCoordinate);
-            this.ParentFloor = parentFloor;
+            this.FloorNumber = floorNumber;
             this.Segments = segments;
-            this.IsBelowGround = isBelowGround;
         }
         public Floor()
         {
@@ -97,19 +53,54 @@ namespace KimTower
 
     public class ConstructFloor 
     {
-        public readonly int cost = 500;
+
+        private int _segment;
+
+        public readonly int cost = -500;
 
         public Range Range { get; set; }
 
         public int ParentFloor { get; set; }
 
-        public int FloorNumber { get; }
+        //Should lobby have a parent floor of 0?
+        public int FloorNumber {
+            get
+            {
+                if (!IsBelowGround)
+                {
+                    return this.ParentFloor + 1;
+                }
+                else
+                {
+                    if (this.ParentFloor == 1)
+                    {
+                        return -1;
+                    }
+                    return this.ParentFloor - 1;
+                }
+            }
+        }
 
-        public int Segments { get; set; }
+
+        public int Segments
+        {
+            get { return _segment; }
+            set
+            {
+                if (value <= 0)
+                {
+                    _segment = 1;
+                }
+                else
+                {
+                    _segment = value;
+                }
+            }
+        }
 
         public bool IsBelowGround { get; set; }
 
-        public int Cost { get { return -cost * this.Segments; } }
+        public int Cost { get { return cost * this.Segments; } }
 
         public ConstructFloor(int startingPosition, int parentFloor, int segments, bool isBelowGround) 
         {
@@ -117,12 +108,12 @@ namespace KimTower
             this.ParentFloor = parentFloor;
             this.Segments = segments;
             this.IsBelowGround = isBelowGround;
-            CreateMaintainableFloor(this.Range, parentFloor, segments, isBelowGround);
+            CreateMaintainableFloor(this.Range, FloorNumber, segments);
         }
 
-        public Floor CreateMaintainableFloor(Range range, int parentFloor, int segments, bool isBelowGround)
+        public Floor CreateMaintainableFloor(Range range, int floorNumber, int segments)
         {
-            return new Floor(range, parentFloor,segments,isBelowGround);
+            return new Floor(range, floorNumber, segments);
         }
     }
 
