@@ -6,51 +6,50 @@ namespace KimTower
 
         bool Occupied { get; set; }
 
-        int MaintenanceCost { get; set; }
-
-        int Capacity { get; set; }
-
+        //int MaintenanceCost { get; set; }
+        /// <summary>
+        /// Gets the capacity. Which is used in tower population
+        /// </summary>
+        /// <value>The capacity.</value>
+        int Capacity { get; }
+        /// <summary>
+        /// Current population of people.
+        /// </summary>
+        /// <value>The population.</value>
         int Population { get; set; }
 
         int IsLit { get; set; }
 
-        int ConstructionCost { get; set; }
+        //int ConstructionCost { get; set; }
 
         Range Position { get; set; }
 
-        int Floor { get; set; }
+        int FloorNumber { get; set; }
 
-        int Revenue { get; set; }
+        //int Revenue { get; set; }
 
-        int Segements { get; set; }
+        int Segements { get; }
        
 
     }
-
     public class Office : IRoom
     {
-        public bool Occupied { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int MaintenanceCost { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Capacity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Population { get => 3; set => throw new NotImplementedException(); }
-        public int IsLit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int ConstructionCost { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Range Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Floor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Revenue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Segements { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        private int segments = 9;
+        private int capacity = 6;
+       
+        public bool Occupied { get; set; }
+        public int Capacity => capacity;
+        public int Population { get; set; }
+        public int IsLit { get; set; } //set by time
+        public Range Position { get; set; }
+        public int FloorNumber { get; set; }
+
+        public int Segements => segments;
+
+        public Office(Floor floor)
+        {
+            this.FloorNumber = floor.FloorNumber;
+        }
     }
-    public class Condo : IRoom
-    {
-        public bool Occupied { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int MaintenanceCost { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Capacity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Population { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int IsLit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int ConstructionCost { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Range Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Floor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Revenue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Segements { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    }
+
 }

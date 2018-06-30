@@ -12,6 +12,33 @@ namespace KimTower
 
         int Segments { get; set; }
 
+        void ExtendFloor(int coordinate);
+    }
+    //people can be in lobbies
+    public class Lobby : IFloor
+    {
+        public Range Range { get; set; }
+
+        public int FloorNumber { get; set;}
+
+        public int Segments { get; set; }
+
+        public void ExtendFloor(int coordinate)
+        {
+            //copy pasta.  Maybe us an abstract class
+            //needs to fill with lobby "room"
+            if (coordinate < 0)
+            {
+                this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
+
+            }
+            else
+            {
+                this.Range = new Range(this.Range.XCoordinate, this.Range.XCoordinate + coordinate);
+            }
+
+            this.Segments += Math.Abs(coordinate);
+        }
     }
     //floors can not be deleted
     public class Floor : IFloor
@@ -57,19 +84,20 @@ namespace KimTower
         {
 
         }
+        //Combine these
+        public void ExtendFloor(int coordinate)
+        {
+            if(coordinate < 0)
+            {
+                this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
 
-        public void ExtendFloorToTheRight(int segments)
-        {
-            var newX = this.Range.XSecondCoordinate + segments;
-            this.Range = new Range(this.Range.XCoordinate, newX);
-            this.Segments += segments;
-        }
-        //TODO: Need an origin somewhere. Max and min position
-        public void ExtendFloorToTheLeft(int segments)
-        {
-            var newX = this.Range.XCoordinate - segments;
-            this.Range = new Range(newX, this.Range.XSecondCoordinate);
-            this.Segments += segments;
+            }
+            else
+            {
+                this.Range = new Range(this.Range.XCoordinate, this.Range.XCoordinate + coordinate);
+            }
+
+            this.Segments += Math.Abs(coordinate);
         }
     }
 
