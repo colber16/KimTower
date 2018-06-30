@@ -1,6 +1,9 @@
 ﻿using System;
 namespace KimTower
 {
+    /// <summary>
+    /// Room.
+    /// </summary>
     public interface IRoom
     {
 
@@ -22,7 +25,7 @@ namespace KimTower
 
         //int ConstructionCost { get; set; }
 
-        Range Position { get; set; }
+        Range Range { get; set; }
 
         int FloorNumber { get; set; }
 
@@ -32,6 +35,7 @@ namespace KimTower
        
 
     }
+    /// <inheritdoc/>
     public class Office : IRoom
     {
         private int segments = 9;
@@ -39,16 +43,18 @@ namespace KimTower
        
         public bool Occupied { get; set; }
         public int Capacity => capacity;
-        public int Population { get; set; }
+        public int Population { get; set; } // set by time?
         public int IsLit { get; set; } //set by time
-        public Range Position { get; set; }
+        public Range Range { get; set; }
         public int FloorNumber { get; set; }
 
         public int Segements => segments;
 
-        public Office(Floor floor)
+        public Office(Floor floor, Range range)
         {
             this.FloorNumber = floor.FloorNumber;
+            this.Range = range;
+
         }
     }
 
