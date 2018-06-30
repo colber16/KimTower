@@ -9,6 +9,6 @@ namespace KimTower
 
         public string Name { get; set; }
 
-        public Position Position { get; set; }
+        public Range Position { get; set; }
     }
 }

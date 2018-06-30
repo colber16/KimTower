@@ -2,9 +2,9 @@
 {
     using System;
 
-    public struct Position
+    public struct Range
     {
-        public Position(int xCoordinate, int xSecondCoordinate)
+        public Range(int xCoordinate, int xSecondCoordinate)
         {
             this.XCoordinate = xCoordinate;
             this.XSecondCoordinate = xSecondCoordinate;
@@ -14,7 +14,7 @@
 
         public int XSecondCoordinate { get; set; }
 
-        public Position GetPosition()
+        public Range GetPosition()
         {
             throw new NotImplementedException();
         }
