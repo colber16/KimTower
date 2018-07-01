@@ -35,6 +35,46 @@ namespace KimTower
        
 
     }
+    /// <summary>
+    /// Waiting rooms for transportation.
+    /// </summary>
+    public class WaitingRoom : IRoom
+    {
+        private int capacity = 32;//Random number
+
+        public bool Occupied { get; set; } //time of day
+
+        public int Capacity => capacity;
+
+        public int Population { get; set; } // time
+
+        public bool IsLit { get; set; } //doesn't really apply
+
+        //int ConstructionCost { get; set; }
+
+        public Range Range { get; }
+
+        public int FloorNumber { get; set; }
+
+        //int Revenue { get; set; }
+
+        public int Segements => this.Range.XSecondCoordinate - this.Range.XCoordinate;
+
+        public WaitingRoom(Floor floor, int x)
+        {
+            this.FloorNumber = floor.FloorNumber;
+            this.Range = GetRange(floor, x);
+        }
+        /// <summary>
+        /// Waiting room is to the left of transportation.
+        /// </summary>
+        /// <returns>The range.</returns>
+        /// <param name="x">The x coordinate.</param>
+        private Range GetRange(Floor floor, int x)
+        {
+            return new Range(floor.Range.XCoordinate, x);
+        }
+    }
 
     public class Office : IRoom
     {
@@ -63,3 +103,4 @@ namespace KimTower
     }
 
 }
+

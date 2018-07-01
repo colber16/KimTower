@@ -1,10 +1,16 @@
 ﻿using System;
 namespace KimTower
 {
-    public class Transportation
+    public interface ITransportation
     {
-        public Transportation()
-        {
-        }
+        int Capacity { get; }
+
+        int Population { get; set; }
+
+        bool InUse { get; set; }
+
+        WaitingRoom WaitingRoom { get; set; }
+
+
     }
 }
