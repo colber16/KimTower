@@ -6,7 +6,10 @@ namespace KimTower
     /// </summary>
     public interface IRoom
     {
-
+        /// <summary>
+        /// Is room being rented or lived in.
+        /// </summary>
+        /// <value><c>true</c> if occupied; otherwise, <c>false</c>.</value>
         bool Occupied { get; set; }
 
         //int MaintenanceCost { get; set; }
@@ -42,11 +45,11 @@ namespace KimTower
     {
         private int capacity = 32;//Random number
 
-        public bool Occupied { get; set; } //time of day
+        public bool Occupied { get; set; } //doesn't really apply
 
         public int Capacity => capacity;
 
-        public int Population { get; set; } // time
+        public int Population { get; set; } 
 
         public bool IsLit { get; set; } //doesn't really apply
 
@@ -60,10 +63,11 @@ namespace KimTower
 
         public int Segements => this.Range.XSecondCoordinate - this.Range.XCoordinate;
 
-        public WaitingRoom(Floor floor, int x)
+        public WaitingRoom(Floor floor, int x, Time time)
         {
             this.FloorNumber = floor.FloorNumber;
             this.Range = GetRange(floor, x);
+            this.Population = GetPopulation(time);
         }
         /// <summary>
         /// Waiting room is to the left of transportation.
@@ -73,6 +77,23 @@ namespace KimTower
         private Range GetRange(Floor floor, int x)
         {
             return new Range(floor.Range.XCoordinate, x);
+        }
+
+        private int GetPopulation(Time time)
+        {
+            if(time.GetTrafficFromMinutes(time.TotalMinutes) == Traffic.Busy)
+            {
+                return capacity;
+            }
+            if (time.GetTrafficFromMinutes(time.TotalMinutes) == Traffic.Medium)
+            {
+                return capacity / 2;
+            }
+            else
+            {
+                return 0; 
+            }
+
         }
     }
 

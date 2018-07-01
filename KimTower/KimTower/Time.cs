@@ -64,6 +64,29 @@ namespace KimTower
             }
         }
 
+        public Traffic GetTrafficFromMinutes(int minutes)
+        {
+            var morningRush = 9;
+            var lunchRush = 12;
+            var EveningRush = 17; 
+
+            var day = GetDayFromMinutes(minutes);
+
+            if (day.Equals(Day.Weekend))
+            {
+                return Traffic.Slow;
+            }
+
+            else
+            {
+                if(this.Hour == morningRush || this.Hour == lunchRush || this.Hour == EveningRush)
+                {
+                    return Traffic.Busy;
+                }
+                return Traffic.Slow;
+            }
+        }
+
     }
 
     public enum Day
@@ -71,5 +94,13 @@ namespace KimTower
         WeekdayOne,
         WeekdayTwo,
         Weekend
+    }
+
+    public enum Traffic
+    {
+        Slow,
+        Medium,
+        Busy
+
     }
 }
