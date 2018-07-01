@@ -1,9 +1,7 @@
 ﻿using System;
 namespace KimTower
 {
-    /// <summary>
-    /// Room.
-    /// </summary>
+
     public interface IRoom
     {
         /// <summary>
@@ -69,14 +67,15 @@ namespace KimTower
             this.Range = GetRange(floor, x);
             this.Population = GetPopulation(time);
         }
-        /// <summary>
-        /// Waiting room is to the left of transportation.
-        /// </summary>
-        /// <returns>The range.</returns>
-        /// <param name="x">The x coordinate.</param>
+       
         private Range GetRange(Floor floor, int x)
         {
-            return new Range(floor.Range.XCoordinate, x);
+            if(x < 0)
+            {
+                return new Range(floor.Range.XCoordinate, x);
+            }
+            return new Range(x, floor.Range.XSecondCoordinate);
+
         }
 
         private int GetPopulation(Time time)

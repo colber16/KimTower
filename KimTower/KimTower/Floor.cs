@@ -6,6 +6,8 @@ namespace KimTower
 
         Range Range { get; set; }
 
+        int ParentFloor { get; }
+
         int FloorNumber { get; }
 
         //int MaintenanceCost { get; }
@@ -17,7 +19,11 @@ namespace KimTower
     //people can be in lobbies
     public class Lobby : IFloor
     {
+        private int parentFloor = 0;
+
         public Range Range { get; set; }
+
+        public int ParentFloor => parentFloor;
 
         public int FloorNumber { get; set;}
 
@@ -25,8 +31,7 @@ namespace KimTower
 
         public void ExtendFloor(int coordinate)
         {
-            //copy pasta.  Maybe us an abstract class
-            //needs to fill with lobby "room"
+            
             if (coordinate < 0)
             {
                 this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
@@ -84,7 +89,7 @@ namespace KimTower
         {
 
         }
-        //Combine these
+       
         public void ExtendFloor(int coordinate)
         {
             if(coordinate < 0)
