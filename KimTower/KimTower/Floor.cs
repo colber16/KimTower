@@ -57,7 +57,7 @@ namespace KimTower
         public bool IsBelowGround { get; set; }
 
         public int ParentFloor { get; set; }
-        //Should lobby have a parent floor of 0?
+        
         public int FloorNumber
         {
             get
