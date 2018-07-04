@@ -15,6 +15,8 @@ namespace KimTower
         int Segments { get; set; }
 
         void ExtendFloor(int coordinate);
+
+        //ITransportation Transportation { get; set; }
     }
     //people can be in lobbies
     public class Lobby : IFloor
@@ -28,6 +30,8 @@ namespace KimTower
         public int FloorNumber { get; set;}
 
         public int Segments { get; set; }
+
+        public ITransportation Transportation { get; set; }
 
         public void ExtendFloor(int coordinate)
         {
@@ -77,6 +81,8 @@ namespace KimTower
             }
         }
 
+        public ElevatorShaft ElevatorShaft{ get; set; }
+
 
         public Floor(Range range, int segments, int parentfloor, bool isBelowGround)
         {
@@ -89,7 +95,10 @@ namespace KimTower
         {
 
         }
-       
+        public void AddElevator(int x)
+        {
+            this.ElevatorShaft = new ElevatorShaft(this, x);
+        }
         public void ExtendFloor(int coordinate)
         {
             if(coordinate < 0)

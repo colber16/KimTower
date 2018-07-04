@@ -61,11 +61,11 @@ namespace KimTower
 
         public int Segements => this.Range.XSecondCoordinate - this.Range.XCoordinate;
 
-        public WaitingRoom(Floor floor, int x, Time time)
+        public WaitingRoom(Floor floor, int x)//, Time time)
         {
             this.FloorNumber = floor.FloorNumber;
             this.Range = GetRange(floor, x);
-            this.Population = GetPopulation(time);
+            //this.Population = GetPopulation(time);
         }
        
         private Range GetRange(Floor floor, int x)
@@ -77,23 +77,23 @@ namespace KimTower
             return new Range(x, floor.Range.XSecondCoordinate);
 
         }
+        public int GetPopulation => 0;
+        //private int GetPopulation(Time time)
+        //{
+        //    if(time.GetTrafficFromMinutes(time.TotalMinutes) == Traffic.Busy)
+        //    {
+        //        return capacity;
+        //    }
+        //    if (time.GetTrafficFromMinutes(time.TotalMinutes) == Traffic.Medium)
+        //    {
+        //        return capacity / 2;
+        //    }
+        //    else
+        //    {
+        //        return 0; 
+        //    }
 
-        private int GetPopulation(Time time)
-        {
-            if(time.GetTrafficFromMinutes(time.TotalMinutes) == Traffic.Busy)
-            {
-                return capacity;
-            }
-            if (time.GetTrafficFromMinutes(time.TotalMinutes) == Traffic.Medium)
-            {
-                return capacity / 2;
-            }
-            else
-            {
-                return 0; 
-            }
-
-        }
+        //}
     }
 
     public class Office : IRoom
