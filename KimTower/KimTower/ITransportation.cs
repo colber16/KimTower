@@ -86,13 +86,21 @@ namespace KimTower
             this.FloorSpan = new FloorSpan(floor.FloorNumber, floor.FloorNumber);
             this.Population = GetPopulation();
             this.InUse = IsInUse();
-            ElevatorCars.Add(AddNewCar());
+            ElevatorCars.Add(AddNewCar(this, floor.FloorNumber));
 
         }
-        //...
-        public ElevatorCar AddNewCar()
+
+        public virtual ElevatorCar AddNewCar(ElevatorShaft elevatorShaft, int floorNumber)
         {
-            return new ElevatorCar();
+            if(elevatorShaft.ElevatorCars.Any(car => car.FloorNumber == floorNumber))
+            {
+                throw new NotImplementedException();
+            }
+            if(!this.FloorSpan.IsFloorInFloorSpan(this, floorNumber))
+            {
+                throw new NotImplementedException();
+            }
+            return new ElevatorCar(elevatorShaft, floorNumber);
 
         }
         public FloorSpan ExtendFloorSpan(int floorNumber)
@@ -119,6 +127,37 @@ namespace KimTower
         {
             return this.ElevatorCars.Any(car => car.WaitingRoom.Population > 0);
         }
+
+
+    }
+
+    public class ServiceElevatorShaft : ElevatorShaft
+    {
+        public ServiceElevatorShaft(Floor floor) : base(floor)
+        {
+           
+        }
+    }
+
+    public class ExpressElevatorShaft : ElevatorShaft
+    {
+        private int capacity = 40;
+        private int segments =  6;
+
+        public ExpressElevatorShaft(Floor floor) : base(floor)
+        {
+            
+        }
+
+        public override ElevatorCar AddNewCar(ElevatorShaft elevatorShaft, int floorNumber)
+        {
+            if(floorNumber % 15 != 0)
+            {
+                throw new NotImplementedException();
+            }
+            return new ElevatorCar(elevatorShaft, floorNumber);
+        }
+
     }
 
     public class ElevatorCar : ITransportation
@@ -139,17 +178,25 @@ namespace KimTower
 
         public int Segments => segments;
 
-        public int FloorNumber { get; set; }
-        //Range of floors car can travel to, maybe.
-        public FloorSpan FloorSpan => throw new NotImplementedException();
+        public int FloorNumber { get; private set; }
+        //Is there a limit
+        public FloorSpan FloorSpan { get;  }
 
-        public ElevatorCar()
+
+        public ElevatorCar(ElevatorShaft elevatorShaft, int floorNumber)
         {
             this.Population = GetPopulation();
+            this.InUse = IsInUse();
+            this.FloorNumber = floorNumber;
+            this.FloorSpan = new FloorSpan(elevatorShaft.FloorSpan.BottomFloor, elevatorShaft.FloorSpan.TopFloor);
         }
         public int GetPopulation()
         {
             throw new NotImplementedException();
+        }
+        public bool IsInUse()
+        {
+            return this.WaitingRoom.Population > 0;
         }
     }
 
@@ -165,8 +212,14 @@ namespace KimTower
         public int BottomFloor { get; set; }
 
         public int TopFloor { get; set; }
+
+        public bool IsFloorInFloorSpan(ElevatorShaft elevatorShaft, int floorNumber)
+        {
+            return ((floorNumber >= elevatorShaft.FloorSpan.BottomFloor)
+                    && (floorNumber <= elevatorShaft.FloorSpan.TopFloor));
+            
+        }
     }
 
-    public delegate void IsInUse(WaitingRoom waitingRoom);
 
 }
