@@ -86,12 +86,10 @@ namespace KimTower
         public ElevatorShaft(Floor floor, int x)
         {
             this.FloorSpan = new FloorSpan(floor.FloorNumber, floor.FloorNumber);
-            //ElevatorCars.Add(AddNewCar(floor));
             this.Range = new Range(x, x + segments);
             this.ElevatorCars = new List<ElevatorCar>{new ElevatorCar(floor, this.Range.XCoordinate)};
             this.Population = GetPopulation();
             this.InUse = IsInUse();
-
 
         }
 
@@ -136,13 +134,19 @@ namespace KimTower
 
     }
 
-    //public class ServiceElevatorShaft : ElevatorShaft
-    //{
-    //    public ServiceElevatorShaft(Floor floor, int x) : base(floor, x)
-    //    {
+    public class ServiceElevatorShaft : ElevatorShaft
+    {
+        public ServiceElevatorShaft(Floor floor, int x) : base(floor, x)
+        {
            
-    //    }
-    //}
+        }
+
+        public bool IsServicePerson(Person person)
+        {
+            throw new NotImplementedException();
+            //return type == serviceperson
+        }
+    }
 
     //public class ExpressElevatorShaft : ElevatorShaft
     //{
