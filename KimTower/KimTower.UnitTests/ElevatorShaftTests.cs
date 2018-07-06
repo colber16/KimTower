@@ -9,27 +9,26 @@ namespace KimTower.UnitTests
         public int GetSegments(int x)
         {
             var floor = new Floor(new Range(1, 10), 10, 14, false);
-            floor.AddElevator(1);
-            var elevatorShaft = new ElevatorShaft(floor, x);
-            return elevatorShaft.Segments;
+            floor.AddElevatorShaft(1);
+            return floor.ElevatorShaft.Segments;
         }
 
         [Test, TestCase(2, ExpectedResult = 1)]
         public int GetElevatorCarCount(int x)
         {
             var floor = new Floor(new Range(1, 10), 10, 14, false);
-            floor.AddElevator(1);
-            var elevatorShaft = new ElevatorShaft(floor, x);
-            return elevatorShaft.ElevatorCars.Count;
+            floor.AddElevatorShaft(1);
+            return floor.ElevatorShaft.ElevatorCars.Count;
         }
 
         [Test, TestCase(3, ExpectedResult = 7)]
         public int GetRange(int x)
         {
             var floor = new Floor(new Range(1, 10), 10, 14, false);
-            floor.AddElevator(1);
-            var elevatorShaft = new ElevatorShaft(floor, x);
-            return elevatorShaft.Range.XSecondCoordinate;
+            floor.AddElevatorShaft(1);
+            return floor.ElevatorShaft.Range.XSecondCoordinate;
         }
+
+
     }
 }

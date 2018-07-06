@@ -95,7 +95,7 @@ namespace KimTower
         {
 
         }
-        public void AddElevator(int x)
+        public void AddElevatorShaft(int x)
         {
             this.ElevatorShaft = new ElevatorShaft(this, x);
         }
