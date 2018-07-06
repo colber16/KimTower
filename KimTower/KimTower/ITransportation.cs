@@ -77,7 +77,7 @@ namespace KimTower
 
         public int Segments => segments;
 
-        public FloorSpan FloorSpan { get; }
+        public FloorSpan FloorSpan { get; set; }
 
         public List<ElevatorCar> ElevatorCars { get; set; }
 
@@ -106,13 +106,14 @@ namespace KimTower
             return new ElevatorCar(floor, this.Range.XCoordinate);
 
         }
-        public FloorSpan ExtendFloorSpan(int floorNumber)
+
+        public FloorSpan ExtendFloorSpan(int numberOfFloors)
         {
-            if (floorNumber < 0)
+            if (numberOfFloors < 0)
             {
-                return new FloorSpan(this.FloorSpan.TopFloor, this.FloorSpan.BottomFloor - floorNumber);
+                return new FloorSpan(this.FloorSpan.BottomFloor + numberOfFloors, this.FloorSpan.TopFloor);
             }
-            return new FloorSpan(this.FloorSpan.TopFloor + floorNumber, this.FloorSpan.BottomFloor);
+            return new FloorSpan(this.FloorSpan.BottomFloor, this.FloorSpan.TopFloor + numberOfFloors);
         }
 
         public int GetPopulation()
@@ -226,7 +227,7 @@ namespace KimTower
         public int BottomFloor { get; set; }
 
         public int TopFloor { get; set; }
-
+        //Shrinking elevators....
         public bool IsFloorInFloorSpan(ElevatorShaft elevatorShaft, int floorNumber)
         {
             return ((floorNumber >= elevatorShaft.FloorSpan.BottomFloor)
