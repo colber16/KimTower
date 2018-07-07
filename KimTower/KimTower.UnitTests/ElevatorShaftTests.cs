@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace KimTower.UnitTests
 {
@@ -29,25 +30,40 @@ namespace KimTower.UnitTests
             return floor.ElevatorShaft.Range.XSecondCoordinate;
         }
 
-        [Test, TestCase(3, 10, 14, false, ExpectedResult = 18)]
+        //[Test, TestCase(3, 10, 14, false, ExpectedResult = 18)]
       
-        public int ExtendFloorSpanUp(int numberOfFloors, int segments, int parentFloor, bool isBelowGround)
+        //public int ExtendFloorSpanUp(int numberOfFloors, int segments, int parentFloor, bool isBelowGround)
+        //{
+        //    var floor = new Floor(new Range(1, 10), segments, parentFloor, isBelowGround);
+        //    floor.AddElevatorShaft(1);
+        //    floor.ElevatorShaft.FloorSpan = floor.ElevatorShaft.ExtendFloorSpan(numberOfFloors);
+        //    return floor.ElevatorShaft.FloorSpan.TopFloor;
+
+        //}
+        //[Test, TestCase(-3, 10, 14, false, ExpectedResult = new Range(12, 15))]
+        //public int ExtendFloorSpanDown(int numberOfFloors, int segments, int parentFloor, bool isBelowGround)
+        //{
+        //    var floor = new Floor(new Range(1, 10), segments, parentFloor, isBelowGround);
+        //    floor.AddElevatorShaft(1);
+        //    floor.ElevatorShaft.FloorSpan = floor.ElevatorShaft.ExtendFloorSpan(numberOfFloors);
+        //    return floor.ElevatorShaft.FloorSpan.BottomFloor;
+
+        //}
+        [Test, TestCaseSource(nameof(ListSources))]
+        public FloorSpan ExtendFloorSpan(Floor floor, int numberOfFloors)
         {
-            var floor = new Floor(new Range(1, 10), segments, parentFloor, isBelowGround);
             floor.AddElevatorShaft(1);
             floor.ElevatorShaft.FloorSpan = floor.ElevatorShaft.ExtendFloorSpan(numberOfFloors);
-            return floor.ElevatorShaft.FloorSpan.TopFloor;
+            return floor.ElevatorShaft.FloorSpan;
 
         }
-        [Test, TestCase(-3, 10, 14, false, ExpectedResult = 12)]
-        public int ExtendFloorSpanDown(int numberOfFloors, int segments, int parentFloor, bool isBelowGround)
+        static List<TestCaseData> ListSources = new List<TestCaseData>
         {
-            var floor = new Floor(new Range(1, 10), segments, parentFloor, isBelowGround);
-            floor.AddElevatorShaft(1);
-            floor.ElevatorShaft.FloorSpan = floor.ElevatorShaft.ExtendFloorSpan(numberOfFloors);
-            return floor.ElevatorShaft.FloorSpan.BottomFloor;
+             new TestCaseData(new Floor(new Range(1, 9), 8, 14, false), 3).Returns(new FloorSpan(15, 18)),
+             new TestCaseData(new Floor(new Range(1, 9), 8, 1, false), -3).Returns(new FloorSpan(-1, 2))
 
-        }
+        };
 
     }
+
 }

@@ -63,6 +63,12 @@ namespace KimTower
         }
 
     }
+    public class Escalator : Stairs
+    {
+        public Escalator(Floor floor) : base(floor)
+        {
+        }
+    }
 
     public class ElevatorShaft : ITransportation
     {
@@ -82,12 +88,12 @@ namespace KimTower
         public List<ElevatorCar> ElevatorCars { get; set; }
 
         public Range Range  { get; set; }
-
+        //Xcoor needs to be in floor range
         public ElevatorShaft(Floor floor, int x)
         {
             this.FloorSpan = new FloorSpan(floor.FloorNumber, floor.FloorNumber);
             this.Range = new Range(x, x + segments);
-            this.ElevatorCars = new List<ElevatorCar>{new ElevatorCar(floor, this.Range.XCoordinate)};
+            this.ElevatorCars = new List<ElevatorCar>{new ElevatorCar(floor)};
             this.Population = GetPopulation();
             this.InUse = IsInUse();
 
@@ -103,7 +109,7 @@ namespace KimTower
             {
                 throw new NotImplementedException();
             }
-            return new ElevatorCar(floor, this.Range.XCoordinate);
+            return new ElevatorCar(floor);
 
         }
 
@@ -111,7 +117,7 @@ namespace KimTower
         {
             if (numberOfFloors < 0)
             {
-                return new FloorSpan(this.FloorSpan.BottomFloor + numberOfFloors, this.FloorSpan.TopFloor);
+                return new FloorSpan(this.FloorSpan.BottomFloor + numberOfFloors , this.FloorSpan.TopFloor);
             }
             return new FloorSpan(this.FloorSpan.BottomFloor, this.FloorSpan.TopFloor + numberOfFloors);
         }
@@ -145,32 +151,43 @@ namespace KimTower
         public bool IsServicePerson(Person person)
         {
             throw new NotImplementedException();
-            //return type == serviceperson
         }
     }
 
-    //public class ExpressElevatorShaft : ElevatorShaft
-    //{
+    public class ExpressElevatorShaft : ElevatorShaft
+    {
 
-    //    public ExpressElevatorShaft(Floor floor) : base(floor)
-    //    {
-    //        this.segments = 6;
-    //    }
+        public ExpressElevatorShaft(Floor floor, int x) : base(floor, x)
+        {
+            this.segments = 6;
+        }
 
-    //    public override ElevatorCar AddNewCar(Floor floor)
-    //    {
-    //        if(floor.FloorNumber % 15 != 0)
-    //        {
-    //            throw new NotImplementedException();
-    //        }
-    //        return new ElevatorCar(floor);
-    //    }
+        public override ElevatorCar AddNewCar(Floor floor)
+        {
+            if(floor.FloorNumber % 15 != 0)
+            {
+                throw new NotImplementedException();
+            }
+            return new ExpressElevatorCar(floor);
+        }
 
-    //}
-    //public abstract class ElevatorCar
-    //{
-    //    public abstract AddCar
-    //}
+    }
+
+    internal class ExpressElevatorCar : ElevatorCar
+    {
+        private int capacity = 40;
+        private int segments = 6;
+
+        public new int Capacity => capacity;
+
+        public new int Segments => segments;
+
+        public ExpressElevatorCar(Floor floor) : base(floor)
+        {
+            
+        }
+    }
+
     public class ElevatorCar : ITransportation
     {
         private int capacity = 20;
@@ -194,10 +211,10 @@ namespace KimTower
         public FloorSpan FloorSpan { get;  }
 
 
-        public ElevatorCar(Floor floor, int x)
+        public ElevatorCar(Floor floor)
         {
             //this.Population = GetPopulation();
-            this.WaitingRoom = new WaitingRoom(floor, x);
+            this.WaitingRoom = new WaitingRoom(floor, floor.ElevatorShaft.Range.XCoordinate);
             this.InUse = IsInUse();
             this.FloorNumber = floor.FloorNumber;
             //this.FloorSpan = new FloorSpan(floor.ElevatorShaft.FloorSpan.BottomFloor, floor.ElevatorShaft.FloorSpan.TopFloor);
@@ -207,11 +224,24 @@ namespace KimTower
         }
         public int GetPopulation()
         {
-            throw new NotImplementedException();
+            if (this.WaitingRoom.Population % capacity == 0)
+            {
+                return capacity;
+            }
+            else
+            {
+                return this.WaitingRoom.Population % capacity;
+            }
         }
         public bool IsInUse()
         {
             return this.WaitingRoom.Population > 0;
+        }
+
+        public int Move(int desiredFloor)
+        {
+            //check if floor number in span
+            return desiredFloor;
         }
     }
 
