@@ -122,5 +122,31 @@ namespace KimTower
 
     }
 
+    public class Condo : IRoom
+    {
+        private int segments = 9;
+        private int capacity = 6;
+        private int xSecondCooridnate = 0;
+
+        public bool Occupied { get; set; } // is there transportation.  Are conditions good?
+        public int Capacity => capacity;
+        public int Population { get; set; } // set by time
+        public bool IsLit { get; set; } //set by time
+        public Range Range { get; }
+        public int FloorNumber { get; set; }
+
+        public int Segements => segments;
+
+        public Condo(Floor floor)
+        {
+            this.FloorNumber = floor.FloorNumber;
+            this.Range = GetRange();
+
+        }
+
+        private Range GetRange() => new Range(this.xSecondCooridnate, this.xSecondCooridnate + segments);
+
+    }
+
 }
 

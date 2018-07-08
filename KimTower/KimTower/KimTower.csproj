@@ -50,6 +50,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="ConstructFloor.cs" />
     <Compile Include="ITransportation.cs" />
+    <Compile Include="BetterTransportation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

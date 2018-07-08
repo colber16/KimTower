@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace KimTower
 {
     public interface IFloor
@@ -14,41 +15,44 @@ namespace KimTower
 
         int Segments { get; set; }
 
-        void ExtendFloor(int coordinate);
 
-        //ITransportation Transportation { get; set; }
+        List<IBetterTransportation> Transportations { get; set; }
+
+        List<IRoom> Rooms { get; set; }
+
+
+        void ExtendFloor(int coordinate);
     }
     //people can be in lobbies
-    public class Lobby : IFloor
-    {
-        private int parentFloor = 0;
+    //public class Lobby : IFloor
+    //{
+    //    private int parentFloor = 0;
 
-        public Range Range { get; set; }
+    //    public Range Range { get; set; }
 
-        public int ParentFloor => parentFloor;
+    //    public int ParentFloor => parentFloor;
 
-        public int FloorNumber { get; set;}
+    //    public int FloorNumber { get; set;}
 
-        public int Segments { get; set; }
+    //    public int Segments { get; set; }
+    //    public List<ITransportation> Transportation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public ITransportation Transportation { get; set; }
-
-        public void ExtendFloor(int coordinate)
-        {
+    //    public void ExtendFloor(int coordinate)
+    //    {
             
-            if (coordinate < 0)
-            {
-                this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
+    //        if (coordinate < 0)
+    //        {
+    //            this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
 
-            }
-            else
-            {
-                this.Range = new Range(this.Range.XCoordinate, this.Range.XCoordinate + coordinate);
-            }
+    //        }
+    //        else
+    //        {
+    //            this.Range = new Range(this.Range.XCoordinate, this.Range.XCoordinate + coordinate);
+    //        }
 
-            this.Segments += Math.Abs(coordinate);
-        }
-    }
+    //        this.Segments += Math.Abs(coordinate);
+    //    }
+    //}
     //floors can not be deleted
     public class Floor : IFloor
     {
@@ -83,6 +87,8 @@ namespace KimTower
 
         public ElevatorShaft ElevatorShaft{ get; set; }
 
+        public List<IBetterTransportation> Transportations { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<IRoom> Rooms { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public Floor(Range range, int segments, int parentfloor, bool isBelowGround)
         {
