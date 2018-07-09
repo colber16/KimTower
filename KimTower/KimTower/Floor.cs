@@ -16,7 +16,7 @@ namespace KimTower
         int Segments { get; set; }
 
 
-        List<IBetterTransportation> Transportations { get; set; }
+        List<IElevator> Elevators { get; set; }
 
         List<IRoom> Rooms { get; set; }
 
@@ -39,7 +39,7 @@ namespace KimTower
 
     //    public void ExtendFloor(int coordinate)
     //    {
-            
+
     //        if (coordinate < 0)
     //        {
     //            this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
@@ -65,7 +65,7 @@ namespace KimTower
         public bool IsBelowGround { get; set; }
 
         public int ParentFloor { get; set; }
-        
+
         public int FloorNumber
         {
             get
@@ -85,10 +85,9 @@ namespace KimTower
             }
         }
 
-        public ElevatorShaft ElevatorShaft{ get; set; }
+        public List<IElevator> Elevators { get; set; }
 
-        public List<IBetterTransportation> Transportations { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<IRoom> Rooms { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<IRoom> Rooms { get; set; }
 
         public Floor(Range range, int segments, int parentfloor, bool isBelowGround)
         {
@@ -96,21 +95,29 @@ namespace KimTower
             this.Range = new Range(range.XCoordinate, range.XSecondCoordinate);
             this.Segments = segments;
             this.IsBelowGround = isBelowGround;
+            this.Elevators = new List<IElevator>();
+            this.Rooms = new List<IRoom>();
         }
         public Floor()
         {
 
         }
-        public void AddElevatorShaft(int x)
+
+        public void AddElevator(ElevatorType elevatorType, int xCoordinateRight)
         {
-            this.ElevatorShaft = new ElevatorShaft(this, x);
+            var factory = new ElevatorFactory();
+            var elevator = factory.GetElevator(elevatorType, xCoordinateRight, this.FloorNumber);
+            this.Elevators.Add(elevator);
+            var waitingRoom = new WaitingRoom(this.Range, elevator);
+            this.Rooms.Add(waitingRoom);
+            elevator.Elevator.WaitingRooms.Add(waitingRoom);
+
         }
         public void ExtendFloor(int coordinate)
         {
-            if(coordinate < 0)
+            if (coordinate < 0)
             {
                 this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
-
             }
             else
             {
@@ -118,6 +125,30 @@ namespace KimTower
             }
 
             this.Segments += Math.Abs(coordinate);
+        }
+        public enum ElevatorType
+        {
+            Passenger,
+            Service,
+            Express
+        }
+
+        public class ElevatorFactory
+        {
+            public IElevator GetElevator(ElevatorType elevatorType, int xCoordinateRight, int floorNumber)
+            {
+                switch (elevatorType)
+                {
+                    case ElevatorType.Passenger:
+                        return new PassengerElevator(xCoordinateRight, floorNumber);
+                    //case ElevatorType.Service:
+                    //    return new ServiceElevator(xCoordinateRight);
+                    //case ElevatorType.Express:
+                        //return new ExpressElevator(xCoordinateRight);
+                    default:
+                        throw new NotSupportedException();
+                }
+            }
         }
     }
 

@@ -61,10 +61,10 @@ namespace KimTower
 
         public int Segements => this.Range.XSecondCoordinate - this.Range.XCoordinate;
 
-        public WaitingRoom(Floor floor, int x)//, Time time)
+        public WaitingRoom(Range floorRange, IElevator transpo)//, Time time)
         {
-            this.FloorNumber = floor.FloorNumber;
-            this.Range = GetRange(floor, x);
+            this.FloorNumber = transpo.Elevator.FloorSpan.BottomFloor;
+            this.Range = new Range(floorRange.XCoordinate, floorRange.XSecondCoordinate);
             //this.Population = GetPopulation(time);
         }
        
