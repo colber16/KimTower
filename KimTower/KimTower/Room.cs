@@ -61,11 +61,11 @@ namespace KimTower
 
         public int Segements => this.Range.XSecondCoordinate - this.Range.XCoordinate;
 
-        public WaitingRoom(Range floorRange, IElevator transpo)//, Time time)
+        public WaitingRoom(Range floorRange, IElevator transpo)
         {
             this.FloorNumber = transpo.Elevator.FloorSpan.BottomFloor;
             this.Range = new Range(floorRange.XCoordinate, floorRange.XSecondCoordinate);
-            //this.Population = GetPopulation(time);
+           // this.Population = GetPopulation(time);
         }
        
         private Range GetRange(Floor floor, int x)
@@ -77,6 +77,7 @@ namespace KimTower
             return new Range(x, floor.Range.XSecondCoordinate);
 
         }
+
         public int GetPopulation => 0;
         //private int GetPopulation(Time time)
         //{
@@ -122,30 +123,11 @@ namespace KimTower
 
     }
 
-    public class Condo : IRoom
+    public class Condo //: IRoom
     {
         private int segments = 9;
         private int capacity = 6;
-        private int xSecondCooridnate = 0;
-
-        public bool Occupied { get; set; } // is there transportation.  Are conditions good?
-        public int Capacity => capacity;
-        public int Population { get; set; } // set by time
-        public bool IsLit { get; set; } //set by time
-        public Range Range { get; }
-        public int FloorNumber { get; set; }
-
-        public int Segements => segments;
-
-        public Condo(Floor floor)
-        {
-            this.FloorNumber = floor.FloorNumber;
-            this.Range = GetRange();
-
-        }
-
-        private Range GetRange() => new Range(this.xSecondCooridnate, this.xSecondCooridnate + segments);
-
+       
     }
 
 }

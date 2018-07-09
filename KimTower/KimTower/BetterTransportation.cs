@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace KimTower
 {
 
@@ -8,14 +9,9 @@ namespace KimTower
     {
         Range Range { get; set; }
 
-
-
-        //bool InUse { get; set; }
-        ////waiting room on every floor
+        bool InUse { get; set; }
        
         Elevator Elevator { get; set; }
-
-        //int GetPopulation();
     }
 
     public class Elevator 
@@ -33,13 +29,19 @@ namespace KimTower
             this.Shaft = new Shaft(car);
             this.FloorSpan = new FloorSpan(floorNumber, floorNumber);
             this.WaitingRooms = new List<WaitingRoom>();
-          //  this.Population = GetPopulation();
+            this.Population = GetPopulation();
         }
 
-        //public int GetPopulation()
-        //{
-        //   this. 
-        //}
+        public int GetPopulation()
+        {
+            var sum = 0;
+
+            foreach(var car in this.Shaft.Cars)
+            {
+                sum =+ car.Population;
+            }
+            return sum;
+        }
     }
 
     public static class ElevatorExtentions
@@ -67,6 +69,7 @@ namespace KimTower
 
         public Elevator Elevator { get; set; }
 
+        public bool InUse { get; set; }
        
 
         public PassengerElevator(int position, int floorNumber)
@@ -120,7 +123,7 @@ namespace KimTower
     {
         int Capacity { get; }
         int Segments { get; }
-        int Population { get; }
+        int Population { get; set; }
     }
 
     public class Car : ICar
@@ -129,8 +132,7 @@ namespace KimTower
 
         public int Segments { get; } = 4;
 
-        public int Population { get; }
-
+        public int Population { get; set; }
 
     }
     public class ExpressCar : ICar
@@ -139,7 +141,7 @@ namespace KimTower
 
         public int Segments { get; } = 6;
 
-        public int Population { get; }
+        public int Population { get; set; }
 
        
     }
