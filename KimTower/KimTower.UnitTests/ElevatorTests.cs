@@ -7,9 +7,8 @@ namespace KimTower.UnitTests
         [Test]
         public void ElevatorTest()
         {
-            //var shaft = new Shaft()
-            var car = new Car();
-            Assert.AreEqual(20, car.Capacity);
+            var ele = new PassengerElevator(2, 4);
+            Assert.That(ele.InUse);
         }
     }
 }

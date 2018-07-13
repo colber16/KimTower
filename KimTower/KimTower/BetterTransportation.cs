@@ -74,10 +74,10 @@ namespace KimTower
 
         public PassengerElevator(int position, int floorNumber)
         {
-            this.Range = this.Elevator.GetRange(position);
-
+            
             this.Elevator = new Elevator(new Car(), floorNumber);
-           
+            
+            this.Range = this.Elevator.GetRange(position);
            
         }
     }
