@@ -1,33 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace KimTower
 {
     public interface IFloor
     {
-        
-        Position Position { get; set; }
 
-        int ParentFloor { get; set; }
+        Range Range { get; set; }
+
+        int ParentFloor { get; }
 
         int FloorNumber { get; }
 
-        int MaintenanceCost { get; }
+        //int MaintenanceCost { get; }
 
         int Segments { get; set; }
-        //total width of the floor
-        int TotalSegments { get; }
 
-        bool IsBelowGround { get; set; }
 
-        int Cost { get; }
+        List<IElevator> Elevators { get; set; }
 
+        List<IRoom> Rooms { get; set; }
+
+
+        void ExtendFloor(int coordinate);
     }
+    //people can be in lobbies
+    //public class Lobby : IFloor
+    //{
+    //    private int parentFloor = 0;
+
+    //    public Range Range { get; set; }
+
+    //    public int ParentFloor => parentFloor;
+
+    //    public int FloorNumber { get; set;}
+
+    //    public int Segments { get; set; }
+    //    public List<ITransportation> Transportation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    //    public void ExtendFloor(int coordinate)
+    //    {
+
+    //        if (coordinate < 0)
+    //        {
+    //            this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
+
+    //        }
+    //        else
+    //        {
+    //            this.Range = new Range(this.Range.XCoordinate, this.Range.XCoordinate + coordinate);
+    //        }
+
+    //        this.Segments += Math.Abs(coordinate);
+    //    }
+    //}
+    //floors can not be deleted
     public class Floor : IFloor
     {
-        public readonly int cost = 500;
+        public Range Range { get; set; }
 
-        private int _segment;
+        //public int MaintenanceCost { get { return 0; } }
 
-        public Position Position { get; set; }
+        public int Segments { get; set; }
+
+        public bool IsBelowGround { get; set; }
 
         public int ParentFloor { get; set; }
 
@@ -50,77 +85,71 @@ namespace KimTower
             }
         }
 
-        public int MaintenanceCost { get { return 0; } }
+        public List<IElevator> Elevators { get; set; }
 
-        public int Segments
+        public List<IRoom> Rooms { get; set; }
+
+        public Floor(Range range, int segments, int parentfloor, bool isBelowGround)
         {
-            get { return _segment; }
-            set
-            {
-                if (value <= 0)
-                {
-                    _segment = 1;
-                }
-                else
-                {
-                    _segment = value;
-                }
-            }
-        }
-
-        public int TotalSegments { get; private set; }
-
-        public bool IsBelowGround { get; set; }
-
-        public int Cost { get { return - cost * this.Segments; } }
-
-        public Floor(int startingPosition, int parentFloor, int segments, int totalSegments, bool isBelowGround)
-        {
-            this.Position = new Position(startingPosition, startingPosition + segments);
-            this.TotalSegments = segments + totalSegments;
-            this.ParentFloor = parentFloor;
+            this.ParentFloor = parentfloor;
+            this.Range = new Range(range.XCoordinate, range.XSecondCoordinate);
             this.Segments = segments;
             this.IsBelowGround = isBelowGround;
+            this.Elevators = new List<IElevator>();
+            this.Rooms = new List<IRoom>();
         }
         public Floor()
         {
-            
+
         }
 
-        public Floor ExtendFloorToTheRight(int segments)
+        public void AddElevator(ElevatorType elevatorType, int xCoordinateRight)
         {
-            var newX = this.Position.XSecondCoordinate + segments;
-            this.Position = new Position(this.Position.XCoordinate, newX);
-            this.TotalSegments += segments;
-            return new Floor();
+            var factory = new ElevatorFactory();
+            var elevator = factory.GetElevator(elevatorType, xCoordinateRight, this.FloorNumber);
+            this.Elevators.Add(elevator);
+            var waitingRoom = new WaitingRoom(this.Range, elevator);
+            this.Rooms.Add(waitingRoom);
+            elevator.Elevator.WaitingRooms.Add(waitingRoom);
+
         }
-        //TODO: Need an origin somewhere. Max and min position
-        public Floor ExtendFloorToTheLeft(int segments)
+        public void ExtendFloor(int coordinate)
         {
-            var newX = this.Position.XCoordinate - segments;
-            this.Position = new Position(newX, this.Position.XSecondCoordinate);
-            this.TotalSegments += segments;
-            return new Floor();
+            if (coordinate < 0)
+            {
+                this.Range = new Range(this.Range.XCoordinate + coordinate, this.Range.XCoordinate);
+            }
+            else
+            {
+                this.Range = new Range(this.Range.XCoordinate, this.Range.XCoordinate + coordinate);
+            }
+
+            this.Segments += Math.Abs(coordinate);
+        }
+        public enum ElevatorType
+        {
+            Passenger,
+            Service,
+            Express
+        }
+
+        public class ElevatorFactory
+        {
+            public IElevator GetElevator(ElevatorType elevatorType, int xCoordinateRight, int floorNumber)
+            {
+                switch (elevatorType)
+                {
+                    case ElevatorType.Passenger:
+                        return new PassengerElevator(xCoordinateRight, floorNumber);
+                    //case ElevatorType.Service:
+                    //    return new ServiceElevator(xCoordinateRight);
+                    //case ElevatorType.Express:
+                        //return new ExpressElevator(xCoordinateRight);
+                    default:
+                        throw new NotSupportedException();
+                }
+            }
         }
     }
-    /// <summary>
-    /// Lobbies can only be placed on the 1st floor
-    /// </summary>
-    //public class Lobby : IFloor
-    //{
-    //    public Lobby()
-    //    {
-    //    }
-
-    //    public Position Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //    public int ParentFloor { get { return 0; } }
-    //    public int MaintenanceCost { get;  }
-    //    public int Segments { get => throw new NotImplementedException();  }
-    //    public bool IsBelowGround { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //    public int Cost { get => throw new NotImplementedException();  }
-    //    public int FloorNumber { get => throw new NotImplementedException(); }
-    //    int IFloor.ParentFloor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //    int IFloor.MaintenanceCost { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //}
 
 }

@@ -49,6 +49,9 @@
     <Compile Include="TimeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FloorTests.cs" />
+    <Compile Include="ConstructFloorTests.cs" />
+    <Compile Include="ElevatorShaftTests.cs" />
+    <Compile Include="ElevatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
