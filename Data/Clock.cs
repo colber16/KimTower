@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace KimTower
+namespace KimTower.Data
 {
     public class Clock
     {

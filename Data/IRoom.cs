@@ -1,4 +1,4 @@
-﻿namespace KimTower
+﻿namespace KimTower.Data
 {
     using System.Collections.Generic;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace KimTower
+namespace KimTower.Data
 {
     public class Lobby : IRoom
     {
