@@ -10,4 +10,7 @@
   <ItemGroup>
     <None Remove=".gitignore" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
 </Project>
