@@ -14,7 +14,7 @@ namespace KimTower
             while(true)
             {
                 time.RunTime();
-                DisplayTime(time);
+                Console.WriteLine(DisplayTime(time));
             }
         }
         public string DisplayTime(Time time)

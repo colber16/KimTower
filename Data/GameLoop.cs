@@ -13,7 +13,6 @@ namespace KimTower
                 StartTime();
                 //ProcessInput(tower);
                 //DisplayTowerStats(tower);
-                Console.ReadLine();
             }
         }
 
