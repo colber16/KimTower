@@ -2,30 +2,41 @@
 namespace KimTower.Data
 {
     using System;
+
     public class GameLoop
     {
-      public void Run(Tower tower)
+      public void Run(string input, Tower tower)
         {
             Build build = new Build();
 
             while(true)
             {
-                StartTime();
-                //ProcessInput(tower);
-                //DisplayTowerStats(tower);
+                ProcessInput(input, tower);
+               // Update();
+                Render(tower);
             }
         }
 
-        private void StartTime()
+        private void Render(Tower tower)
         {
-            var time = new Time(0);
-            var clock = new Clock(time);
-            clock.RunClock(time);
+            Console.WriteLine($"Floors:{tower.Floors[0].FloorNumber}");
         }
 
-        private void ProcessInput(Tower tower)
+        private void Update()
         {
             throw new NotImplementedException();
+        }
+        private void UpdateFloor()
+        {
+            
+        }
+
+        private void ProcessInput(string input, Tower tower)
+        {
+            if(input == "l")
+            {
+                tower.AddLobby();
+            }
         }
     }
 }
