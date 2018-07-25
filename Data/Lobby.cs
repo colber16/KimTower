@@ -13,6 +13,10 @@ namespace KimTower.Data
         {
             this.Segments = segments;
         }
+        public void ExtendSegments()
+        {
+            this.Segments += 4;
+        }
 
     }
 }

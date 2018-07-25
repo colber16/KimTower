@@ -2,6 +2,7 @@
 namespace KimTower.Data
 {
     using System;
+    using System.Linq;
 
     public class GameLoop
     {
@@ -14,12 +15,13 @@ namespace KimTower.Data
                 ProcessInput(input, tower);
                // Update();
                 Render(tower);
+                Console.ReadLine();
             }
         }
 
         private void Render(Tower tower)
         {
-            Console.WriteLine($"Floors:{tower.Floors[0].FloorNumber}");
+            Console.WriteLine($"Floors:{tower.Floors[0].FloorNumber}, Segments: {tower.Floors[0].Segments}");
         }
 
         private void Update()
@@ -35,7 +37,23 @@ namespace KimTower.Data
         {
             if(input == "l")
             {
-                tower.AddLobby();
+                if(tower.Floors.Count == 0)
+                {
+                    tower.AddInitialLobby();
+                }
+                else
+                {
+                    tower.Floors[0].ExtendSegments(4);
+
+                    foreach(var room in tower.Floors[0].Rooms)
+                    {
+                        if(room is Lobby)
+                        {
+                            ((Lobby)room).ExtendSegments();
+                        }
+                    }
+                }
+
             }
         }
     }
