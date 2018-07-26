@@ -6,55 +6,102 @@ namespace KimTower.Data
 
     public class GameLoop
     {
-      public void Run(string input, Tower tower)
+        public void Run(Tower tower)
         {
             Build build = new Build();
 
-            while(true)
+            while (true)
             {
+                var input = Console.ReadLine();
                 ProcessInput(input, tower);
-               // Update();
+                // Update();
                 Render(tower);
-                Console.ReadLine();
+
             }
         }
 
         private void Render(Tower tower)
         {
-            Console.WriteLine($"Floors:{tower.Floors[0].FloorNumber}, Segments: {tower.Floors[0].Segments}");
+            for (int i = 0; i < tower.Floors.Count; i++)
+            {
+                Console.WriteLine($"Floors:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].Segments}");
+
+            }
         }
 
         private void Update()
         {
             throw new NotImplementedException();
         }
-        private void UpdateFloor()
+
+        private Floor FloorCheck(IRoom room, Tower tower, int floorNumber)
         {
-            
+            foreach (var floor in tower.Floors)
+            {
+                if (floor.FloorNumber == floorNumber)
+                {
+                    return floor;
+
+                }
+            }
+
+            var newFloor = new Floor(room.Segments, floorNumber);
+
+            tower.Floors.Add(newFloor);
+
+            return newFloor;
+
         }
+
 
         private void ProcessInput(string input, Tower tower)
         {
-            if(input == "l")
+            var inputs = input.Split(" ");
+            var desiredRoom = inputs[0];
+            var floorNumber = Int32.Parse(inputs[1]);
+            //new room
+            IRoom room = DetermineRoomType(desiredRoom);
+
+            var floor = FloorCheck(room, tower, floorNumber);
+
+            if (room is Lobby)
             {
-                if(tower.Floors.Count == 0)
+                if (floor.Rooms.Any(l => l is Lobby))
                 {
-                    tower.AddInitialLobby();
+                    ((Lobby)room).ExtendSegments();
+                    floor.ExtendSegments(((Lobby)room).StandardSegments);
                 }
                 else
                 {
-                    tower.Floors[0].ExtendSegments(4);
-
-                    foreach(var room in tower.Floors[0].Rooms)
-                    {
-                        if(room is Lobby)
-                        {
-                            ((Lobby)room).ExtendSegments();
-                        }
-                    }
+                    floor.Rooms.Add(room);    
                 }
-
+            }
+            else
+            {
+                if(floor.Rooms.Any(l => l is Office))
+                {
+                    floor.ExtendSegments(room.Segments);
+                    floor.Rooms.Add(room); 
+                }
+                else
+                {
+                    floor.Rooms.Add(room); 
+                }
             }
         }
+
+        private IRoom DetermineRoomType(string desiredRoom)
+        {
+            if (desiredRoom == "l")
+            {
+                return new Lobby();
+            }
+            if (desiredRoom == "o")
+            {
+                return new Office();
+            }
+            throw new NotImplementedException();
+        }
+
     }
 }

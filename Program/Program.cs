@@ -10,7 +10,7 @@ namespace Program
         {
             var tower = new Tower();
             var loop = new GameLoop();
-            loop.Run(Console.ReadLine(), tower);
+            loop.Run(tower);
 
         }
     }

@@ -5,17 +5,21 @@ namespace KimTower.Data
 {
     public class Lobby : IRoom
     {
+        int segments = 4;
         public List<Person> People { get; set; }
 
-        public int Segments { get; set; }
+        public int Segments { get; private set; }
 
-        public Lobby(int segments)
+        public int StandardSegments { get; private set; }
+
+        public Lobby()
         {
             this.Segments = segments;
+            this.StandardSegments = segments;
         }
         public void ExtendSegments()
         {
-            this.Segments += 4;
+            this.Segments += segments;
         }
 
     }

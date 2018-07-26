@@ -10,18 +10,19 @@ namespace KimTower.Data
 
         public int Segments { get; set; }
 
-        public int FloorNumber { get;  }
+        public int FloorNumber { get; set; }
 
-        public Floor(int segments)
+        public Floor(int segments, int floorNumber)
         {
             this.Rooms = new List<IRoom>();
             this.Segments = segments;
-            this.FloorNumber = 1;
+            this.FloorNumber = floorNumber; 
         }
 
         public void ExtendSegments(int segments)
         {
             this.Segments += segments;
         }
+
     }
 }
