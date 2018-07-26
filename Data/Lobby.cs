@@ -10,16 +10,16 @@ namespace KimTower.Data
 
         public int Segments { get; private set; }
 
-        public int StandardSegments { get; private set; }
+        public int TotalSegments { get; private set; }
 
         public Lobby()
         {
             this.Segments = segments;
-            this.StandardSegments = segments;
+            this.TotalSegments = segments;
         }
         public void ExtendSegments()
         {
-            this.Segments += segments;
+            this.TotalSegments += segments;
         }
 
     }

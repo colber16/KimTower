@@ -24,7 +24,7 @@ namespace KimTower.Data
         {
             for (int i = 0; i < tower.Floors.Count; i++)
             {
-                Console.WriteLine($"Floors:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].Segments}");
+                Console.WriteLine($"Floors:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].Segments}, Rooms Count: {tower.Floors[i].Rooms.Count}");
 
             }
         }
@@ -34,18 +34,19 @@ namespace KimTower.Data
             throw new NotImplementedException();
         }
 
-        private Floor FloorCheck(IRoom room, Tower tower, int floorNumber)
+        private Floor FloorCheck(int segments, Tower tower, int floorNumber)
         {
             foreach (var floor in tower.Floors)
             {
                 if (floor.FloorNumber == floorNumber)
                 {
+                    floor.ExtendSegments(segments);
                     return floor;
 
                 }
             }
 
-            var newFloor = new Floor(room.Segments, floorNumber);
+            var newFloor = new Floor(segments, floorNumber);
 
             tower.Floors.Add(newFloor);
 
@@ -59,35 +60,37 @@ namespace KimTower.Data
             var inputs = input.Split(" ");
             var desiredRoom = inputs[0];
             var floorNumber = Int32.Parse(inputs[1]);
-            //new room
+
             IRoom room = DetermineRoomType(desiredRoom);
 
-            var floor = FloorCheck(room, tower, floorNumber);
+            var floor = FloorCheck(room.Segments, tower, floorNumber);
 
-            if (room is Lobby)
+            AddRoom(room, floor);
+        }
+
+        private void AddRoom(IRoom room, Floor floor)
+        {
+            if((!floor.Rooms.Any(l => l is Lobby) && room is Lobby) || !(room is Lobby))
             {
-                if (floor.Rooms.Any(l => l is Lobby))
-                {
-                    ((Lobby)room).ExtendSegments();
-                    floor.ExtendSegments(((Lobby)room).StandardSegments);
-                }
-                else
-                {
-                    floor.Rooms.Add(room);    
-                }
+                floor.Rooms.Add(room);
             }
             else
             {
-                if(floor.Rooms.Any(l => l is Office))
-                {
-                    floor.ExtendSegments(room.Segments);
-                    floor.Rooms.Add(room); 
-                }
-                else
-                {
-                    floor.Rooms.Add(room); 
-                }
+                ((Lobby)room).ExtendSegments();
             }
+
+            //if (room is Lobby)
+            //{
+            //    if (floor.Rooms.Any(l => l is Lobby))
+            //    {
+            //        ((Lobby)room).ExtendSegments();
+            //    }
+            //}
+            //else
+            //{
+            //    floor.Rooms.Add(room);
+
+            //}
         }
 
         private IRoom DetermineRoomType(string desiredRoom)
