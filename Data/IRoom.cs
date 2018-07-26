@@ -5,5 +5,6 @@
     public interface IRoom
     {
         List<Person> People { get; set; }
+        int Segments { get; }
     }
 }

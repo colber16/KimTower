@@ -12,5 +12,7 @@ namespace KimTower.Data
         {
             this.Floors = new List<Floor>();
         }
+
+
     }
 }

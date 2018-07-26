@@ -5,10 +5,21 @@ namespace KimTower.Data
 {
     public class Lobby : IRoom
     {
-        public List<Person> People { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        int segments = 4;
+        public List<Person> People { get; set; }
+
+        public int Segments { get; private set; }
+
+        public int TotalSegments { get; private set; }
 
         public Lobby()
         {
+            this.Segments = segments;
+            this.TotalSegments = segments;
+        }
+        public void ExtendSegments()
+        {
+            this.TotalSegments += segments;
         }
 
     }
