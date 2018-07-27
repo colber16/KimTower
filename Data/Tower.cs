@@ -16,14 +16,12 @@ namespace KimTower.Data
             this.Ledger = new Ledger();
         }
 
-        private Ledger UpdateLedger()
+        public void UpdateLedger()
         {
-            foreach(var floor in this.Floors)
+            foreach (var floor in this.Floors)
             {
-                this.Ledger.TotalProfit += floor.Ledger.TotalProfit;
-                this.Ledger.TotalCost += floor.Ledger.TotalCost;
+                this.Ledger += floor.Ledger;
             }
-            return Ledger;
         }
     }
 }

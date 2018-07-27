@@ -18,7 +18,6 @@ namespace KimTower.Data
                     var input = Console.ReadLine();
                     ProcessInput(input, tower);
                 }
-               
                 Update(time, tower);
                 Render(tower, clock);
 
@@ -29,11 +28,12 @@ namespace KimTower.Data
         {
             for (int i = 0; i < tower.Floors.Count; i++)
             {
-                Console.WriteLine($"Floors:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].Segments}, Rooms Count: {tower.Floors[i].Rooms.Count}");
-                Console.WriteLine(clock.DisplayTime());
-                Console.WriteLine($"Money: {tower.Floors[i].Ledger.TotalProfit}");
+                Console.WriteLine($"Floor Number:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].Segments}, Rooms Count: {tower.Floors[i].Rooms.Count}");
 
             }
+
+            Console.WriteLine(clock.DisplayTime());
+            Console.WriteLine($"Money: {tower.Ledger.TotalProfit}");
         }
 
         private void Update(Time time, Tower tower)
@@ -52,6 +52,7 @@ namespace KimTower.Data
                     }
                 }
             }
+            tower.UpdateLedger();
         }
 
         private Floor FloorCheck(int segments, Tower tower, int floorNumber)
