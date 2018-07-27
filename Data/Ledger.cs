@@ -8,8 +8,7 @@
 
         public Ledger()
         {
-            this.TotalCost = 0;
-            this.TotalProfit = 0;
+            
         }
     }
 

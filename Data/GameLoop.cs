@@ -15,7 +15,7 @@ namespace KimTower.Data
             {
                 var input = Console.ReadLine();
                 ProcessInput(input, tower);
-                Update(time);
+                Update(time, tower);
                 Render(tower, clock);
 
             }
@@ -32,9 +32,22 @@ namespace KimTower.Data
             }
         }
 
-        private void Update(Time time)
+        private void Update(Time time, Tower tower)
         {
             time.RunTime();
+            if(time.Day == Day.WeekdayTwo)
+            {
+                foreach(var floor in tower.Floors)
+                {
+                    foreach(var office in floor.Rooms)
+                    {
+                        if(office is Office)
+                        {
+                            floor.Ledger.TotalProfit += ((Office)office).PayRent();
+                        }
+                    }
+                }
+            }
         }
 
         private Floor FloorCheck(int segments, Tower tower, int floorNumber)
