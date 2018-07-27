@@ -13,8 +13,12 @@ namespace KimTower.Data
             Clock clock = new Clock(time);
             while (true)
             {
-                var input = Console.ReadLine();
-                ProcessInput(input, tower);
+                if (Console.ReadKey(true).Key != ConsoleKey.DownArrow)
+                {
+                    var input = Console.ReadLine();
+                    ProcessInput(input, tower);
+                }
+               
                 Update(time, tower);
                 Render(tower, clock);
 
@@ -72,6 +76,7 @@ namespace KimTower.Data
 
         private void ProcessInput(string input, Tower tower)
         {
+            
             var inputs = input.Split(" ");
             var desiredRoom = inputs[0];
             var floorNumber = Int32.Parse(inputs[1]);

@@ -62,7 +62,7 @@ namespace KimTower.Data
         }
         public int RunTime()
         {
-            this.TotalMinutes += 1440;
+            this.TotalMinutes += 1442;
             return this.TotalMinutes;
         }
 
