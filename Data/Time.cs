@@ -62,8 +62,7 @@ namespace KimTower.Data
         }
         public int RunTime()
         {
-            //Thread.Sleep(1000);
-            this.TotalMinutes += 12;
+            this.TotalMinutes += 1442;
             return this.TotalMinutes;
         }
 

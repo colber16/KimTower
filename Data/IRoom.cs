@@ -6,5 +6,6 @@
     {
         List<Person> People { get; set; }
         int Segments { get; }
+        int Rent { get; }
     }
 }

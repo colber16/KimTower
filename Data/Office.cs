@@ -7,13 +7,23 @@ namespace KimTower.Data
     public class Office : IRoom 
     {
         int segments = 6;
-        public List<Person> People { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        int rent = 1000;
+
+        public List<Person> People { get ; set ; }
 
         public int Segments { get;  }
+
+        public int Rent => rent;
 
         public Office()
         {
             this.Segments = segments;
+        }
+        public int PayRent()
+        {
+            //every month 
+            //time
+            return this.Rent;
         }
        
     }
