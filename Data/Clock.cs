@@ -5,21 +5,23 @@ namespace KimTower.Data
 {
     public class Clock
     {
+        public Time Time { get; set; 
+        }
         public Clock(Time time)
         {
-            
+            this.Time = time;
         }
         public void RunClock(Time time)
         {
             while(true)
             {
                 time.RunTime();
-                Console.WriteLine(DisplayTime(time));
+                Console.WriteLine(DisplayTime());
             }
         }
-        public string DisplayTime(Time time)
+        public string DisplayTime()
         {
-            return $"{time.Hour} : {time.Minute}  {time.Day}";
+            return $"{this.Time.Hour} : {this.Time.Minute}  {this.Time.Day}";
         }
     }
 }

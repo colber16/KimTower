@@ -1,7 +1,6 @@
 ﻿
 namespace KimTower.Data
 {
-    using System;
     using System.Collections.Generic;
 
     public class Floor
@@ -12,16 +11,27 @@ namespace KimTower.Data
 
         public int FloorNumber { get; set; }
 
+        public Ledger Ledger {get; private set;}
+
         public Floor(int segments, int floorNumber)
         {
             this.Rooms = new List<IRoom>();
             this.Segments = segments;
-            this.FloorNumber = floorNumber; 
+            this.FloorNumber = floorNumber;
+            this.Ledger = new Ledger();
         }
 
         public void ExtendSegments(int segments)
         {
             this.Segments += segments;
+        }
+        //daily??
+        public void CountItUp()
+        {
+            foreach(var room in Rooms)
+            {
+                this.Ledger.TotalProfit += room.Rent;
+            }
         }
 
     }

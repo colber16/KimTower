@@ -9,29 +9,32 @@ namespace KimTower.Data
         public void Run(Tower tower)
         {
             Build build = new Build();
-
+            Time time = new Time(0);
+            Clock clock = new Clock(time);
             while (true)
             {
                 var input = Console.ReadLine();
                 ProcessInput(input, tower);
-                // Update();
-                Render(tower);
+                Update(time);
+                Render(tower, clock);
 
             }
         }
 
-        private void Render(Tower tower)
+        private void Render(Tower tower, Clock clock)
         {
             for (int i = 0; i < tower.Floors.Count; i++)
             {
                 Console.WriteLine($"Floors:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].Segments}, Rooms Count: {tower.Floors[i].Rooms.Count}");
+                Console.WriteLine(clock.DisplayTime());
+                Console.WriteLine($"Money: {tower.Floors[i].Ledger.TotalProfit}");
 
             }
         }
 
-        private void Update()
+        private void Update(Time time)
         {
-            throw new NotImplementedException();
+            time.RunTime();
         }
 
         private Floor FloorCheck(int segments, Tower tower, int floorNumber)
@@ -53,7 +56,6 @@ namespace KimTower.Data
             return newFloor;
 
         }
-
 
         private void ProcessInput(string input, Tower tower)
         {
@@ -78,19 +80,6 @@ namespace KimTower.Data
             {
                 ((Lobby)room).ExtendSegments();
             }
-
-            //if (room is Lobby)
-            //{
-            //    if (floor.Rooms.Any(l => l is Lobby))
-            //    {
-            //        ((Lobby)room).ExtendSegments();
-            //    }
-            //}
-            //else
-            //{
-            //    floor.Rooms.Add(room);
-
-            //}
         }
 
         private IRoom DetermineRoomType(string desiredRoom)
