@@ -30,9 +30,10 @@ namespace KimTower.Data
             this.Segments += segments;
         }
         //hmmmm.....
-        public void IsOccupied(Office room)
+        public void IsOccupied(Office room, Tower tower)
         {
-            if (this.Stairs.Any(s => s.TopFloor == this.FloorNumber))
+            //if (this.Stairs.Any(s => s.TopFloor == this.FloorNumber))
+            if(tower.HasFirstFloorAccess(this.FloorNumber))
             {
                 room.Occupied = true;
             }
