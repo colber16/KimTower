@@ -25,20 +25,21 @@ namespace KimTower.Data
 
         }
         public bool HasFirstFloorAccess(int floorNumber)
-        {//change to acending
+        {
+            //Floors should be in order.
             this.Floors.OrderByDescending(f => f.FloorNumber);
             var stairCount = 0;
 
             for (int i = floorNumber; i >= 1; i--)
             {
-                    if (Floors[i - 1].Stairs.Count > 0)
+                if (Floors[i - 1].Stairs.Count > 0)
+                {
+                    stairCount++;
+                    if (stairCount == 0)
                     {
-                        stairCount++;
-                    //if(stairCount ==0)
-                    //return false;
+                        return false;
                     }
-
-              
+                }
             }
             return stairCount == floorNumber;
         }
