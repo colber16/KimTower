@@ -40,14 +40,18 @@ namespace KimTower.Data
         {
             time.RunTime();
 
+
             if(time.Day == Day.WeekdayTwo)
             {
                 foreach(var floor in tower.Floors)
                 {
+                    //Just throwing this here because there a floor there.
                     foreach(var room in floor.Rooms)
                     {
                         if(room is Office)
                         {
+                            floor.IsOccupied((Office)room);
+
                             floor.Ledger.TotalProfit += ((Office)room).PayRent();
                         }
                     }
@@ -93,10 +97,14 @@ namespace KimTower.Data
             }
             else
             {
-                var floor = tower.Floors.Single(f => f.FloorNumber == floorNumber);
-                floor.Stairs.Add(new StairCase(floorNumber));
+                var bottomFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == floorNumber);
+                bottomFloor.Stairs.Add(new StairCase(floorNumber));
+
+                var topFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == bottomFloor.FloorNumber + 1);
+                topFloor.Stairs.Add(new StairCase(bottomFloor.FloorNumber));
             }
             //need to validate if floor exist, maybe. . .
+
        
 
 
