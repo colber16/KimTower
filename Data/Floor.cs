@@ -37,10 +37,7 @@ namespace KimTower.Data
                 //if(room is IRentable)
                // {
                     //don't know about other floors
-           foreach(var stair in this.Stairs)
-            {
-                
-            }
+           
                     if(this.Stairs.Any(s => s.TopFloor == this.FloorNumber))
                     {
                         room.Occupied = true;
