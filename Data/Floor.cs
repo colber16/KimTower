@@ -13,12 +13,15 @@ namespace KimTower.Data
 
         public Ledger Ledger {get; private set;}
 
+        public List<StairCase> Stairs { get; set; }
+
         public Floor(int segments, int floorNumber)
         {
             this.Rooms = new List<IRoom>();
             this.Segments = segments;
             this.FloorNumber = floorNumber;
             this.Ledger = new Ledger();
+            this.Stairs = new List<StairCase>();
         }
 
         public void ExtendSegments(int segments)

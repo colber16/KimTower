@@ -39,15 +39,16 @@ namespace KimTower.Data
         private void Update(Time time, Tower tower)
         {
             time.RunTime();
+
             if(time.Day == Day.WeekdayTwo)
             {
                 foreach(var floor in tower.Floors)
                 {
-                    foreach(var office in floor.Rooms)
+                    foreach(var room in floor.Rooms)
                     {
-                        if(office is Office)
+                        if(room is Office)
                         {
-                            floor.Ledger.TotalProfit += ((Office)office).PayRent();
+                            floor.Ledger.TotalProfit += ((Office)room).PayRent();
                         }
                     }
                 }
@@ -82,11 +83,28 @@ namespace KimTower.Data
             var desiredRoom = inputs[0];
             var floorNumber = Int32.Parse(inputs[1]);
 
-            IRoom room = DetermineRoomType(desiredRoom);
+            if(!IsStairRequest(inputs))
+            {
+                IRoom room = DetermineRoomType(desiredRoom);
 
-            var floor = FloorCheck(room.Segments, tower, floorNumber);
+                var floor = FloorCheck(room.Segments, tower, floorNumber);
 
-            AddRoom(room, floor);
+                AddRoom(room, floor);
+            }
+            else
+            {
+                var floor = tower.Floors.Single(f => f.FloorNumber == floorNumber);
+                floor.Stairs.Add(new StairCase(floorNumber));
+            }
+            //need to validate if floor exist, maybe. . .
+       
+
+
+        }
+
+        private bool IsStairRequest(string[] inputs)
+        {
+            return inputs.Contains("s");
         }
 
         private void AddRoom(IRoom room, Floor floor)
