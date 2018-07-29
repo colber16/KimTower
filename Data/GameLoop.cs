@@ -68,6 +68,7 @@ namespace KimTower.Data
 
         private Floor FloorCheck(int segments, Tower tower, int floorNumber)
         {
+            
             foreach (var floor in tower.Floors)
             {
                 if (floor.FloorNumber == floorNumber)
@@ -97,9 +98,16 @@ namespace KimTower.Data
             {
                 IRoom room = DetermineRoomType(desiredRoom);
 
-                var floor = FloorCheck(room.Segments, tower, floorNumber);
+                if (!IsRoomValidForFloor(room, floorNumber))
+                {
+                    Console.WriteLine("Invalid input");
+                }
+                else
+                {
+                    var floor = FloorCheck(room.Segments, tower, floorNumber);
 
-                AddRoom(room, floor);
+                    AddRoom(room, floor); 
+                }
             }
             else
             {
@@ -120,14 +128,38 @@ namespace KimTower.Data
 
         private void AddRoom(IRoom room, Floor floor)
         {
-            if((!floor.Rooms.Any(l => l is Lobby) && room is Lobby) || !(room is Lobby))
+            if (room is Lobby)
             {
-                floor.Rooms.Add(room);
+                if ((!floor.Rooms.Any(l => l is Lobby)))
+                {
+                    ((Lobby)room).ExtendSegments();
+                }
+                else
+                {
+                    floor.Rooms.Add(room);
+                }
             }
             else
             {
-                ((Lobby)room).ExtendSegments();
+                floor.Rooms.Add(room);
             }
+        }
+
+        public bool IsRoomValidForFloor(IRoom room, int floorNumber)
+        {
+            if (floorNumber == 1)
+            {
+                if (room is Lobby)
+                {
+                    return true;
+                }
+                return false;
+            }
+            if(!(room is Lobby))
+            {
+                return true;
+            }
+            return false;
         }
 
         private IRoom DetermineRoomType(string desiredRoom)
