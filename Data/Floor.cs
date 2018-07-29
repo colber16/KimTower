@@ -2,6 +2,7 @@
 namespace KimTower.Data
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Floor
     {
@@ -13,25 +14,31 @@ namespace KimTower.Data
 
         public Ledger Ledger {get; private set;}
 
+        public List<StairCase> Stairs { get; set; }
+
         public Floor(int segments, int floorNumber)
         {
             this.Rooms = new List<IRoom>();
             this.Segments = segments;
             this.FloorNumber = floorNumber;
             this.Ledger = new Ledger();
+            this.Stairs = new List<StairCase>();
         }
 
         public void ExtendSegments(int segments)
         {
             this.Segments += segments;
         }
-        //daily??
-        public void CountItUp()
+        //hmmmm.....
+        public void IsOccupied(Office room, Tower tower)
         {
-            foreach(var room in Rooms)
+            //if (this.Stairs.Any(s => s.TopFloor == this.FloorNumber))
+            if(tower.HasFirstFloorAccess(this.FloorNumber))
             {
-                this.Ledger.TotalProfit += room.Rent;
+                room.Occupied = true;
             }
+            // or floor with that extends to 1
+
         }
 
     }

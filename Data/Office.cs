@@ -4,10 +4,11 @@ namespace KimTower.Data
     using System;
     using System.Collections.Generic;
 
-    public class Office : IRoom 
+    public class Office : IRoom, IRentable
     {
         int segments = 6;
         int rent = 1000;
+        int cost = 10000;
 
         public List<Person> People { get ; set ; }
 
@@ -15,14 +16,21 @@ namespace KimTower.Data
 
         public int Rent => rent;
 
+        public bool Occupied { get; set; }
+
+        public int Cost => cost;
+
         public Office()
         {
             this.Segments = segments;
+            this.People = new List<Person>();
+
         }
+
+
         public int PayRent()
         {
-            //every month 
-            //time
+            //paid every weekday2
             return this.Rent;
         }
        

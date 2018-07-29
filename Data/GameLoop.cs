@@ -39,15 +39,26 @@ namespace KimTower.Data
         private void Update(Time time, Tower tower)
         {
             time.RunTime();
-            if(time.Day == Day.WeekdayTwo)
+
+            CollectRent(time, tower);
+        }
+
+        private static void CollectRent(Time time, Tower tower)
+        {
+            if (time.Day == Day.WeekdayTwo)
             {
-                foreach(var floor in tower.Floors)
+                foreach (var floor in tower.Floors)
                 {
-                    foreach(var office in floor.Rooms)
+                    foreach (var room in floor.Rooms)
                     {
-                        if(office is Office)
+                        if (room is Office)
                         {
-                            floor.Ledger.TotalProfit += ((Office)office).PayRent();
+                            floor.IsOccupied((Office)room, tower);
+                            if (((Office)room).Occupied)
+                            {
+                                floor.Ledger.TotalProfit += ((Office)room).PayRent();
+                            }
+
                         }
                     }
                 }
@@ -82,11 +93,29 @@ namespace KimTower.Data
             var desiredRoom = inputs[0];
             var floorNumber = Int32.Parse(inputs[1]);
 
-            IRoom room = DetermineRoomType(desiredRoom);
+            if(!IsStairRequest(inputs))
+            {
+                IRoom room = DetermineRoomType(desiredRoom);
 
-            var floor = FloorCheck(room.Segments, tower, floorNumber);
+                var floor = FloorCheck(room.Segments, tower, floorNumber);
 
-            AddRoom(room, floor);
+                AddRoom(room, floor);
+            }
+            else
+            {
+                var bottomFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == floorNumber);
+                bottomFloor.Stairs.Add(new StairCase(floorNumber));
+
+                var topFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == bottomFloor.FloorNumber + 1);
+                topFloor.Stairs.Add(new StairCase(bottomFloor.FloorNumber));
+            }
+            //need to validate if floor exist, maybe. . .
+
+        }
+
+        private bool IsStairRequest(string[] inputs)
+        {
+            return inputs.Contains("s");
         }
 
         private void AddRoom(IRoom room, Floor floor)

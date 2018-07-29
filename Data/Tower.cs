@@ -1,7 +1,7 @@
 ﻿
 namespace KimTower.Data
 {
-    using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     public class Tower
@@ -22,6 +22,26 @@ namespace KimTower.Data
             {
                 this.Ledger += floor.Ledger;
             }
+
+        }
+        public bool HasFirstFloorAccess(int floorNumber)
+        {
+            //Floors should be in order.
+            this.Floors.OrderByDescending(f => f.FloorNumber);
+            var stairCount = 0;
+
+            for (int i = floorNumber; i >= 1; i--)
+            {
+                if (Floors[i - 1].Stairs.Count > 0)
+                {
+                    stairCount++;
+                    if (stairCount == 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return stairCount == floorNumber;
         }
     }
 }
