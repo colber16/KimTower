@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Remove="Class1.cs" />
+    <Compile Remove="Clock.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />

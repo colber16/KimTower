@@ -8,7 +8,6 @@ namespace KimTower.Data
     {
         Build build = new Build();
         Time time = new Time(0);
-        //Clock clock = new Clock(time);
         Tower tower = new Tower();
 
         public void Run()
