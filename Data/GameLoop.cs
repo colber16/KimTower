@@ -6,11 +6,13 @@ namespace KimTower.Data
 
     public class GameLoop
     {
-        public void Run(Tower tower)
+        Build build = new Build();
+        Time time = new Time(0);
+        //Clock clock = new Clock(time);
+        Tower tower = new Tower();
+
+        public void Run()
         {
-            Build build = new Build();
-            Time time = new Time(0);
-            Clock clock = new Clock(time);
             while (true)
             {
                 if (Console.ReadKey(true).Key != ConsoleKey.DownArrow)
@@ -18,13 +20,13 @@ namespace KimTower.Data
                     var input = Console.ReadLine();
                     ProcessInput(input, tower);
                 }
-                Update(time, tower);
-                Render(tower, clock);
+                Update();
+                Render();
 
             }
         }
 
-        private void Render(Tower tower, Clock clock)
+        private void Render()
         {
             for (int i = 0; i < tower.Floors.Count; i++)
             {
@@ -32,18 +34,18 @@ namespace KimTower.Data
 
             }
 
-            Console.WriteLine(clock.DisplayTime());
+            Console.WriteLine(time.ToString());
             Console.WriteLine($"Money: {tower.Ledger.TotalProfit}");
         }
 
-        private void Update(Time time, Tower tower)
+        private void Update()
         {
-            time.RunTime();
+            this.time = time.RunTime();
 
             CollectRent(time, tower);
         }
 
-        private static void CollectRent(Time time, Tower tower)
+        private void CollectRent(Time time, Tower tower)
         {
             if (time.Day == Day.WeekdayTwo)
             {

@@ -60,10 +60,14 @@ namespace KimTower.Data
                 return 48 * 60;
             }
         }
-        public int RunTime()
+        public Time RunTime()
         {
-            this.TotalMinutes += 1442;
-            return this.TotalMinutes;
+            var totalMinutes = 1442 + this.TotalMinutes;
+            return new Time(totalMinutes);
+        }
+        public override string ToString()
+        {
+            return $"{this.Hour} : {this.Minute}  {this.Day}";
         }
 
     }
@@ -74,5 +78,6 @@ namespace KimTower.Data
         WeekdayTwo,
         Weekend
     }
+   
 
 }
