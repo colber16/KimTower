@@ -41,10 +41,10 @@ namespace KimTower.Data
         {
             this.time = time.RunTime();
 
-            CollectRent(time, tower);
+            CollectRent();
         }
 
-        private void CollectRent(Time time, Tower tower)
+        private void CollectRent()
         {
             if (time.Day == Day.WeekdayTwo)
             {
