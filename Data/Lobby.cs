@@ -14,6 +14,8 @@ namespace KimTower.Data
 
         public int Rent => 0;
 
+        public Position Position {get; set;}
+
         public Lobby()
         {
             this.Segments = segments;

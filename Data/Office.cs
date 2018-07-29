@@ -20,6 +20,8 @@ namespace KimTower.Data
 
         public int Cost => cost;
 
+        public Position Position { get; set; }
+
         public Office()
         {
             this.Segments = segments;

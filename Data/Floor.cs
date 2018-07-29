@@ -16,13 +16,16 @@ namespace KimTower.Data
 
         public List<StairCase> Stairs { get; set; }
 
-        public Floor(int segments, int floorNumber)
+        public Position Position { get; set; }
+
+        public Floor(int x, int x2, int floorNumber)
         {
             this.Rooms = new List<IRoom>();
-            this.Segments = segments;
+            this.Segments = x2 - x;
             this.FloorNumber = floorNumber;
             this.Ledger = new Ledger();
             this.Stairs = new List<StairCase>();
+            this.Position = new Position(x, x2, floorNumber);
         }
 
         public void ExtendSegments(int segments)
@@ -32,7 +35,6 @@ namespace KimTower.Data
         //hmmmm.....
         public void IsOccupied(Office room, Tower tower)
         {
-            //if (this.Stairs.Any(s => s.TopFloor == this.FloorNumber))
             if(tower.HasFirstFloorAccess(this.FloorNumber))
             {
                 room.Occupied = true;
