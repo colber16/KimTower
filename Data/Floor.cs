@@ -40,6 +40,5 @@ namespace KimTower.Data
             // or floor with that extends to 1
 
         }
-
     }
 }
