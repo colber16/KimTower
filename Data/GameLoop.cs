@@ -15,16 +15,20 @@ namespace KimTower.Data
             while (true)
             {
                 var isProcessed = false;
+                //eats first key
                 if (Console.ReadKey(true).Key != ConsoleKey.DownArrow)
                 {
                     var input = Console.ReadLine();
                     isProcessed = ProcessInput(input);
                 }
-                if(isProcessed)
+                if (!isProcessed)
                 {
-                    Update();
-                    Render();
+                    Console.WriteLine("Input was not processed.");
+                    return;
                 }
+                Update();
+                Render();
+               
             }
         }
 
@@ -72,7 +76,6 @@ namespace KimTower.Data
 
         private Floor FloorCheck(int x, int segments, int floorNumber)
         {
-            
             foreach (var floor in tower.Floors)
             {
                 if (floor.FloorNumber == floorNumber)
@@ -82,18 +85,24 @@ namespace KimTower.Data
 
                 }
             }
+            //get new floor
 
-            var newFloor = new Floor(x, x + segments, floorNumber);
+            return GetNewFloor(x, segments, floorNumber);
+
+        }
+
+        private Floor GetNewFloor(int x, int x2, int floorNumber)
+        {
+            var newFloor = new Floor(x, x2, floorNumber);
 
             tower.Floors.Add(newFloor);
 
             return newFloor;
-
         }
 
         private bool ProcessInput(string input)
         {
-            
+
             var inputs = input.Split(" ");
             var desiredRoom = inputs[0];
             int floorNumber;
@@ -101,7 +110,7 @@ namespace KimTower.Data
 
             int.TryParse(inputs[1], out floorNumber);
 
-            if(inputs.Length < 3)
+            if (inputs.Length < 3)
             {
                 Console.WriteLine("Invalid input");
                 return false;
@@ -112,9 +121,34 @@ namespace KimTower.Data
             if (IsFloorRequest(inputs))
             {
                 int.TryParse(inputs[3], out int x2);
-                tower.Floors.Add(new Floor(x, x2, floorNumber));
+
+                if (!IsValidPositionOnMap(x, x2, floorNumber))
+                {
+                    Console.WriteLine("Invalid Position");
+                    return false;
+                }
+
+                var floor = GetExistingFloor(floorNumber);
+
+                if (floor == null)
+                {
+                    var newFloor = new Floor(x, x2, floorNumber);
+
+                    tower.Floors.Add(newFloor);
+
+                    return true;
+                }
+                if (IsValidPositionInExistingFloor(x, x2, floor))
+                {
+                    //all positions
+                    var position = GetNewFloorPosition(x, x2, floor);
+                    floor.ExtendPosition(position);
+                    return true;
+                }
+                return false;
             }
-            else if(IsStairRequest(inputs))
+
+            if (IsStairRequest(inputs))
             {
                 var bottomFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == floorNumber);
                 bottomFloor.Stairs.Add(new StairCase(floorNumber));
@@ -140,7 +174,6 @@ namespace KimTower.Data
             }
             return true;
             //need to validate if floor exist, maybe. . .
-
         }
 
         private bool IsFloorRequest(string[] inputs)
@@ -182,7 +215,7 @@ namespace KimTower.Data
                 }
                 return false;
             }
-            if(!(room is Lobby))
+            if (!(room is Lobby))
             {
                 return true;
             }
@@ -200,6 +233,132 @@ namespace KimTower.Data
                 return new Office();
             }
             throw new NotImplementedException();
+        }
+        ////break up into get new coordinate maybe.
+        //public bool IsValidSegment(int x, int x2, int floorNumber)
+        //{
+        //    if (IsValidPositionOnMap(x, x2, floorNumber))
+        //    {
+        //        foreach (var floor in tower.Floors)
+        //        {
+        //            if (floor.FloorNumber == floorNumber)
+        //            {
+        //                if (x < floor.Position.X)
+        //                {
+        //                    if (x2 <= floor.Position.X2)
+        //                    {
+        //                        floor.ExtendPosition(x, floor.Position.X2);
+        //                    }
+        //                    else
+        //                    {
+        //                        floor.ExtendPosition(x, x2);
+        //                    }
+        //                    return true;
+        //                }
+        //                else if (x > floor.Position.X && x2 > floor.Position.X2)
+        //                {
+        //                    floor.ExtendPosition(floor.Position.X, x2);
+        //                    return true;
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine("Invalid floor Position");
+
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //    return false;
+        //}
+        //only call this if it is valid.
+        public Position GetNewFloorPosition(int x, int x2, Floor floor)
+        {
+            
+            if (x < floor.Position.X)
+            {
+                
+                if(x2 > floor.Position.X2)
+                {
+                    return new Position(x, x2, floor.FloorNumber);
+                }
+                return new Position(x, floor.Position.X2, floor.FloorNumber);
+                //if (x2 <= floor.Position.X2)
+                //{
+                //    return x;
+                //}
+                //else
+                //{
+                // return x2;
+                //}
+                //return x;
+            }
+            else 
+            {
+                return new Position(x, x2, floor.FloorNumber);
+                //if(x2 > floor.Position.X2)
+                //{
+                  //  return x2;
+               // }
+            }
+        }
+
+        public Floor GetExistingFloor(int floorNumber)
+        {
+            foreach (var existingFloor in tower.Floors)
+            {
+                    if (existingFloor.FloorNumber == floorNumber)
+                {
+                        return existingFloor;
+                }
+            }
+            return null;
+        }
+        //only invalid if x and x2 are contained in existing floor position.
+        //else the floor can be extended.
+        public bool IsValidPositionInExistingFloor(int x, int x2, Floor floor)
+        {
+            //wrong
+            return (x > floor.Position.X && x2 < floor.Position.X2);
+        }
+
+            //if (x < floor.Position.X)
+            //{
+            //    if (x2 <= floor.Position.X2)
+            //    {
+            //        GetNewPosition(x, floor.Position.X2, floorNumber);
+            //    }
+            //    else
+            //    {
+            //        GetNewPosition(x, x2, floorNumber);
+            //    }
+            //    return true;
+            //}
+            //else if (x > floor.Position.X && x2 > floor.Position.X2)
+            //{
+            //    GetNewPosition(floor.Position.X, x2, floorNumber);
+            //    return true;
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Invalid floor Position");
+            //}
+                    
+                
+
+
+        //    return false;
+        //}
+        public bool IsValidPositionOnMap(int x, int x2, int floorNumber)
+        {
+            if (x >= 0 && x2 <= 500)
+            {
+                if (floorNumber >= -10 && floorNumber <= 100)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

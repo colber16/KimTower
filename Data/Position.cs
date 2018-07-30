@@ -1,7 +1,7 @@
 ﻿using System;
 namespace KimTower.Data
 {
-    public class Position
+    public struct Position
     {
         public int X { get; set; }
         public int X2 { get; set; }
@@ -13,6 +13,9 @@ namespace KimTower.Data
             this.X2 = x2;
             this.FloorNumber = floorNumber;
         }
+
+
+     
 
     }
 }

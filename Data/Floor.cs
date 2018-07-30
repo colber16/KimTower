@@ -16,7 +16,7 @@ namespace KimTower.Data
 
         public List<StairCase> Stairs { get; set; }
 
-        public Position Position { get; set; }
+        public Position Position { get; private set; }
 
         public Floor(int x, int x2, int floorNumber)
         {
@@ -27,7 +27,10 @@ namespace KimTower.Data
             this.Stairs = new List<StairCase>();
             this.Position = new Position(x, x2, floorNumber);
         }
-
+        public void ExtendPosition(Position position)
+        {
+            this.Position = position;
+        }
         public void ExtendSegments(int segments)
         {
             this.Segments += segments;
@@ -42,5 +45,6 @@ namespace KimTower.Data
             // or floor with that extends to 1
 
         }
+       
     }
 }
