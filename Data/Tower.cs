@@ -1,6 +1,7 @@
 ﻿
 namespace KimTower.Data
 {
+    using System;
     using System.Linq;
     using System.Collections.Generic;
 
@@ -32,6 +33,7 @@ namespace KimTower.Data
 
             for (int i = floorNumber; i >= 1; i--)
             {
+                //floors need to be set to index number
                 if (Floors[i - 1].Stairs.Count > 0)
                 {
                     stairCount++;
@@ -40,6 +42,7 @@ namespace KimTower.Data
                         return false;
                     }
                 }
+                Console.WriteLine("No Access to first floor.");
             }
             return stairCount == floorNumber;
         }

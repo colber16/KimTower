@@ -3,6 +3,7 @@ namespace KimTower.Data
 {
     using System;
     using System.Linq;
+    using System.Collections.Generic;
 
     public class GameLoop
     {
@@ -12,16 +13,26 @@ namespace KimTower.Data
 
         public void Run()
         {
-            while (true)
+            ConsoleStuff.PrintTitle();
+
+            var play = true;
+            var newInput = true;
+
+            while (play)
             {
                 var isProcessed = false;
-                //eats first key
-                if (Console.ReadKey(true).Key != ConsoleKey.DownArrow)
+
+                if (newInput)
                 {
+                    ConsoleStuff.PrintInputRequest();
+
                     var input = Console.ReadLine();
+
                     isProcessed = ProcessInput(input);
+
                 }
-                if (isProcessed)
+
+                if (isProcessed || !newInput)
                 {
                     Update();
                     Render();
@@ -30,6 +41,10 @@ namespace KimTower.Data
                 {
                     Console.WriteLine("Input was not processed.");
                 }
+
+                ConsoleStuff.PrintContinueRequest();
+
+                ConsoleStuff.ProcessContinueInput(ref play, ref newInput);
             }
         }
 
@@ -86,8 +101,6 @@ namespace KimTower.Data
 
                 }
             }
-            //get new floor
-
             return GetNewFloor(x, segments, floorNumber);
 
         }
@@ -236,44 +249,7 @@ namespace KimTower.Data
             }
             throw new NotImplementedException();
         }
-        ////break up into get new coordinate maybe.
-        //public bool IsValidSegment(int x, int x2, int floorNumber)
-        //{
-        //    if (IsValidPositionOnMap(x, x2, floorNumber))
-        //    {
-        //        foreach (var floor in tower.Floors)
-        //        {
-        //            if (floor.FloorNumber == floorNumber)
-        //            {
-        //                if (x < floor.Position.X)
-        //                {
-        //                    if (x2 <= floor.Position.X2)
-        //                    {
-        //                        floor.ExtendPosition(x, floor.Position.X2);
-        //                    }
-        //                    else
-        //                    {
-        //                        floor.ExtendPosition(x, x2);
-        //                    }
-        //                    return true;
-        //                }
-        //                else if (x > floor.Position.X && x2 > floor.Position.X2)
-        //                {
-        //                    floor.ExtendPosition(floor.Position.X, x2);
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    Console.WriteLine("Invalid floor Position");
 
-        //                }
-        //            }
-        //        }
-
-        //    }
-        //    return false;
-        //}
-        //only call this if it is valid.
         public Position GetNewFloorPosition(int x, int x2, Floor floor)
         {
             
@@ -285,23 +261,11 @@ namespace KimTower.Data
                     return new Position(x, x2, floor.FloorNumber);
                 }
                 return new Position(x, floor.Position.X2, floor.FloorNumber);
-                //if (x2 <= floor.Position.X2)
-                //{
-                //    return x;
-                //}
-                //else
-                //{
-                // return x2;
-                //}
-                //return x;
+         
             }
             else 
             {
                 return new Position(x, x2, floor.FloorNumber);
-                //if(x2 > floor.Position.X2)
-                //{
-                  //  return x2;
-               // }
             }
         }
 
@@ -320,37 +284,13 @@ namespace KimTower.Data
         //else the floor can be extended.
         public bool IsValidPositionInExistingFloor(int x, int x2, Floor floor)
         {
-            //wrong
-            //return (x >= floor.Position.X && x2 >= floor.Position.X2);
-
-            //if (x < floor.Position.X)
-            //{
-            //    if (x2 <= floor.Position.X2)
-            //    {
-            //        return true;
-            //    }
-            //    if(x = floor.Position.X)
-            //    {
-                    
-            //    }
-            //    return true;
-            //}
-            //else if (x > floor.Position.X && x2 > floor.Position.X2)
-            //{
-            //    return true;
-            //}
-            //return false;
-
             var count = 0;
 
             for (int i = floor.Position.X; i <= floor.Position.X2; i++)
             {
-                
-
                 if(x >= i)
                 {
                     count++;
-                    //don't want to keep checking this.
                 }
                 if(count > 0)
                 {
@@ -367,34 +307,6 @@ namespace KimTower.Data
             }
             return true;
         }
-
-            //if (x < floor.Position.X)
-            //{
-            //    if (x2 <= floor.Position.X2)
-            //    {
-            //        GetNewPosition(x, floor.Position.X2, floorNumber);
-            //    }
-            //    else
-            //    {
-            //        GetNewPosition(x, x2, floorNumber);
-            //    }
-            //    return true;
-            //}
-            //else if (x > floor.Position.X && x2 > floor.Position.X2)
-            //{
-            //    GetNewPosition(floor.Position.X, x2, floorNumber);
-            //    return true;
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Invalid floor Position");
-            //}
-                    
-                
-
-
-        //    return false;
-        //}
         public bool IsValidPositionOnMap(int x, int x2, int floorNumber)
         {
             if (x >= 0 && x2 <= 500)
