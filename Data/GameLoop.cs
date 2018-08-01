@@ -192,16 +192,6 @@ namespace KimTower.Data
             //need to validate if floor exist, maybe. . .
         }
 
-        private bool IsFloorRequest(string[] inputs)
-        {
-            return inputs.Contains("f");
-        }
-
-        private bool IsStairRequest(string[] inputs)
-        {
-            return inputs.Contains("s");
-        }
-
         private void AddRoom(IRoom room, Floor floor)
         {
             if (room is Lobby)

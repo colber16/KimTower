@@ -3,6 +3,7 @@ namespace KimTower.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public static class ConsoleStuff
     {
@@ -64,6 +65,16 @@ namespace KimTower.Data
         public static void PrintContinueRequest()
         {
             FormatPrint(continueRequest);
+        }
+
+        public static bool IsFloorRequest(string[] inputs)
+        {
+            return inputs.Contains("f");
+        }
+
+        public static bool IsStairRequest(string[] inputs)
+        {
+            return inputs.Contains("s");
         }
     }
 }
