@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program\Program.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimTower.Data", "Data\KimTower.Data.csproj", "{1AEEBF09-E116-437A-A66A-10F15F735FE0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimTower.Tests", "KimTower.Tests\KimTower.Tests.csproj", "{8241BE29-BEF1-4908-8B1E-444AE2855009}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{1AEEBF09-E116-437A-A66A-10F15F735FE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AEEBF09-E116-437A-A66A-10F15F735FE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AEEBF09-E116-437A-A66A-10F15F735FE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8241BE29-BEF1-4908-8B1E-444AE2855009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8241BE29-BEF1-4908-8B1E-444AE2855009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8241BE29-BEF1-4908-8B1E-444AE2855009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8241BE29-BEF1-4908-8B1E-444AE2855009}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

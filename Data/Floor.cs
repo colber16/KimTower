@@ -46,6 +46,25 @@ namespace KimTower.Data
             // or floor with that extends to 1
 
         }
+
+        public Position GetNewFloorPosition(int x, int x2)
+        {
+
+            if (x < this.Position.X)
+            {
+
+                if (x2 > this.Position.X2)
+                {
+                    return new Position(x, x2, this.FloorNumber);
+                }
+                return new Position(x, this.Position.X2, this.FloorNumber);
+
+            }
+            else
+            {
+                return new Position(x, x2, this.FloorNumber);
+            }
+        }
        
     }
 }

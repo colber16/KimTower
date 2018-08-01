@@ -6,7 +6,6 @@ namespace KimTower.Data
 
     public static class ConsoleStuff
     {
-        
         const string inputRequest = "\n Enter: Structure Type | Floor Number | Starting Point | Ending Point";
         const string continueRequest = "\n Build more stuff? (y/n) OR continue (down arrow)";
         const string farewell = "\n ___Game Over___";
@@ -40,6 +39,7 @@ namespace KimTower.Data
                 Console.WriteLine("KimTower");
             }
         }
+
         public static void ProcessContinueInput(ref bool play, ref bool newInput)
         {
             var someMoreInput = Console.ReadKey();

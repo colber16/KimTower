@@ -121,6 +121,7 @@ namespace KimTower.Data
             var desiredRoom = inputs[0];
             int floorNumber;
             int x;
+            Floor floor;
 
             int.TryParse(inputs[1], out floorNumber);
 
@@ -136,13 +137,13 @@ namespace KimTower.Data
             {
                 int.TryParse(inputs[3], out int x2);
 
-                if (!IsValidPositionOnMap(x, x2, floorNumber))
+                if (!FloorValidation.IsValidPositionOnMap(x, x2, floorNumber))
                 {
                     Console.WriteLine("Invalid position.");
                     return false;
                 }
 
-                var floor = GetExistingFloor(floorNumber);
+                 floor = tower.GetExistingFloor(floorNumber);
 
                 if (floor == null)
                 {
@@ -152,10 +153,10 @@ namespace KimTower.Data
 
                     return true;
                 }
-                if (IsValidPositionInExistingFloor(x, x2, floor))
+                if (FloorValidation.IsValidPositionInExistingFloor(x, x2, floor))
                 {
                     //all positions
-                    var position = GetNewFloorPosition(x, x2, floor);
+                    var position = floor.GetNewFloorPosition(x, x2);
                     floor.ExtendPosition(position);
                     return true;
                 }
@@ -175,13 +176,13 @@ namespace KimTower.Data
             {
                 IRoom room = DetermineRoomType(desiredRoom);
 
-                if (!IsRoomValidForFloor(room, floorNumber))
+                if (!FloorValidation.IsRoomValidForFloor(room, floorNumber))
                 {
                     Console.WriteLine("Invalid input");
                 }
                 else
                 {
-                    var floor = FloorCheck(x, room.Segments, floorNumber);
+                    floor = FloorCheck(x, room.Segments, floorNumber);
 
                     AddRoom(room, floor);
                 }
@@ -220,22 +221,6 @@ namespace KimTower.Data
             }
         }
 
-        public bool IsRoomValidForFloor(IRoom room, int floorNumber)
-        {
-            if (floorNumber == 1)
-            {
-                if (room is Lobby)
-                {
-                    return true;
-                }
-                return false;
-            }
-            if (!(room is Lobby))
-            {
-                return true;
-            }
-            return false;
-        }
 
         private IRoom DetermineRoomType(string desiredRoom)
         {
@@ -250,74 +235,6 @@ namespace KimTower.Data
             throw new NotImplementedException();
         }
 
-        public Position GetNewFloorPosition(int x, int x2, Floor floor)
-        {
-            
-            if (x < floor.Position.X)
-            {
-                
-                if(x2 > floor.Position.X2)
-                {
-                    return new Position(x, x2, floor.FloorNumber);
-                }
-                return new Position(x, floor.Position.X2, floor.FloorNumber);
-         
-            }
-            else 
-            {
-                return new Position(x, x2, floor.FloorNumber);
-            }
-        }
-
-        public Floor GetExistingFloor(int floorNumber)
-        {
-            foreach (var existingFloor in tower.Floors)
-            {
-                    if (existingFloor.FloorNumber == floorNumber)
-                {
-                        return existingFloor;
-                }
-            }
-            return null;
-        }
-        //only invalid if x and x2 are contained in existing floor position.
-        //else the floor can be extended.
-        public bool IsValidPositionInExistingFloor(int x, int x2, Floor floor)
-        {
-            var count = 0;
-
-            for (int i = floor.Position.X; i <= floor.Position.X2; i++)
-            {
-                if(x >= i)
-                {
-                    count++;
-                }
-                if(count > 0)
-                {
-                    i = floor.Position.X2;
-                }
-                if (x2 <= i)
-                {
-                    count++;
-                }
-            }
-            if(count >=2)
-            {
-                return false;
-            }
-            return true;
-        }
-        public bool IsValidPositionOnMap(int x, int x2, int floorNumber)
-        {
-            if (x >= 0 && x2 <= 500)
-            {
-                if (floorNumber >= -10 && floorNumber <= 100)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
     }
 }

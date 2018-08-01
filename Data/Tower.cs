@@ -25,6 +25,7 @@ namespace KimTower.Data
             }
 
         }
+
         public bool HasFirstFloorAccess(int floorNumber)
         {
             //Floors should be in order.
@@ -45,6 +46,18 @@ namespace KimTower.Data
                 Console.WriteLine("No Access to first floor.");
             }
             return stairCount == floorNumber;
+        }
+
+        public Floor GetExistingFloor(int floorNumber)
+        {
+            foreach (var existingFloor in this.Floors)
+            {
+                if (existingFloor.FloorNumber == floorNumber)
+                {
+                    return existingFloor;
+                }
+            }
+            return null;
         }
     }
 }
