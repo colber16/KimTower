@@ -30,10 +30,11 @@ namespace KimTower.Data
         public void ExtendPosition(Position position)
         {
             this.Position = position;
+            ExtendSegments(position.X2 - position.X);
         }
         public void ExtendSegments(int segments)
         {
-            this.Segments += segments;
+            this.Segments = segments;
         }
         //hmmmm.....
         public void IsOccupied(Office room, Tower tower)

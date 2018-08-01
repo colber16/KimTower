@@ -21,14 +21,15 @@ namespace KimTower.Data
                     var input = Console.ReadLine();
                     isProcessed = ProcessInput(input);
                 }
-                if (!isProcessed)
+                if (isProcessed)
+                {
+                    Update();
+                    Render();
+                }
+                else
                 {
                     Console.WriteLine("Input was not processed.");
-                    return;
                 }
-                Update();
-                Render();
-               
             }
         }
 
@@ -112,7 +113,7 @@ namespace KimTower.Data
 
             if (inputs.Length < 3)
             {
-                Console.WriteLine("Invalid input");
+                Console.WriteLine("Invalid input.");
                 return false;
             }
 
@@ -124,7 +125,7 @@ namespace KimTower.Data
 
                 if (!IsValidPositionOnMap(x, x2, floorNumber))
                 {
-                    Console.WriteLine("Invalid Position");
+                    Console.WriteLine("Invalid position.");
                     return false;
                 }
 
@@ -145,6 +146,7 @@ namespace KimTower.Data
                     floor.ExtendPosition(position);
                     return true;
                 }
+                Console.WriteLine("Invalid position.");
                 return false;
             }
 
@@ -319,7 +321,51 @@ namespace KimTower.Data
         public bool IsValidPositionInExistingFloor(int x, int x2, Floor floor)
         {
             //wrong
-            return (x > floor.Position.X && x2 < floor.Position.X2);
+            //return (x >= floor.Position.X && x2 >= floor.Position.X2);
+
+            //if (x < floor.Position.X)
+            //{
+            //    if (x2 <= floor.Position.X2)
+            //    {
+            //        return true;
+            //    }
+            //    if(x = floor.Position.X)
+            //    {
+                    
+            //    }
+            //    return true;
+            //}
+            //else if (x > floor.Position.X && x2 > floor.Position.X2)
+            //{
+            //    return true;
+            //}
+            //return false;
+
+            var count = 0;
+
+            for (int i = floor.Position.X; i <= floor.Position.X2; i++)
+            {
+                
+
+                if(x >= i)
+                {
+                    count++;
+                    //don't want to keep checking this.
+                }
+                if(count > 0)
+                {
+                    i = floor.Position.X2;
+                }
+                if (x2 <= i)
+                {
+                    count++;
+                }
+            }
+            if(count >=2)
+            {
+                return false;
+            }
+            return true;
         }
 
             //if (x < floor.Position.X)
