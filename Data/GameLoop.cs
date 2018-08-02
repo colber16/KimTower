@@ -91,6 +91,7 @@ namespace KimTower.Data
             int floorNumber;
             int x;
             Floor floor;
+
             var structure = ConsoleStuff.GetStructureFromInput(desiredStructure);
 
             if (structure == null)
@@ -154,8 +155,6 @@ namespace KimTower.Data
                 {
                     room = GetRoomType(structure);
                 }
-
-
                 if (!FloorValidation.IsRoomValidForFloor(room, floorNumber))
                 {
                     Console.WriteLine("Invalid room for floor");
@@ -224,11 +223,6 @@ namespace KimTower.Data
             switch (desiredRoom)
             {
                 case StructureTypes.Lobby:
-                    //if (tower.Floors.Count != 0 && tower.Floors[0].Rooms.Count != 0)
-                    //{
-                    //    return (Lobby)tower.Floors[0].Rooms[0];
-                    //    //maybe return null and then check and then extend and then and then and then.
-                    //}
                     return new Lobby();
                 case StructureTypes.Office:
                     return new Office();
@@ -242,19 +236,6 @@ namespace KimTower.Data
             }
 
         }
-        //private IRoom DetermineRoomType(string desiredRoom)
-        //{
-        //    if (desiredRoom == "l")
-        //    {
-        //        return new Lobby();
-        //    }
-        //    if (desiredRoom == "o")
-        //    {
-        //        return new Office();
-        //    }
-        //    throw new NotImplementedException();
-        //}
-
 
     }
 }

@@ -7,10 +7,9 @@ namespace KimTower.Data
 
     public static class ConsoleStuff
     {
-        const string inputRequest = "\n Enter: Structure Type | Floor Number | Starting Point | Ending Point";
+        const string inputRequest = "\n Enter: Structure Type | Floor Number | Starting Point | (Floor Only) Ending Point";
         const string continueRequest = "\n Build more stuff? (y/n) OR continue (down arrow)";
         const string farewell = "\n ___Game Over___";
-        //readonly string lobby = ((StructureTypes)'l').ToString();
     
 
         public static void PrintInputRequest()
@@ -42,16 +41,7 @@ namespace KimTower.Data
                 Console.WriteLine("KimTower");
             }
         }
-        //public static bool IsValidStructureInput(string input)
-        //{
-        //    var structureTypes = new List<string>();
-
-        //    foreach(var structure in (StructureTypes[])Enum.GetValues(typeof(StructureTypes)))
-        //    {
-        //        structureTypes.Add(structure.ToString()); Enum.
-        //    }
-        //    return structureTypes.Contains(input);
-        //}
+      
         public static StructureTypes? GetStructureFromInput(char input)
         {
             if(Enum.IsDefined(typeof(StructureTypes), (int)input))
@@ -59,44 +49,40 @@ namespace KimTower.Data
                return (StructureTypes)input; 
             }
             return null;
-            //return (StructureTypes) Enum.ToObject(typeof(StructureTypes), input[0]);
         }
 
         public static void ProcessContinueInput(ref bool play, ref bool newInput)
         {
             var validInput = false;
 
-            while(!validInput)
+            while (!validInput)
             {
                 var someMoreInput = Console.ReadKey();
 
-                if(someMoreInput != null)
+                if (someMoreInput.Key == ConsoleKey.Y)
                 {
-                    if (someMoreInput.Key == ConsoleKey.Y)
-                    {
-                        play = true;
-                        newInput = true;
-                    }
-
-                    if (someMoreInput.Key == ConsoleKey.N)
-                    {
-                        play = false;
-                        FormatPrint(farewell);
-                    }
-
-                    if (someMoreInput.Key == ConsoleKey.DownArrow)
-                    {
-                        newInput = false;
-                    }
-
+                    play = true;
+                    newInput = true;
                     validInput = true;
                 }
-                else
+
+                if (someMoreInput.Key == ConsoleKey.N)
                 {
-                    Console.WriteLine("\n Invalid Input");
+                    play = false;
+                    FormatPrint(farewell);
+                    validInput = true;
                 }
+
+                if (someMoreInput.Key == ConsoleKey.DownArrow)
+                {
+                    newInput = false;
+                    validInput = true;
+                }
+
+                Console.WriteLine("\n Invalid Input");
+
             }
-         
+
         }
 
         public static void PrintContinueRequest()
