@@ -52,7 +52,7 @@ namespace KimTower.Data
         //    }
         //    return structureTypes.Contains(input);
         //}
-        public static StructureTypes? GetStructure(char input)
+        public static StructureTypes? GetStructureFromInput(char input)
         {
             if(Enum.IsDefined(typeof(StructureTypes), (int)input))
             {
@@ -131,6 +131,7 @@ namespace KimTower.Data
         Stairs = 's',
         Restaurant = 'r',
         Condo = 'c',
-        Elevator = 'e'
+        Elevator = 'e',
+        Floor ='f'
     }
 }
