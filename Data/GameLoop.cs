@@ -75,22 +75,12 @@ namespace KimTower.Data
 
         //}
 
-        private Floor GetNewFloor(Position position)
-        {
-            var newFloor = new Floor(position);
-
-            tower.Floors.Add(newFloor);
-
-            return newFloor;
-        }
-
         private bool ProcessInput(string input)
         {
             var inputs = input.Split(" ");
             var desiredStructure = Convert.ToChar(inputs[0]);
             int floorNumber;
             int x;
-            //Floor floor;
 
             var structure = ConsoleStuff.GetStructureFromInput(desiredStructure);
 
@@ -99,7 +89,7 @@ namespace KimTower.Data
                 Console.WriteLine("Invalid structure.");
                 return false;
             }
-
+            //blow up if valid structure is passed
             int.TryParse(inputs[1], out floorNumber);
 
             if (!IsPositionGivenInInput(inputs))
@@ -113,7 +103,6 @@ namespace KimTower.Data
             {
                 int.TryParse(inputs[3], out int x2);
                 //x2 == room.segments
-                //can not have a position without a floor
                 var position = new Position(x, x2, floorNumber);
 
                 if (!FloorValidation.IsValidPositionOnMap(position))
@@ -123,7 +112,11 @@ namespace KimTower.Data
                 }
                 var floor = GetFloor(position);
 
-                if(floor.Preexisting)
+                if (!floor.Preexisting)
+                {
+                    tower.AddFloor(floor); 
+                }
+                else
                 {
                     if (!FloorValidation.IsValidPositionInExistingFloor(x, x2, floor))
                     {
@@ -131,40 +124,10 @@ namespace KimTower.Data
                         return false;
                     }
                     position = floor.GetNewFloorPosition(x, x2);
+                    floor.ExtendPosition(position);
                 }
-                //move to preexisting
-                //var floorPosition = floor.GetNewFloorPosition(x, x2);
 
-                floor.ExtendPosition(position);
-
-                if(!floor.Preexisting)
-                {
-                    tower.AddFloor(floor);
-                }
                 return true;
-
-                //if (!FloorValidation.IsValidPositionOnMap(x, x2, floorNumber))
-                //{
-                //    Console.WriteLine("Invalid position.");
-                //    return false;
-                //}
-
-                //floor = tower.GetExistingFloor(floorNumber);
-
-                //if (floor == null)
-                //{
-                //    return CreateAndAddNewFloor(floorNumber, x, x2);
-                //}
-                //if (!FloorValidation.IsValidPositionInExistingFloor(x, x2, floor))
-                //{
-                //    Console.WriteLine("Invalid position.");
-                //    return false;
-                //}
-
-                //var position = floor.GetNewFloorPosition(x, x2);
-                //floor.ExtendPosition(position);
-                //return true;
-
             }
 
             if (structure.Equals(StructureTypes.Stairs))
@@ -212,15 +175,6 @@ namespace KimTower.Data
             }
             return true;
         }
-
-        //private bool CreateAndAddNewFloor(int floorNumber, int x, int x2)
-        //{
-        //    var newFloor = new Floor(x, x2, floorNumber);
-
-        //    tower.Floors.Add(newFloor);
-
-        //    return true;
-        //}
 
         private void ProcessStairRequest(int floorNumber)
         {

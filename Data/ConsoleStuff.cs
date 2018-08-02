@@ -10,8 +10,9 @@ namespace KimTower.Data
         const string inputRequest = "\n Enter: Structure Type | Floor Number | Starting Point | (Floor Only) Ending Point";
         const string continueRequest = "\n Build more stuff? (y/n) OR continue (down arrow)";
         const string farewell = "\n ___Game Over___";
-    
 
+        static List<ConsoleKey> AcceptableKeys = new List<ConsoleKey> { ConsoleKey.Y, ConsoleKey.N, ConsoleKey.DownArrow };
+    
         public static void PrintInputRequest()
         {
             FormatPrint(inputRequest);
@@ -59,30 +60,34 @@ namespace KimTower.Data
             {
                 var someMoreInput = Console.ReadKey();
 
-                if (someMoreInput.Key == ConsoleKey.Y)
+                if (!AcceptableKeys.Contains(someMoreInput.Key))
                 {
-                    play = true;
-                    newInput = true;
+                    Console.WriteLine("\n Invalid Input");
+                    PrintContinueRequest();
+                }
+                else
+                {
+                    if (someMoreInput.Key == ConsoleKey.Y)
+                    {
+                        play = true;
+                        newInput = true;
+                    }
+
+                    if (someMoreInput.Key == ConsoleKey.N)
+                    {
+                        play = false;
+                        FormatPrint(farewell);
+
+                    }
+
+                    if (someMoreInput.Key == ConsoleKey.DownArrow)
+                    {
+                        newInput = false;
+                    }
+
                     validInput = true;
                 }
-
-                if (someMoreInput.Key == ConsoleKey.N)
-                {
-                    play = false;
-                    FormatPrint(farewell);
-                    validInput = true;
-                }
-
-                if (someMoreInput.Key == ConsoleKey.DownArrow)
-                {
-                    newInput = false;
-                    validInput = true;
-                }
-
-                Console.WriteLine("\n Invalid Input");
-
             }
-
         }
 
         public static void PrintContinueRequest()
