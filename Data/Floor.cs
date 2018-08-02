@@ -17,15 +17,18 @@ namespace KimTower.Data
         public List<StairCase> Stairs { get; set; }
 
         public Position Position { get; private set; }
+       
+        public bool Preexisting { get; set; }
 
-        public Floor(int x, int x2, int floorNumber)
+        public Floor(Position position)
         {
             this.Rooms = new List<IRoom>();
-            this.Segments = x2 - x;
-            this.FloorNumber = floorNumber;
+            this.Segments = position.X2 - position.X;
+            this.FloorNumber = position.FloorNumber;
             this.Ledger = new Ledger();
             this.Stairs = new List<StairCase>();
-            this.Position = new Position(x, x2, floorNumber);
+            this.Position = position; //new Position(position.X, position.X2, position.FloorNumber);
+            this.Preexisting = false;
         }
         public void ExtendPosition(Position position)
         {
@@ -46,7 +49,7 @@ namespace KimTower.Data
             // or floor with that extends to 1
 
         }
-
+        //needs to handle all inputs
         public Position GetNewFloorPosition(int x, int x2)
         {
 

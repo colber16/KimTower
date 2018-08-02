@@ -29,11 +29,11 @@ namespace KimTower.Data
             return true;
         }
 
-        public static bool IsValidPositionOnMap(int x,int x2, int floorNumber)
+        public static bool IsValidPositionOnMap(Position position)
         {
-            if (x >= 0 && x2 <= 500)
+            if (position.X >= 0 && position.X2 <= 500)
             {
-                if (floorNumber >= -10 && floorNumber <= 100)
+                if (position.FloorNumber >= -10 && position.FloorNumber <= 100)
                 {
                     return true;
                 }

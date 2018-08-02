@@ -82,5 +82,12 @@ namespace KimTower.Data
             }
             this.UpdateLedger();
         }
+
+        internal void AddFloor(Floor floor)
+        {
+            
+            this.Floors.Add(floor);
+            floor.Preexisting = true;
+        }
     }
 }

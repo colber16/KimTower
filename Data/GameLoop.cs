@@ -60,24 +60,24 @@ namespace KimTower.Data
             tower.CollectRent(time);
         }
 
-        private Floor FloorCheck(int x, int segments, int floorNumber)
+        //private Floor FloorCheck(Position position)
+        //{
+        //    foreach (var floor in tower.Floors)
+        //    {
+        //        if (floor.FloorNumber == position.FloorNumber)
+        //        {
+        //            floor.ExtendSegments(position.);
+        //            return floor;
+
+        //        }
+        //    }
+        //    return GetNewFloor(position);
+
+        //}
+
+        private Floor GetNewFloor(Position position)
         {
-            foreach (var floor in tower.Floors)
-            {
-                if (floor.FloorNumber == floorNumber)
-                {
-                    floor.ExtendSegments(segments);
-                    return floor;
-
-                }
-            }
-            return GetNewFloor(x, segments, floorNumber);
-
-        }
-
-        private Floor GetNewFloor(int x, int x2, int floorNumber)
-        {
-            var newFloor = new Floor(x, x2, floorNumber);
+            var newFloor = new Floor(position);
 
             tower.Floors.Add(newFloor);
 
@@ -90,7 +90,7 @@ namespace KimTower.Data
             var desiredStructure = Convert.ToChar(inputs[0]);
             int floorNumber;
             int x;
-            Floor floor;
+            //Floor floor;
 
             var structure = ConsoleStuff.GetStructureFromInput(desiredStructure);
 
@@ -102,7 +102,7 @@ namespace KimTower.Data
 
             int.TryParse(inputs[1], out floorNumber);
 
-            if (!IsPositionInInput(inputs))
+            if (!IsPositionGivenInInput(inputs))
             {
                 return false;
             }
@@ -112,28 +112,58 @@ namespace KimTower.Data
             if (structure.Equals(StructureTypes.Floor))
             {
                 int.TryParse(inputs[3], out int x2);
+                //x2 == room.segments
+                //can not have a position without a floor
+                var position = new Position(x, x2, floorNumber);
 
-                if (!FloorValidation.IsValidPositionOnMap(x, x2, floorNumber))
+                if (!FloorValidation.IsValidPositionOnMap(position))
                 {
-                    Console.WriteLine("Invalid position.");
+                    Console.WriteLine("Invalid position within map.");
                     return false;
                 }
+                var floor = GetFloor(position);
 
-                floor = tower.GetExistingFloor(floorNumber);
-
-                if (floor == null)
+                if(floor.Preexisting)
                 {
-                    return CreateAndAddNewFloor(floorNumber, x, x2);
+                    if (!FloorValidation.IsValidPositionInExistingFloor(x, x2, floor))
+                    {
+                        Console.WriteLine("Invalid position.");
+                        return false;
+                    }
+                    position = floor.GetNewFloorPosition(x, x2);
                 }
-                if (!FloorValidation.IsValidPositionInExistingFloor(x, x2, floor))
-                {
-                    Console.WriteLine("Invalid position.");
-                    return false;
-                }
+                //move to preexisting
+                //var floorPosition = floor.GetNewFloorPosition(x, x2);
 
-                var position = floor.GetNewFloorPosition(x, x2);
                 floor.ExtendPosition(position);
+
+                if(!floor.Preexisting)
+                {
+                    tower.AddFloor(floor);
+                }
                 return true;
+
+                //if (!FloorValidation.IsValidPositionOnMap(x, x2, floorNumber))
+                //{
+                //    Console.WriteLine("Invalid position.");
+                //    return false;
+                //}
+
+                //floor = tower.GetExistingFloor(floorNumber);
+
+                //if (floor == null)
+                //{
+                //    return CreateAndAddNewFloor(floorNumber, x, x2);
+                //}
+                //if (!FloorValidation.IsValidPositionInExistingFloor(x, x2, floor))
+                //{
+                //    Console.WriteLine("Invalid position.");
+                //    return false;
+                //}
+
+                //var position = floor.GetNewFloorPosition(x, x2);
+                //floor.ExtendPosition(position);
+                //return true;
 
             }
 
@@ -162,9 +192,10 @@ namespace KimTower.Data
                 }
                 else
                 {
-                    floor = FloorCheck(x, room.Segments, floorNumber);
+                    //Do something about this
+                    //floor = FloorCheck(x, room.Segments, floorNumber);
 
-                    AddRoom(room, floor);
+                    //AddRoom(room, floor);
                 }
             }
 
@@ -172,7 +203,7 @@ namespace KimTower.Data
 
 
         }
-        private bool IsPositionInInput(string[] inputs)
+        private bool IsPositionGivenInInput(string[] inputs)
         {
             if (inputs.Length < 3)
             {
@@ -181,14 +212,15 @@ namespace KimTower.Data
             }
             return true;
         }
-        private bool CreateAndAddNewFloor(int floorNumber, int x, int x2)
-        {
-            var newFloor = new Floor(x, x2, floorNumber);
 
-            tower.Floors.Add(newFloor);
+        //private bool CreateAndAddNewFloor(int floorNumber, int x, int x2)
+        //{
+        //    var newFloor = new Floor(x, x2, floorNumber);
 
-            return true;
-        }
+        //    tower.Floors.Add(newFloor);
+
+        //    return true;
+        //}
 
         private void ProcessStairRequest(int floorNumber)
         {
@@ -236,6 +268,17 @@ namespace KimTower.Data
             }
 
         }
-
+        private Floor GetFloor(Position position)
+        {
+            var floor = tower.GetExistingFloor(position.FloorNumber) ?? new Floor(position);
+            return floor;
+        }
+        
+        //private static Position GetFloorPosition()
+        //{
+        //    var position = floor.GetNewFloorPosition(x, x2);
+        //    floor.ExtendPosition(position);
+        //    return true;
+        //}
     }
 }
