@@ -1,20 +1,17 @@
-﻿
-namespace KimTower.Data
+﻿namespace KimTower.Data
 {
-    using System;
     using System.Collections.Generic;
 
-    public class Office : IRoom, IRentable
+    public class Condo : IRoom
     {
-        int segments = 6;
-        int rent = 1000;
-        int cost = 10000;
 
-        public List<Person> People { get ; set ; }
+        int segments = 8;
+        int salePrice = 300000;
+        int cost = 100000;
 
-        public int Segments { get;  }
+        public List<Person> People { get; set; }
 
-        public int Rent => rent;
+        public int Segments { get; }
 
         public bool Occupied { get; set; }
 
@@ -22,7 +19,8 @@ namespace KimTower.Data
 
         public Position Position { get; set; }
 
-        public Office(int x, int floorNumber)
+
+        public Condo(int x, int floorNumber)
         {
             this.Segments = segments;
             this.People = new List<Person>();
@@ -38,12 +36,5 @@ namespace KimTower.Data
             }
 
         }
-
-        public int PayRent()
-        {
-            //paid every weekday2
-            return this.Rent;
-        }
-       
     }
 }

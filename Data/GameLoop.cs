@@ -84,11 +84,11 @@ namespace KimTower.Data
 
             int.TryParse(inputs[2], out x);
 
-            if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
-            {
-                Console.WriteLine("Must create lobby first");
-                return false;
-            }
+            //if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
+            //{
+            //    Console.WriteLine("Must create lobby first");
+            //    return false;
+            //}
             if (structure.Equals(StructureTypes.Floor))
             {
                 int.TryParse(inputs[3], out int x2);
@@ -111,7 +111,7 @@ namespace KimTower.Data
                     ////////*******Need to do validations first.
                     if (!tower.HasLobby)
                     {
-                        room = new Lobby();
+                        room = new Lobby(x, floorNumber);
                         tower.HasLobby = true;
                     }
                     else
@@ -122,7 +122,7 @@ namespace KimTower.Data
                 }
                 else
                 {
-                    room = GetRoomType(structure);
+                    room = GetRoomType(structure,x, floorNumber);
                 }
                 if (!FloorValidation.IsRoomValidForFloor(room, floorNumber))
                 {
@@ -132,11 +132,8 @@ namespace KimTower.Data
                 else
                 {
 
-                    //var position = new Position(x, x + room.Segments, floorNumber);
-                    //ProcessFloor(position);
-                    //Do something about this
-                    //floor = FloorCheck(x, room.Segments, floorNumber);
-                    var position = GetRoomPosition(x, room.Segments, floorNumber);
+                    //var position = GetRoomPosition(x, room.Segments, floorNumber);
+                    var position = room.Position;
 
                     if (!FloorValidation.IsValidPositionOnMap(position))
                     {
@@ -167,11 +164,7 @@ namespace KimTower.Data
             return true;
 
         }
-        public Position GetRoomPosition(int x, int segments, int floorNumber)
-        {
-            var x2 = x + segments;
-            return new Position(x, x2, floorNumber);
-        }
+
         public bool ProcessFloor(Position position)
         {
 
@@ -214,11 +207,6 @@ namespace KimTower.Data
         {
             tower.Floors[floorNumber - 1].AddStairs(floorNumber);
             tower.Floors[floorNumber].AddStairs(floorNumber);
-            //var bottomFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == floorNumber);
-            //bottomFloor.Stairs.Add(new StairCase(floorNumber));
-
-            //var topFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == bottomFloor.FloorNumber + 1);
-            //topFloor.Stairs.Add(new StairCase(bottomFloor.FloorNumber));
         }
 
         private void AddRoom(IRoom room, Floor floor)
@@ -241,18 +229,18 @@ namespace KimTower.Data
             }
         }
 
-        private IRoom GetRoomType(StructureTypes? desiredRoom)
+        private IRoom GetRoomType(StructureTypes? desiredRoom, int x, int floorNumber)
         {
             switch (desiredRoom)
             {
                 case StructureTypes.Lobby:
-                    return new Lobby();
+                    return new Lobby(x, floorNumber);
                 case StructureTypes.Office:
-                    return new Office();
-                //case StructureTypes.Condo:
-                //return new Condo();
-                //case StructureTypes.Restaurant:
-                //return new Restaurant();
+                    return new Office(x, floorNumber);
+                case StructureTypes.Condo:
+                    return new Condo(x, floorNumber);
+                case StructureTypes.Restaurant:
+                    return new Restaurant(x, floorNumber);
 
                 default:
                     return null;

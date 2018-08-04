@@ -61,10 +61,15 @@ namespace KimTower.Data
 
         }
         //does an item n a list know where it is in the list?
-        public void AddStairs(int floorNumber)
+        public void AddStairs(int bottomFloor)
         {
-            this.Stairs.Add(new StairCase(floorNumber));
+            this.Stairs.Add(new StairCase(bottomFloor));
 
+        }
+
+        public void AddRoom(IRoom room)
+        {
+            this.Rooms.Add(room);
         }
        
     }

@@ -8,8 +8,6 @@
     <Compile Remove="Class1.cs" />
     <Compile Remove="Clock.cs" />
     <Compile Remove="Result.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
+    <Compile Remove="Office %28copy%29.cs" />
   </ItemGroup>
 </Project>

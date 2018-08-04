@@ -7,7 +7,8 @@ namespace KimTower.Tests
     [TestFixture]
     public class OfficeTests
     {
-       [Test, TestCase(0, 2)]
+        [Test, TestCase(0, 2)]
+        [TestCase(0, 99)]
         public void OfficePosition(int x, int floorNumber)
         {
             var office = new Office(x, floorNumber);

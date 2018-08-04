@@ -10,7 +10,7 @@
 
         Position Position { get; set; }
 
-       // void IsOccupied(Tower tower);
-       
+        //Position GetRoomPosition(int x, int segments, int floorNumber);
+      
     }
 }

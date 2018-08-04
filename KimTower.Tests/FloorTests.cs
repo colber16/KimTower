@@ -25,33 +25,40 @@ namespace KimTower.Tests
         }
 
         [Test, TestCaseSource(nameof(ExtendedReturnPositions))]
-        public Position GetExtendedFloorSegmentsReturnsLargerPosition(Position originalposition, Position extendedPosition)
+        public Position GetExtendedFloorSegmentsReturnsLargerPosition(Position originalPosition, Position extendedPosition)
         {
-            var floor = new Floor(originalposition);
+            var floor = new Floor(originalPosition);
             return floor.GetExtendedFloorPosition(extendedPosition);
 
         }
-      
 
+        //[Test, TestCaseSource()]
+        //public Position FloorIsSetFromRoomPosition(Position position, IRoom room)
+        //{
+        //    var floor = new Floor(position);
+
+        //}
+      
+        //needs to use floor number
         [Test]
         [TestCase("l 1 2", 0, ExpectedResult = 4) ]
-        //[TestCase("o 2 0", 1, ExpectedResult = 6)]
+        [TestCase("o 2 0", 1, ExpectedResult = 6)]
         public int ProperFloorSegmentsFromRoomSegments(string input, int floorIndex)
         {
 
             var gameLoop = new GameLoop();
             var isProcessed = gameLoop.ProcessInput(input);
-            return gameLoop.tower.Floors[floorIndex].Segments;
+            return gameLoop.tower.Floors[0].Segments;
         }
 
-        [TestCase("o 2 0", ExpectedResult = false)]
-        public bool RoomInputIsNotProcessedWithoutLobbyBeingBuilt(string input)
-        {
+        //[TestCase("o 2 0", ExpectedResult = false)]
+        //public bool RoomInputIsNotProcessedWithoutLobbyBeingBuilt(string input)
+        //{
 
-            var gameLoop = new GameLoop();
-            return gameLoop.ProcessInput(input);
+        //    var gameLoop = new GameLoop();
+        //    return gameLoop.ProcessInput(input);
 
-        }
+        //}
 
       
         static List<TestCaseData> Positions = new List<TestCaseData> 

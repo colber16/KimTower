@@ -6,6 +6,7 @@ namespace KimTower.Data
     public class Lobby : IRoom
     {
         int segments = 4;
+
         public List<Person> People { get; set; }
 
         public int Segments { get; private set; }
@@ -16,10 +17,11 @@ namespace KimTower.Data
 
         public Position Position {get; set;}
 
-        public Lobby()
+        public Lobby(int x, int floorNumber)
         {
             this.Segments = segments;
             this.TotalSegments = segments;
+            this.Position = new Position(x, x + this.segments, floorNumber);
         }
         public void ExtendSegments()
         {
