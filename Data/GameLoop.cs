@@ -148,6 +148,7 @@ namespace KimTower.Data
                     }
                     else
                     {
+                        //unavailable for position
                         if (!FloorValidation.IsFloorPositionPreexisting(position, floor))
                         {
                             Console.WriteLine("Invalid position. Must be larger than current floor position");
