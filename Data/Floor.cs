@@ -18,7 +18,7 @@ namespace KimTower.Data
 
         public Position Position { get; private set; }
        
-        public bool Preexisting { get; set; }
+        public bool IsPreexisting { get; set; }
 
         public Floor(Position position)
         {
@@ -27,46 +27,41 @@ namespace KimTower.Data
             this.FloorNumber = position.FloorNumber;
             this.Ledger = new Ledger();
             this.Stairs = new List<StairCase>();
-            this.Position = position; //new Position(position.X, position.X2, position.FloorNumber);
-            this.Preexisting = false;
+            this.Position = position; 
+            this.IsPreexisting = false;
         }
+
         public void ExtendPosition(Position position)
         {
             this.Position = position;
             ExtendSegments(position.X2 - position.X);
         }
+
         public void ExtendSegments(int segments)
         {
             this.Segments = segments;
         }
         //hmmmm.....
-        public void IsOccupied(Office room, Tower tower)
-        {
-            if(tower.HasFirstFloorAccess(this.FloorNumber))
-            {
-                room.Occupied = true;
-            }
-            // or floor with that extends to 1
-
-        }
+       
         //needs to handle all inputs
-        public Position GetNewFloorPosition(int x, int x2)
+        public Position GetExtendedFloorPosition(Position position)
         {
+            int smallestX = this.Position.X;
+            int largestX2 = this.Position.X2;
 
-            if (x < this.Position.X)
+            if (position.X <= this.Position.X)
             {
+                smallestX = position.X;
 
-                if (x2 > this.Position.X2)
+                if (position.X2 >= this.Position.X2)
                 {
-                    return new Position(x, x2, this.FloorNumber);
+                    largestX2 = position.X2;
                 }
-                return new Position(x, this.Position.X2, this.FloorNumber);
+            }
 
-            }
-            else
-            {
-                return new Position(x, x2, this.FloorNumber);
-            }
+            return new Position(smallestX, largestX2, this.FloorNumber);
+
+           
         }
        
     }

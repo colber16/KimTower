@@ -9,6 +9,8 @@
         int Segments { get; }
 
         Position Position { get; set; }
+
+       // void IsOccupied(Tower tower);
        
     }
 }

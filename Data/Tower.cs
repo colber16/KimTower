@@ -11,10 +11,13 @@ namespace KimTower.Data
 
         public Ledger Ledger { get; set; }
 
+        public bool HasLobby { get; set; }
+
         public Tower()
         {
             this.Floors = new List<Floor>();
             this.Ledger = new Ledger();
+            this.HasLobby = false;
         }
 
         public void UpdateLedger()
@@ -70,7 +73,7 @@ namespace KimTower.Data
                     {
                         if (room is Office)
                         {
-                            floor.IsOccupied((Office)room, this);
+                            ((Office)room).IsOccupied(this);
                             if (((Office)room).Occupied)
                             {
                                 floor.Ledger.TotalProfit += ((Office)room).PayRent();
@@ -83,11 +86,10 @@ namespace KimTower.Data
             this.UpdateLedger();
         }
 
-        internal void AddFloor(Floor floor)
+        public void AddFloor(Floor floor)
         {
-            
             this.Floors.Add(floor);
-            floor.Preexisting = true;
+            floor.IsPreexisting = true;
         }
     }
 }

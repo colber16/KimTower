@@ -3,28 +3,14 @@ namespace KimTower.Data
 {
     public static class FloorValidation
     {
-        public static bool IsValidPositionInExistingFloor(int x, int x2, Floor floor)
+        public static bool IsFloorPositionPreexisting(Position position, Floor floor)
         {
-            var count = 0;
-
-            for (int i = floor.Position.X; i <= floor.Position.X2; i++)
+            if (position.X >= floor.Position.X)
             {
-                if (x >= i)
+                if (position.X2 <= floor.Position.X2)
                 {
-                    count++;
+                    return false;
                 }
-                if (count > 0)
-                {
-                    i = floor.Position.X2;
-                }
-                if (x2 <= i)
-                {
-                    count++;
-                }
-            }
-            if (count >= 2)
-            {
-                return false;
             }
             return true;
         }

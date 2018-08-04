@@ -26,5 +26,9 @@ namespace KimTower.Data
             this.TotalSegments += segments;
         }
 
+        //public void IsOccupied(Tower tower)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

@@ -9,7 +9,7 @@ namespace KimTower.Data
     {
         Build build = new Build();
         Time time = new Time(0);
-        Tower tower = new Tower();
+        public Tower tower = new Tower();
 
         public void Run()
         {
@@ -60,22 +60,7 @@ namespace KimTower.Data
             tower.CollectRent(time);
         }
 
-        //private Floor FloorCheck(Position position)
-        //{
-        //    foreach (var floor in tower.Floors)
-        //    {
-        //        if (floor.FloorNumber == position.FloorNumber)
-        //        {
-        //            floor.ExtendSegments(position.);
-        //            return floor;
-
-        //        }
-        //    }
-        //    return GetNewFloor(position);
-
-        //}
-
-        private bool ProcessInput(string input)
+        public bool ProcessInput(string input)
         {
             var inputs = input.Split(" ");
             var desiredStructure = Convert.ToChar(inputs[0]);
@@ -99,35 +84,17 @@ namespace KimTower.Data
 
             int.TryParse(inputs[2], out x);
 
+            if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
+            {
+                Console.WriteLine("Must create lobby first");
+                return false;
+            }
             if (structure.Equals(StructureTypes.Floor))
             {
                 int.TryParse(inputs[3], out int x2);
                 //x2 == room.segments
                 var position = new Position(x, x2, floorNumber);
-
-                if (!FloorValidation.IsValidPositionOnMap(position))
-                {
-                    Console.WriteLine("Invalid position within map.");
-                    return false;
-                }
-                var floor = GetFloor(position);
-
-                if (!floor.Preexisting)
-                {
-                    tower.AddFloor(floor); 
-                }
-                else
-                {
-                    if (!FloorValidation.IsValidPositionInExistingFloor(x, x2, floor))
-                    {
-                        Console.WriteLine("Invalid position.");
-                        return false;
-                    }
-                    position = floor.GetNewFloorPosition(x, x2);
-                    floor.ExtendPosition(position);
-                }
-
-                return true;
+                return ProcessFloor(position);
             }
 
             if (structure.Equals(StructureTypes.Stairs))
@@ -139,10 +106,19 @@ namespace KimTower.Data
             {
                 IRoom room;
 
-                if (structure.Equals(StructureTypes.Lobby) && tower.Floors.Count != 0 && tower.Floors[0].Rooms.Count != 0)
+                if (structure.Equals(StructureTypes.Lobby))
                 {
-                    room = (Lobby)tower.Floors[0].Rooms[0];
-                    //maybe return null and then check and then extend and then and then and then.
+                    ////////*******Need to do validations first.
+                    if (!tower.HasLobby)
+                    {
+                        room = new Lobby();
+                        tower.HasLobby = true;
+                    }
+                    else
+                    {
+                        room = (Lobby)tower.Floors[0].Rooms[0];
+                    }
+
                 }
                 else
                 {
@@ -155,17 +131,75 @@ namespace KimTower.Data
                 }
                 else
                 {
+
+                    //var position = new Position(x, x + room.Segments, floorNumber);
+                    //ProcessFloor(position);
                     //Do something about this
                     //floor = FloorCheck(x, room.Segments, floorNumber);
+                    var position = GetRoomPosition(x, room.Segments, floorNumber);
 
-                    //AddRoom(room, floor);
+                    if (!FloorValidation.IsValidPositionOnMap(position))
+                    {
+                        Console.WriteLine("Invalid position within map.");
+                        return false;
+                    }
+                    var floor = GetFloor(position);
+
+                    if (!floor.IsPreexisting)
+                    {
+                        tower.AddFloor(floor);
+                    }
+                    else
+                    {
+                        if (!FloorValidation.IsFloorPositionPreexisting(position, floor))
+                        {
+                            Console.WriteLine("Invalid position. Must be larger than current floor position");
+                            return false;
+                        }
+                        position = floor.GetExtendedFloorPosition(position);
+                        floor.ExtendPosition(position);
+                    }
+
+                    AddRoom(room, floor);
                 }
             }
 
             return true;
 
-
         }
+        public Position GetRoomPosition(int x, int segments, int floorNumber)
+        {
+            var x2 = x + segments;
+            return new Position(x, x2, floorNumber);
+        }
+        public bool ProcessFloor(Position position)
+        {
+
+            if (!FloorValidation.IsValidPositionOnMap(position))
+            {
+                Console.WriteLine("Invalid position within map.");
+                return false;
+            }
+            var floor = GetFloor(position);
+
+            if (!floor.IsPreexisting)
+            {
+                tower.AddFloor(floor);
+            }
+            else
+            {
+                if (!FloorValidation.IsFloorPositionPreexisting(position, floor))
+                {
+                    Console.WriteLine("Invalid position. Must be larger than current floor position");
+                    return false;
+                }
+                position = floor.GetExtendedFloorPosition(position);
+                floor.ExtendPosition(position);
+            }
+
+            return true;
+        }
+
         private bool IsPositionGivenInInput(string[] inputs)
         {
             if (inputs.Length < 3)
@@ -196,6 +230,7 @@ namespace KimTower.Data
                 else
                 {
                     floor.Rooms.Add(room);
+                    tower.HasLobby = true;
                 }
             }
             else
@@ -227,12 +262,6 @@ namespace KimTower.Data
             var floor = tower.GetExistingFloor(position.FloorNumber) ?? new Floor(position);
             return floor;
         }
-        
-        //private static Position GetFloorPosition()
-        //{
-        //    var position = floor.GetNewFloorPosition(x, x2);
-        //    floor.ExtendPosition(position);
-        //    return true;
-        //}
+
     }
 }
