@@ -72,8 +72,8 @@ namespace KimTower.Data
                     {
                         if (room is Office)
                         {
-                            ((Office)room).SetOccupancy(this);
-                            if (((Office)room).Occupied)
+                            ((Room)room).SetOccupancy(this);
+                            if (((Room)room).Occupied)
                             {
                                 floor.Ledger.TotalProfit += ((Office)room).PayRent();
                             }

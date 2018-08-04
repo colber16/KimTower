@@ -2,31 +2,26 @@
 {
     using System.Collections.Generic;
 
-    public class Condo : IRoom
+    public abstract class Room : IRoom
     {
-
-        int segments = 8;
-        int salePrice = 300000;
-        int cost = 100000;
-
         public List<Person> People { get; set; }
 
-        public int Segments { get; }
-
-        public bool Occupied { get; set; }
-
-        public int Cost => cost;
+        public int Segments { get; private set; }
 
         public Position Position { get; set; }
 
+        public int Cost { get; }
 
-        public Condo(int x, int floorNumber)
+        public bool Occupied { get; set; }
+
+        protected Room(int segments, int cost, int x, int floorNumber)
         {
-            this.Segments = segments;
             this.People = new List<Person>();
-            this.Position = new Position(x, x + segments, floorNumber);
-
+            this.Segments = segments;
+            this.Cost = cost;
+            this.Position= new Position(x, x + this.Segments, floorNumber);
         }
+
 
         public void SetOccupancy(Tower tower)
         {
@@ -37,4 +32,4 @@
 
         }
     }
-}
+}   

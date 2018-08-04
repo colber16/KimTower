@@ -9,8 +9,6 @@
         int Segments { get; }
 
         Position Position { get; set; }
-
-        //Position GetRoomPosition(int x, int segments, int floorNumber);
       
     }
 }
