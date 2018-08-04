@@ -28,8 +28,15 @@ namespace KimTower.Data
             this.People = new List<Person>();
 
         }
+        public Office(int x, int floorNumber)
+        {
+            this.Segments = segments;
+            this.People = new List<Person>();
+            this.Position = new Position(x, x + segments, floorNumber);
 
-        public void IsOccupied(Tower tower)
+        }
+
+        public void SetOccupancy(Tower tower)
         {
             if (tower.HasFirstFloorAccess(this.Position.FloorNumber))
             {

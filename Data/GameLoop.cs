@@ -212,11 +212,13 @@ namespace KimTower.Data
 
         private void ProcessStairRequest(int floorNumber)
         {
-            var bottomFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == floorNumber);
-            bottomFloor.Stairs.Add(new StairCase(floorNumber));
+            tower.Floors[floorNumber - 1].AddStairs(floorNumber);
+            tower.Floors[floorNumber].AddStairs(floorNumber);
+            //var bottomFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == floorNumber);
+            //bottomFloor.Stairs.Add(new StairCase(floorNumber));
 
-            var topFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == bottomFloor.FloorNumber + 1);
-            topFloor.Stairs.Add(new StairCase(bottomFloor.FloorNumber));
+            //var topFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == bottomFloor.FloorNumber + 1);
+            //topFloor.Stairs.Add(new StairCase(bottomFloor.FloorNumber));
         }
 
         private void AddRoom(IRoom room, Floor floor)

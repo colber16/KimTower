@@ -7,10 +7,10 @@ namespace KimTower.Data
 
         public int TopFloor { get; set; }
 
-        public StairCase(int bottom)
+        public StairCase(int bottomFloor)
         {
-            this.BottomFloor = bottom;
-            this.TopFloor = bottom + 1;
+            this.BottomFloor = bottomFloor;
+            this.TopFloor = bottomFloor + 1;
         }
 
 

@@ -41,9 +41,7 @@ namespace KimTower.Data
         {
             this.Segments = segments;
         }
-        //hmmmm.....
-       
-        //needs to handle all inputs
+
         public Position GetExtendedFloorPosition(Position position)
         {
             int smallestX = this.Position.X;
@@ -61,7 +59,12 @@ namespace KimTower.Data
 
             return new Position(smallestX, largestX2, this.FloorNumber);
 
-           
+        }
+        //does an item n a list know where it is in the list?
+        public void AddStairs(int floorNumber)
+        {
+            this.Stairs.Add(new StairCase(floorNumber));
+
         }
        
     }
