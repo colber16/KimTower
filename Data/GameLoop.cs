@@ -3,142 +3,234 @@ namespace KimTower.Data
 {
     using System;
     using System.Linq;
+    using System.Collections.Generic;
 
     public class GameLoop
     {
         Build build = new Build();
         Time time = new Time(0);
-        //Clock clock = new Clock(time);
-        Tower tower = new Tower();
+        public Tower tower = new Tower();
 
         public void Run()
         {
-            while (true)
-            {
-                if (Console.ReadKey(true).Key != ConsoleKey.DownArrow)
-                {
-                    var input = Console.ReadLine();
-                    ProcessInput(input, tower);
-                }
-                Update();
-                Render();
+            ConsoleStuff.PrintTitle();
 
+            var play = true;
+            var newInput = true;
+
+            while (play)
+            {
+                var isProcessed = false;
+
+                if (newInput)
+                {
+                    ConsoleStuff.PrintInputRequest();
+
+                    var input = Console.ReadLine();
+
+                    isProcessed = ProcessInput(input);
+
+                }
+
+                if (isProcessed || !newInput)
+                {
+                    Update();
+                    Render();
+                }
+                else
+                {
+                    Console.WriteLine("Input was not processed.");
+                }
+
+                ConsoleStuff.PrintContinueRequest();
+
+                ConsoleStuff.ProcessContinueInput(ref play, ref newInput);
             }
         }
 
         private void Render()
         {
-            for (int i = 0; i < tower.Floors.Count; i++)
-            {
-                Console.WriteLine($"Floor Number:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].Segments}, Rooms Count: {tower.Floors[i].Rooms.Count}");
-
-            }
-
-            Console.WriteLine(time.ToString());
-            Console.WriteLine($"Money: {tower.Ledger.TotalProfit}");
+            ConsoleStuff.PrintGameStats(tower, time);
         }
 
         private void Update()
         {
             this.time = time.RunTime();
 
-            CollectRent(time, tower);
+            tower.CollectRent(time);
         }
 
-        private void CollectRent(Time time, Tower tower)
+        public bool ProcessInput(string input)
         {
-            if (time.Day == Day.WeekdayTwo)
-            {
-                foreach (var floor in tower.Floors)
-                {
-                    foreach (var room in floor.Rooms)
-                    {
-                        if (room is Office)
-                        {
-                            floor.IsOccupied((Office)room, tower);
-                            if (((Office)room).Occupied)
-                            {
-                                floor.Ledger.TotalProfit += ((Office)room).PayRent();
-                            }
-
-                        }
-                    }
-                }
-            }
-            tower.UpdateLedger();
-        }
-
-        private Floor FloorCheck(int segments, Tower tower, int floorNumber)
-        {
-            
-            foreach (var floor in tower.Floors)
-            {
-                if (floor.FloorNumber == floorNumber)
-                {
-                    floor.ExtendSegments(segments);
-                    return floor;
-
-                }
-            }
-
-            var newFloor = new Floor(segments, floorNumber);
-
-            tower.Floors.Add(newFloor);
-
-            return newFloor;
-
-        }
-
-        private void ProcessInput(string input, Tower tower)
-        {
-            
             var inputs = input.Split(" ");
-            var desiredRoom = inputs[0];
-            var floorNumber = Int32.Parse(inputs[1]);
+            var desiredStructure = Convert.ToChar(inputs[0]);
+            int floorNumber;
+            int x;
 
-            if(!IsStairRequest(inputs))
+            var structure = ConsoleStuff.GetStructureFromInput(desiredStructure);
+
+            if (structure == null)
             {
-                IRoom room = DetermineRoomType(desiredRoom);
+                Console.WriteLine("Invalid structure.");
+                return false;
+            }
+            //blow up if valid structure is passed
+            int.TryParse(inputs[1], out floorNumber);
 
-                if (!IsRoomValidForFloor(room, floorNumber))
+            if (!IsPositionGivenInInput(inputs))
+            {
+                return false;
+            }
+
+            int.TryParse(inputs[2], out x);
+
+            if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
+            {
+                Console.WriteLine("Must create lobby first");
+                return false;
+            }
+            if (structure.Equals(StructureTypes.Floor))
+            {
+                int.TryParse(inputs[3], out int x2);
+                //x2 == room.segments
+                var position = new Position(x, x2, floorNumber);
+                return ProcessFloor(position);
+            }
+
+            if (structure.Equals(StructureTypes.Stairs))
+            {
+                ProcessStairRequest(floorNumber);
+            }
+            if (structure.Equals(StructureTypes.Office)
+               || structure.Equals(StructureTypes.Lobby))
+            {
+                IRoom room;
+
+                if (structure.Equals(StructureTypes.Lobby))
                 {
-                    Console.WriteLine("Invalid input");
+                    ////////*******Need to do validations first.
+                    if (!tower.HasLobby)
+                    {
+                        room = new Lobby();
+                        tower.HasLobby = true;
+                    }
+                    else
+                    {
+                        room = (Lobby)tower.Floors[0].Rooms[0];
+                    }
+
                 }
                 else
                 {
-                    var floor = FloorCheck(room.Segments, tower, floorNumber);
-
-                    AddRoom(room, floor); 
+                    room = GetRoomType(structure);
                 }
+                if (!FloorValidation.IsRoomValidForFloor(room, floorNumber))
+                {
+                    Console.WriteLine("Invalid room for floor");
+                    return false;
+                }
+                else
+                {
+
+                    //var position = new Position(x, x + room.Segments, floorNumber);
+                    //ProcessFloor(position);
+                    //Do something about this
+                    //floor = FloorCheck(x, room.Segments, floorNumber);
+                    var position = GetRoomPosition(x, room.Segments, floorNumber);
+
+                    if (!FloorValidation.IsValidPositionOnMap(position))
+                    {
+                        Console.WriteLine("Invalid position within map.");
+                        return false;
+                    }
+                    var floor = GetFloor(position);
+
+                    if (!floor.IsPreexisting)
+                    {
+                        tower.AddFloor(floor);
+                    }
+                    else
+                    {
+                        if (!FloorValidation.IsFloorPositionPreexisting(position, floor))
+                        {
+                            Console.WriteLine("Invalid position. Must be larger than current floor position");
+                            return false;
+                        }
+                        position = floor.GetExtendedFloorPosition(position);
+                        floor.ExtendPosition(position);
+                    }
+
+                    AddRoom(room, floor);
+                }
+            }
+
+            return true;
+
+        }
+        public Position GetRoomPosition(int x, int segments, int floorNumber)
+        {
+            var x2 = x + segments;
+            return new Position(x, x2, floorNumber);
+        }
+        public bool ProcessFloor(Position position)
+        {
+
+            if (!FloorValidation.IsValidPositionOnMap(position))
+            {
+                Console.WriteLine("Invalid position within map.");
+                return false;
+            }
+            var floor = GetFloor(position);
+
+            if (!floor.IsPreexisting)
+            {
+                tower.AddFloor(floor);
             }
             else
             {
-                var bottomFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == floorNumber);
-                bottomFloor.Stairs.Add(new StairCase(floorNumber));
-
-                var topFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == bottomFloor.FloorNumber + 1);
-                topFloor.Stairs.Add(new StairCase(bottomFloor.FloorNumber));
+                if (!FloorValidation.IsFloorPositionPreexisting(position, floor))
+                {
+                    Console.WriteLine("Invalid position. Must be larger than current floor position");
+                    return false;
+                }
+                position = floor.GetExtendedFloorPosition(position);
+                floor.ExtendPosition(position);
             }
-            //need to validate if floor exist, maybe. . .
 
+            return true;
         }
 
-        private bool IsStairRequest(string[] inputs)
+        private bool IsPositionGivenInInput(string[] inputs)
         {
-            return inputs.Contains("s");
+            if (inputs.Length < 3)
+            {
+                Console.WriteLine("Invalid input.");
+                return false;
+            }
+            return true;
+        }
+
+        private void ProcessStairRequest(int floorNumber)
+        {
+            var bottomFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == floorNumber);
+            bottomFloor.Stairs.Add(new StairCase(floorNumber));
+
+            var topFloor = tower.Floors.SingleOrDefault(f => f.FloorNumber == bottomFloor.FloorNumber + 1);
+            topFloor.Stairs.Add(new StairCase(bottomFloor.FloorNumber));
         }
 
         private void AddRoom(IRoom room, Floor floor)
         {
             if (room is Lobby)
             {
-                if ((!floor.Rooms.Any(l => l is Lobby)))
+                if ((floor.Rooms.Any(l => l is Lobby)))
                 {
                     ((Lobby)room).ExtendSegments();
                 }
                 else
                 {
                     floor.Rooms.Add(room);
+                    tower.HasLobby = true;
                 }
             }
             else
@@ -147,34 +239,28 @@ namespace KimTower.Data
             }
         }
 
-        public bool IsRoomValidForFloor(IRoom room, int floorNumber)
+        private IRoom GetRoomType(StructureTypes? desiredRoom)
         {
-            if (floorNumber == 1)
+            switch (desiredRoom)
             {
-                if (room is Lobby)
-                {
-                    return true;
-                }
-                return false;
-            }
-            if(!(room is Lobby))
-            {
-                return true;
-            }
-            return false;
-        }
+                case StructureTypes.Lobby:
+                    return new Lobby();
+                case StructureTypes.Office:
+                    return new Office();
+                //case StructureTypes.Condo:
+                //return new Condo();
+                //case StructureTypes.Restaurant:
+                //return new Restaurant();
 
-        private IRoom DetermineRoomType(string desiredRoom)
+                default:
+                    return null;
+            }
+
+        }
+        private Floor GetFloor(Position position)
         {
-            if (desiredRoom == "l")
-            {
-                return new Lobby();
-            }
-            if (desiredRoom == "o")
-            {
-                return new Office();
-            }
-            throw new NotImplementedException();
+            var floor = tower.GetExistingFloor(position.FloorNumber) ?? new Floor(position);
+            return floor;
         }
 
     }

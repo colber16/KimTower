@@ -5,7 +5,12 @@
     public interface IRoom
     {
         List<Person> People { get; set; }
+
         int Segments { get; }
+
+        Position Position { get; set; }
+
+       // void IsOccupied(Tower tower);
        
     }
 }

@@ -20,6 +20,8 @@ namespace KimTower.Data
 
         public int Cost => cost;
 
+        public Position Position { get; set; }
+
         public Office()
         {
             this.Segments = segments;
@@ -27,6 +29,14 @@ namespace KimTower.Data
 
         }
 
+        public void IsOccupied(Tower tower)
+        {
+            if (tower.HasFirstFloorAccess(this.Position.FloorNumber))
+            {
+                this.Occupied = true;
+            }
+
+        }
 
         public int PayRent()
         {
