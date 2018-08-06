@@ -67,8 +67,6 @@ namespace KimTower.Data
             int floorNumber;
             int startX;
 
-
-         
             int.TryParse(inputs[1], out floorNumber);
 
             var structure = ConsoleStuff.GetStructureFromInput(desiredStructure);
@@ -82,7 +80,7 @@ namespace KimTower.Data
 
             Range range;
 
-            BuildStructure(structure, startX, floorNumber, inputs);
+            return BuildStructure(structure, startX, floorNumber, inputs);
 
             //if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
             //{
@@ -162,7 +160,7 @@ namespace KimTower.Data
         //        }
            // }
 
-            return true;
+            //return true;
 
         }
 
@@ -174,6 +172,28 @@ namespace KimTower.Data
                     int.TryParse(inputs[3], out int endX);
                     return ProcessFloor(new Range(startX, endX), floorNumber);
 
+                case StructureTypes.Lobby:
+                    var lobby = GetRoom(structure, startX, floorNumber);
+                    var floor = GetFloor(new Range(startX, startX + lobby.Segments), floorNumber);
+                    tower.AddFloor(floor);
+                    if(!floor.IsLobbyFloor())
+                    {
+                        return false;
+                    }
+                    if(!floor.HasLobby())
+                    {
+                        floor.AddRoom(lobby);
+                    }
+                    else
+                    {
+                        var existingLobby = floor.Rooms.SingleOrDefault(l => l is Lobby);
+                        ((Lobby)existingLobby).ExtendSegments(); 
+                        
+                    }
+                   
+
+                    return true;  
+                    
                 default:
                     return false;
             }
@@ -247,7 +267,7 @@ namespace KimTower.Data
                 else
                 {
                     floor.Rooms.Add(room);
-                    tower.HasLobby = true;
+                    //tower.HasLobby = true;
                 }
             }
             else
@@ -256,7 +276,7 @@ namespace KimTower.Data
             }
         }
 
-        private IRoom GetRoomType(StructureTypes? desiredRoom, int x, int floorNumber)
+        private IRoom GetRoom(StructureTypes? desiredRoom, int x, int floorNumber)
         {
             switch (desiredRoom)
             {
@@ -279,6 +299,7 @@ namespace KimTower.Data
             var floor = tower.GetExistingFloor(floorNumber) ?? new Floor(range, floorNumber);
             return floor;
         }
+
 
     }
 }

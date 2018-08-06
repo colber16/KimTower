@@ -45,15 +45,20 @@ namespace KimTower.Data
 
         public bool IsRangeAvailable(Range newRange)
         {      
-            foreach (var room in this.Rooms)
+            if(this.Rooms.Count > 0)
             {
-                if(newRange.StartX >= room.Range.StartX && newRange.EndX <= room.Range.EndX)
+                foreach (var room in this.Rooms)
                 {
-                    return false;
+                    if (newRange.StartX >= room.Range.StartX && newRange.EndX <= room.Range.EndX)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
+           
         }
+
         public int GetSegments()
         {
             return Range.EndX - Range.StartX;
@@ -98,6 +103,10 @@ namespace KimTower.Data
             }
 
         }
+        public bool IsLobbyFloor() => FloorNumber == 1;
+
+        public bool HasLobby() => Rooms.Any(l => l is Lobby);
+
         //public void UpdateOpenSpace()
         //{
             

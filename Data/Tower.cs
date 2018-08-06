@@ -11,13 +11,10 @@ namespace KimTower.Data
 
         public Ledger Ledger { get; set; }
 
-        public bool HasLobby { get; set; }
-
         public Tower()
         {
             this.Floors = new List<Floor>();
             this.Ledger = new Ledger();
-            this.HasLobby = false;
         }
 
         public void UpdateLedger()
