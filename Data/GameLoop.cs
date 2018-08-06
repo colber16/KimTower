@@ -93,8 +93,8 @@ namespace KimTower.Data
             {
                 int.TryParse(inputs[3], out int x2);
                 //x2 == room.segments
-                var position = new Position(x, x2, floorNumber);
-                return ProcessFloor(position);
+                var range = new Range(x, x2);
+                return ProcessFloor(range, floorNumber);
             }
 
             if (structure.Equals(StructureTypes.Stairs))
@@ -166,10 +166,10 @@ namespace KimTower.Data
 
         }
 
-        public bool ProcessFloor(Position position)
+        public bool ProcessFloor(Range range, int floorNumber)
         {
 
-            if (!FloorValidation.IsValidPositionOnMap(position))
+            if (!FloorValidation.IsValidPositionOnMap(range, floorNumber))
             {
                 Console.WriteLine("Invalid position within map.");
                 return false;

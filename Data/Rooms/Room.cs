@@ -8,24 +8,29 @@
 
         public int Segments { get; private set; }
 
-        public Position Position { get; set; }
+        public Range Range { get; set; }
 
         public int Cost { get; }
 
         public bool Occupied { get; set; }
+
+        public int FloorNumber { get; set; }
 
         protected Room(int segments, int cost, int x, int floorNumber)
         {
             this.People = new List<Person>();
             this.Segments = segments;
             this.Cost = cost;
-            this.Position= new Position(x, x + this.Segments, floorNumber);
+            this.Range = new Range(x, x + segments);
+            this.FloorNumber = floorNumber;
+
+            //this.Position= new Position(x, x + this.Segments, floorNumber);
         }
 
 
         public void SetOccupancy(Tower tower)
         {
-            if (tower.HasFirstFloorAccess(this.Position.FloorNumber))
+            if (tower.HasFirstFloorAccess(this.FloorNumber))
             {
                 this.Occupied = true;
             }
