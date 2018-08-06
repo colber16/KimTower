@@ -65,116 +65,129 @@ namespace KimTower.Data
             var inputs = input.Split(" ");
             var desiredStructure = Convert.ToChar(inputs[0]);
             int floorNumber;
-            int x;
+            int startX;
+
+
+         
+            int.TryParse(inputs[1], out floorNumber);
 
             var structure = ConsoleStuff.GetStructureFromInput(desiredStructure);
 
-            if (structure == null)
-            {
-                Console.WriteLine("Invalid structure.");
-                return false;
-            }
-            //blow up if valid structure is passed
-            int.TryParse(inputs[1], out floorNumber);
-
-            if (!IsPositionGivenInInput(inputs))
+            if(!IsInputSortaValid(inputs, structure))
             {
                 return false;
             }
 
-            int.TryParse(inputs[2], out x);
+            int.TryParse(inputs[2], out startX);
+
+            Range range;
+
+            BuildStructure(structure, startX, floorNumber, inputs);
 
             //if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
             //{
             //    Console.WriteLine("Must create lobby first");
             //    return false;
             //}
-            if (structure.Equals(StructureTypes.Floor))
-            {
-                int.TryParse(inputs[3], out int x2);
-                //x2 == room.segments
-                var range = new Range(x, x2);
-                return ProcessFloor(range, floorNumber);
-            }
+            //if (structure.Equals(StructureTypes.Floor))
+            //{
+            //    int.TryParse(inputs[3], out int x2);
+            //    //x2 == room.segments
+            //    var range = new Range(x, x2);
+            //    return ProcessFloor(range, floorNumber);
+            //}
 
-            if (structure.Equals(StructureTypes.Stairs))
-            {
-                ProcessStairRequest(floorNumber);
-            }
-            if (structure.Equals(StructureTypes.Office)
-               || structure.Equals(StructureTypes.Lobby))
-            {
-                IRoom room;
+            //if (structure.Equals(StructureTypes.Stairs))
+            //{
+            //    ProcessStairRequest(floorNumber);
+            //}
+            //if (structure.Equals(StructureTypes.Office)
+            //   || structure.Equals(StructureTypes.Lobby))
+            //{
+        //        IRoom room;
 
-                if (structure.Equals(StructureTypes.Lobby))
-                {
-                    ////////*******Need to do validations first.
-                    if (!tower.HasLobby)
-                    {
-                        room = new Lobby(x, floorNumber);
-                        tower.HasLobby = true;
-                    }
-                    else
-                    {
-                        room = (Lobby)tower.Floors[0].Rooms[0];
-                    }
+        //        if (structure.Equals(StructureTypes.Lobby))
+        //        {
+        //            ////////*******Need to do validations first.
+        //            if (!tower.HasLobby)
+        //            {
+        //                room = new Lobby(x, floorNumber);
+        //                tower.HasLobby = true;
+        //            }
+        //            else
+        //            {
+        //                room = (Lobby)tower.Floors[0].Rooms[0];
+        //            }
 
-                }
-                else
-                {
-                    room = GetRoomType(structure,x, floorNumber);
-                }
-                if (!FloorValidation.IsRoomValidForFloor(room, floorNumber))
-                {
-                    Console.WriteLine("Invalid room for floor");
-                    return false;
-                }
-                else
-                {
+        //        }
+        //        else
+        //        {
+        //            room = GetRoomType(structure,x, floorNumber);
+        //        }
+        //        if (!FloorValidation.IsRoomValidForFloor(room, floorNumber))
+        //        {
+        //            Console.WriteLine("Invalid room for floor");
+        //            return false;
+        //        }
+        //        else
+        //        {
 
-                    //var position = GetRoomPosition(x, room.Segments, floorNumber);
-                    var position = room.Position;
+        //            //var position = GetRoomPosition(x, room.Segments, floorNumber);
+        //            var range = room.Range;
 
-                    if (!FloorValidation.IsValidPositionOnMap(position))
-                    {
-                        Console.WriteLine("Invalid position within map.");
-                        return false;
-                    }
-                    var floor = GetFloor(position);
+        //            if (!FloorValidation.IsValidRangeOnMap(range, floorNumber))
+        //            {
+        //                Console.WriteLine("Invalid position within map.");
+        //                return false;
+        //            }
+        //            var floor = GetFloor(range, floorNumber);
 
-                    if (!floor.IsPreexisting)
-                    {
-                        tower.AddFloor(floor);
-                    }
-                    else
-                    {
-                        //unavailable for position
-                        if (!FloorValidation.IsFloorPositionPreexisting(position, floor))
-                        {
-                            Console.WriteLine("Invalid position. Must be larger than current floor position");
-                            return false;
-                        }
-                        position = floor.GetExtendedFloorPosition(position);
-                        floor.ExtendPosition(position);
-                    }
+        //            if (!floor.IsPreexisting)
+        //            {
+        //                tower.AddFloor(floor);
+        //            }
+        //            else
+        //            {
+        //                //unavailable for position
+        //                if (!FloorValidation.IsFloorPositionPreexisting(range, floor))
+        //                {
+        //                    Console.WriteLine("Invalid position. Must be larger than current floor position");
+        //                    return false;
+        //                }
+        //                range = floor.GetExtendedFloorRange(range);
+        //                floor.ExtendPosition(range);
+        //            }
 
-                    AddRoom(room, floor);
-                }
-            }
+        //            AddRoom(room, floor);
+        //        }
+           // }
 
             return true;
 
         }
 
+        private bool BuildStructure(StructureTypes? structure, int startX, int floorNumber, string[] inputs)
+        {
+            switch (structure)
+            {
+                case StructureTypes.Floor:
+                    int.TryParse(inputs[3], out int endX);
+                    return ProcessFloor(new Range(startX, endX), floorNumber);
+
+                default:
+                    return false;
+            }
+        }
+
         public bool ProcessFloor(Range range, int floorNumber)
         {
 
-            if (!FloorValidation.IsValidPositionOnMap(range, floorNumber))
+            if (!FloorValidation.IsValidRangeOnMap(range, floorNumber))
             {
                 Console.WriteLine("Invalid position within map.");
                 return false;
             }
-            var floor = GetFloor(position);
+            var floor = GetFloor(range, floorNumber);
 
             if (!floor.IsPreexisting)
             {
@@ -182,13 +195,13 @@ namespace KimTower.Data
             }
             else
             {
-                if (!FloorValidation.IsFloorPositionPreexisting(position, floor))
+                if (!FloorValidation.IsFloorPositionPreexisting(range, floor))
                 {
                     Console.WriteLine("Invalid position. Must be larger than current floor position");
                     return false;
                 }
-                position = floor.GetExtendedFloorPosition(position);
-                floor.ExtendPosition(position);
+                range = floor.GetExtendedFloorRange(range);
+                floor.ExtendRange(range);
             }
 
             return true;
@@ -202,6 +215,19 @@ namespace KimTower.Data
                 return false;
             }
             return true;
+        }
+        private bool IsStructureValid(StructureTypes? structure)
+        {
+            if (structure == null)
+            {
+                Console.WriteLine("Invalid structure.");
+                return false;
+            }
+            return true;
+        }
+        public bool IsInputSortaValid(string[] inputs, StructureTypes? structure)
+        {
+            return IsPositionGivenInInput(inputs) && IsStructureValid(structure);
         }
 
         private void ProcessStairRequest(int floorNumber)
@@ -248,9 +274,9 @@ namespace KimTower.Data
             }
 
         }
-        private Floor GetFloor(Position position)
+        private Floor GetFloor(Range range, int floorNumber)
         {
-            var floor = tower.GetExistingFloor(position.FloorNumber) ?? new Floor(position);
+            var floor = tower.GetExistingFloor(floorNumber) ?? new Floor(range, floorNumber);
             return floor;
         }
 

@@ -108,7 +108,7 @@ namespace KimTower.Data
         {
             for (int i = 0; i < tower.Floors.Count; i++)
             {
-                Console.WriteLine($"Floor Number:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].Segments}, Rooms Count: {tower.Floors[i].Rooms.Count}");
+                Console.WriteLine($"Floor Number:{tower.Floors[i].FloorNumber}, Segments: {tower.Floors[i].GetSegments()}, Rooms Count: {tower.Floors[i].Rooms.Count}");
 
             }
             Console.WriteLine(time.ToString());

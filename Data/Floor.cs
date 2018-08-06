@@ -37,36 +37,34 @@ namespace KimTower.Data
             this.Range = range;
         }
 
-        public void ExtendPosition(Range range)
+        public void ExtendRange(Range range)
         {
             this.Range = range;
             //ExtendSegments(position.X2 - position.X);
         }
 
-        public bool IsRangeAvailable(Range newRoomRange)
-        {    
-            if (newRoomRange.StartX <this.Range.StartX && newRoomRange.EndX > this.Range.EndX)
-            {
-                return false;
-            }
-                
+        public bool IsRangeAvailable(Range newRange)
+        {      
             foreach (var room in this.Rooms)
             {
-                if(newRoomRange.StartX >= room.Range.StartX && newRoomRange.EndX <= room.Range.EndX)
+                if(newRange.StartX >= room.Range.StartX && newRange.EndX <= room.Range.EndX)
                 {
                     return false;
                 }
             }
             return true;
         }
-
+        public int GetSegments()
+        {
+            return Range.EndX - Range.StartX;
+        }
         //public void ExtendSegments(int segments)
         //{
         //    this.Segments = segments;
         //}
 
 
-        public Range GetExtendedFloorPosition(Range range)
+        public Range GetExtendedFloorRange(Range range)
         {
             int smallestX = this.Range.StartX;
             int largestX2 = this.Range.EndX;
