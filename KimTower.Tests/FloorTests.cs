@@ -42,7 +42,7 @@ namespace KimTower.Tests
         //needs to use floor number
         [Test]
         [TestCase("l 1 2", 0, ExpectedResult = 4) ]
-       // [TestCase("o 2 0", 1, ExpectedResult = 6)]
+        [TestCase("o 2 0", 1, ExpectedResult = 6)]
         public int ProperFloorSegmentsFromRoomSegments(string input, int floorIndex)
         {
 

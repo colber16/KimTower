@@ -14,5 +14,6 @@ namespace KimTower.Tests
             lobby.ExtendSegments();
             return lobby.TotalSegments;
         }
+       
     }
 }

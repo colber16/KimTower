@@ -78,8 +78,6 @@ namespace KimTower.Data
 
             int.TryParse(inputs[2], out startX);
 
-            Range range;
-
             return BuildStructure(structure, startX, floorNumber, inputs);
 
             //if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
@@ -166,6 +164,8 @@ namespace KimTower.Data
 
         private bool BuildStructure(StructureTypes? structure, int startX, int floorNumber, string[] inputs)
         {
+            Floor floor;
+
             switch (structure)
             {
                 case StructureTypes.Floor:
@@ -174,8 +174,8 @@ namespace KimTower.Data
 
                 case StructureTypes.Lobby:
                     var lobby = GetRoom(structure, startX, floorNumber);
-                    var floor = GetFloor(new Range(startX, startX + lobby.Segments), floorNumber);
-                    tower.AddFloor(floor);
+                    floor = GetFloor(new Range(startX, startX + lobby.Segments), floorNumber);
+
                     if(!floor.IsLobbyFloor())
                     {
                         return false;
@@ -183,6 +183,7 @@ namespace KimTower.Data
                     if(!floor.HasLobby())
                     {
                         floor.AddRoom(lobby);
+                        tower.AddFloor(floor);
                     }
                     else
                     {
@@ -190,9 +191,18 @@ namespace KimTower.Data
                         ((Lobby)existingLobby).ExtendSegments(); 
                         
                     }
-                   
-
                     return true;  
+
+                case StructureTypes.Office: 
+                    var office = GetRoom(structure, startX, floorNumber);
+                    floor = GetFloor(new Range(startX, startX + office.Segments), floorNumber);
+                    if (floor.IsLobbyFloor())
+                    {
+                        return false;
+                    }
+                    floor.AddRoom(office);
+                    tower.AddFloor(floor);
+                    return true;
                     
                 default:
                     return false;
