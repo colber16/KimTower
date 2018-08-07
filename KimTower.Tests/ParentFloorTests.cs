@@ -11,7 +11,6 @@ namespace KimTower.Tests
         [Test]
         public void ParentFloorOflobbyIsNull()
         {
-            //var lobby = new Lobby(1 , 1);
             var gameLoop = new GameLoop();
             var lobby = (StructureTypes)'l';
             var tower = new Tower();
@@ -19,6 +18,20 @@ namespace KimTower.Tests
             gameLoop.BuildStructure(lobby, 1, 1, new string[] { "0000" });
             var parentFloor = tower.GetParentFloor(1);
             Assert.IsNull(parentFloor);
+        }
+
+        [Test]
+        public void ParentFloorOfSecondFloorOfficeIsOne()
+        {
+            var gameLoop = new GameLoop();
+            var office = (StructureTypes)'o';
+            var tower = new Tower();
+
+            tower.AddFloor(new Floor(new Range(1, 9)));
+
+            gameLoop.BuildStructure(office, 1, 2, new string[] { "0000" });
+            var parentFloor = tower.GetParentFloor(2);
+            Assert.AreEqual(1, parentFloor.FloorNumber);
         }
     }
 }

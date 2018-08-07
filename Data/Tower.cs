@@ -95,11 +95,11 @@ namespace KimTower.Data
             {
                 return null;
             }
-            return this.Floors[floorNumber - 1];
+            return this.Floors[floorNumber - 2];
         }
 
         public int SetFloorNumber() =>  this.Floors.Count + 1;
         
-        public bool FloorNumberCorrect(int requestedLevel) => (requestedLevel == SetFloorNumber());
+        public bool IsFloorNumberCorrect(int requestedNumber) => (requestedNumber == SetFloorNumber());
     }
 }

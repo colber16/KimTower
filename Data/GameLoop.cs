@@ -69,6 +69,10 @@ namespace KimTower.Data
 
             int.TryParse(inputs[1], out floorNumber);
 
+            //if(!tower.IsFloorNumberCorrect(floorNumber))
+            //{
+            //    return false;
+            //}
             var structure = ConsoleStuff.GetStructureFromInput(desiredStructure);
 
             if(!IsInputSortaValid(inputs, structure))
