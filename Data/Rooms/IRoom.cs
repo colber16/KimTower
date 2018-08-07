@@ -8,7 +8,6 @@
 
         int Segments { get; }
 
-        //Position Position { get; set; }
         Range Range { get; set; }
       
     }

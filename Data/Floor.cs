@@ -8,8 +8,6 @@ namespace KimTower.Data
     {
         public List<IRoom> Rooms { get; set; }
 
-        //public int Segments { get; set; }
-
         public int FloorNumber { get; set; }
 
         public Ledger Ledger {get; private set;}
@@ -25,14 +23,10 @@ namespace KimTower.Data
 
         public Floor(Range range, int floorNumber)
         {
-            //get rid of segments
-            //open floor space from rooms position
             this.Rooms = new List<IRoom>();
-            //this.Segments = position.X2 - position.X;
-            this.FloorNumber = floorNumber; //position.FloorNumber;
+            this.FloorNumber = floorNumber; 
             this.Ledger = new Ledger();
             this.Stairs = new List<StairCase>();
-            //this.Position = position; 
             this.IsPreexisting = false;
             this.Range = range;
         }
@@ -40,7 +34,6 @@ namespace KimTower.Data
         public void ExtendRange(Range range)
         {
             this.Range = range;
-            //ExtendSegments(position.X2 - position.X);
         }
 
         public bool IsRangeAvailable(Range newRange)
@@ -63,11 +56,6 @@ namespace KimTower.Data
         {
             return Range.EndX - Range.StartX;
         }
-        //public void ExtendSegments(int segments)
-        //{
-        //    this.Segments = segments;
-        //}
-
 
         public Range GetExtendedFloorRange(Range range)
         {
@@ -87,7 +75,7 @@ namespace KimTower.Data
             return new Range(smallestX, largestX2);
 
         }
-        //does an item n a list know where it is in the list?
+
         public void AddStairs(int bottomFloor)
         {
             this.Stairs.Add(new StairCase(bottomFloor));
@@ -98,7 +86,6 @@ namespace KimTower.Data
         {
             if(IsRangeAvailable(room.Range))
             {
-                //this.OpenFloorSpace
                 this.Rooms.Add(room);
             }
 
@@ -107,25 +94,6 @@ namespace KimTower.Data
 
         public bool HasLobby() => Rooms.Any(l => l is Lobby);
 
-        //public void UpdateOpenSpace()
-        //{
-            
-        //}
-        //public bool IsRequestedPositionOpen(Position requestedPosition)
-        //{
-        //    foreach(var openSpace in this.OpenFloorSpace)
-        //    {
-        //        if (requestedPosition.X >= openSpace.X)
-        //        {
-        //            if (requestedPosition.X2 <= openSpace.X2)
-        //            {
-        //                return false;
-        //            }
-        //        }
-        //    }
-           
-        //    return true;
-        //}
        
     }
 }

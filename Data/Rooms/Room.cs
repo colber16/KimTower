@@ -24,7 +24,6 @@
             this.Range = new Range(x, x + segments);
             this.FloorNumber = floorNumber;
 
-            //this.Position= new Position(x, x + this.Segments, floorNumber);
         }
 
 
