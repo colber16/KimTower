@@ -8,8 +8,9 @@
     <Compile Remove="Class1.cs" />
     <Compile Remove="Clock.cs" />
     <Compile Remove="Result.cs" />
+    <Compile Remove="Office %28copy%29.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
+    <Folder Include="Rooms\" />
   </ItemGroup>
 </Project>

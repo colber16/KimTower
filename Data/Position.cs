@@ -1,21 +1,23 @@
-﻿using System;
+﻿
 namespace KimTower.Data
 {
+    using System;
+
     public struct Position
     {
-        public int X { get; set; }
-        public int X2 { get; set; }
+        public Range Range { get; set; }
         public int FloorNumber { get; set; }
 
-        public Position(int x, int x2, int floorNumber)
+        public Position(Range range, int floorNumber)
         {
-            this.X = x;
-            this.X2 = x2;
+            this.Range = range;
             this.FloorNumber = floorNumber;
         }
 
 
-     
-
+        public static bool ArePositionsSameFloor(Position p1, Position p2)
+        {
+            return p1.FloorNumber == p2.FloorNumber;
+        }
     }
 }

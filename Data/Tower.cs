@@ -11,13 +11,10 @@ namespace KimTower.Data
 
         public Ledger Ledger { get; set; }
 
-        public bool HasLobby { get; set; }
-
         public Tower()
         {
             this.Floors = new List<Floor>();
             this.Ledger = new Ledger();
-            this.HasLobby = false;
         }
 
         public void UpdateLedger()
@@ -28,25 +25,24 @@ namespace KimTower.Data
             }
 
         }
-
+        //first floor acces should be assigned to flag on floor?
         public bool HasFirstFloorAccess(int floorNumber)
         {
-            //Floors should be in order.
-            this.Floors.OrderByDescending(f => f.FloorNumber);
             var stairCount = 0;
 
-            for (int i = floorNumber; i >= 1; i--)
+            for (int i = 0; i < floorNumber; i++)
             {
                 //floors need to be set to index number
-                if (Floors[i - 1].Stairs.Count > 0)
+                if (Floors[i].Stairs.Count > 0)
                 {
                     stairCount++;
                     if (stairCount == 0)
                     {
+                        Console.WriteLine("No Access to first floor.");
                         return false;
                     }
                 }
-                Console.WriteLine("No Access to first floor.");
+
             }
             return stairCount == floorNumber;
         }
@@ -73,8 +69,8 @@ namespace KimTower.Data
                     {
                         if (room is Office)
                         {
-                            ((Office)room).IsOccupied(this);
-                            if (((Office)room).Occupied)
+                            ((Room)room).SetOccupancy(this);
+                            if (((Room)room).Occupied)
                             {
                                 floor.Ledger.TotalProfit += ((Office)room).PayRent();
                             }

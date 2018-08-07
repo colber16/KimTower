@@ -8,7 +8,7 @@ namespace KimTower.Data
     {
         public List<IRoom> Rooms { get; set; }
 
-        public int Segments { get; set; }
+        //public int Segments { get; set; }
 
         public int FloorNumber { get; set; }
 
@@ -20,49 +20,112 @@ namespace KimTower.Data
        
         public bool IsPreexisting { get; set; }
 
-        public Floor(Position position)
+        public Range Range { get; set; }
+
+
+        public Floor(Range range, int floorNumber)
         {
+            //get rid of segments
+            //open floor space from rooms position
             this.Rooms = new List<IRoom>();
-            this.Segments = position.X2 - position.X;
-            this.FloorNumber = position.FloorNumber;
+            //this.Segments = position.X2 - position.X;
+            this.FloorNumber = floorNumber; //position.FloorNumber;
             this.Ledger = new Ledger();
             this.Stairs = new List<StairCase>();
-            this.Position = position; 
+            //this.Position = position; 
             this.IsPreexisting = false;
+            this.Range = range;
         }
 
-        public void ExtendPosition(Position position)
+        public void ExtendRange(Range range)
         {
-            this.Position = position;
-            ExtendSegments(position.X2 - position.X);
+            this.Range = range;
+            //ExtendSegments(position.X2 - position.X);
         }
 
-        public void ExtendSegments(int segments)
-        {
-            this.Segments = segments;
-        }
-        //hmmmm.....
-       
-        //needs to handle all inputs
-        public Position GetExtendedFloorPosition(Position position)
-        {
-            int smallestX = this.Position.X;
-            int largestX2 = this.Position.X2;
-
-            if (position.X <= this.Position.X)
+        public bool IsRangeAvailable(Range newRange)
+        {      
+            if(this.Rooms.Count > 0)
             {
-                smallestX = position.X;
-
-                if (position.X2 >= this.Position.X2)
+                foreach (var room in this.Rooms)
                 {
-                    largestX2 = position.X2;
+                    if (newRange.StartX >= room.Range.StartX && newRange.EndX <= room.Range.EndX)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+           
+        }
+
+        public int GetSegments()
+        {
+            return Range.EndX - Range.StartX;
+        }
+        //public void ExtendSegments(int segments)
+        //{
+        //    this.Segments = segments;
+        //}
+
+
+        public Range GetExtendedFloorRange(Range range)
+        {
+            int smallestX = this.Range.StartX;
+            int largestX2 = this.Range.EndX;
+
+            if (range.StartX <= this.Range.StartX)
+            {
+                smallestX = range.StartX;
+
+                if (range.EndX >= this.Range.EndX)
+                {
+                    largestX2 = range.EndX;
                 }
             }
 
-            return new Position(smallestX, largestX2, this.FloorNumber);
+            return new Range(smallestX, largestX2);
 
-           
         }
+        //does an item n a list know where it is in the list?
+        public void AddStairs(int bottomFloor)
+        {
+            this.Stairs.Add(new StairCase(bottomFloor));
+
+        }
+
+        public void AddRoom(IRoom room)
+        {
+            if(IsRangeAvailable(room.Range))
+            {
+                //this.OpenFloorSpace
+                this.Rooms.Add(room);
+            }
+
+        }
+        public bool IsLobbyFloor() => FloorNumber == 1;
+
+        public bool HasLobby() => Rooms.Any(l => l is Lobby);
+
+        //public void UpdateOpenSpace()
+        //{
+            
+        //}
+        //public bool IsRequestedPositionOpen(Position requestedPosition)
+        //{
+        //    foreach(var openSpace in this.OpenFloorSpace)
+        //    {
+        //        if (requestedPosition.X >= openSpace.X)
+        //        {
+        //            if (requestedPosition.X2 <= openSpace.X2)
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //    }
+           
+        //    return true;
+        //}
        
     }
 }
