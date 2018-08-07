@@ -13,4 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Data\KimTower.Data.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="PosistionTests.cs" />
+  </ItemGroup>
 </Project>
