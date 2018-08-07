@@ -21,10 +21,10 @@ namespace KimTower.Data
         public Range Range { get; set; }
 
 
-        public Floor(Range range, int floorNumber)
+        public Floor(Range range)
         {
             this.Rooms = new List<IRoom>();
-            this.FloorNumber = floorNumber; 
+           // this.FloorNumber = floorNumber; 
             this.Ledger = new Ledger();
             this.Stairs = new List<StairCase>();
             this.IsPreexisting = false;
@@ -93,6 +93,8 @@ namespace KimTower.Data
         public bool IsLobbyFloor() => FloorNumber == 1;
 
         public bool HasLobby() => Rooms.Any(l => l is Lobby);
+
+
 
        
     }

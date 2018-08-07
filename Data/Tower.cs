@@ -85,7 +85,21 @@ namespace KimTower.Data
         public void AddFloor(Floor floor)
         {
             this.Floors.Add(floor);
+            floor.FloorNumber = Floors.IndexOf(floor) + 1;
             floor.IsPreexisting = true;
         }
+
+        public Floor GetParentFloor(int floorNumber)
+        {
+            if(!(floorNumber > 1))
+            {
+                return null;
+            }
+            return this.Floors[floorNumber - 1];
+        }
+
+        public int SetFloorNumber() =>  this.Floors.Count + 1;
+        
+        public bool FloorNumberCorrect(int requestedLevel) => (requestedLevel == SetFloorNumber());
     }
 }

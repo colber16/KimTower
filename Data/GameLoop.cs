@@ -78,17 +78,32 @@ namespace KimTower.Data
 
             int.TryParse(inputs[2], out startX);
 
+            if(!IsLobbyBuilt())
+            {
+                if(!(structure is StructureTypes.Lobby))
+                {
+                    return false;
+                }
+            }
             return BuildStructure(structure, startX, floorNumber, inputs);
 
-            //if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
-            //{
-            //    Console.WriteLine("Must create lobby first");
-            //    return false;
-            //}
+        
            
         }
 
-        private bool BuildStructure(StructureTypes? structure, int startX, int floorNumber, string[] inputs)
+        private bool IsLobbyBuilt()
+        {
+            //if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
+            if(tower.Floors[0] != null)
+            {
+                Console.WriteLine("Must create lobby first");
+                return false;
+            }
+            return true;
+        }
+
+
+        public bool BuildStructure(StructureTypes? structure, int startX, int floorNumber, string[] inputs)
         {
             Floor floor;
 
@@ -193,7 +208,7 @@ namespace KimTower.Data
             tower.Floors[floorNumber].AddStairs(floorNumber);
         }
 
-        private IRoom GetRoom(StructureTypes? desiredRoom, int x, int floorNumber)
+        public IRoom GetRoom(StructureTypes? desiredRoom, int x, int floorNumber)
         {
             switch (desiredRoom)
             {
@@ -213,7 +228,8 @@ namespace KimTower.Data
         }
         private Floor GetFloor(Range range, int floorNumber)
         {
-            var floor = tower.GetExistingFloor(floorNumber) ?? new Floor(range, floorNumber);
+            var floor = tower.GetExistingFloor(floorNumber) ?? new Floor(range);
+            floor.FloorNumber = tower.SetFloorNumber();
             return floor;
         }
 

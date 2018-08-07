@@ -17,7 +17,7 @@ namespace KimTower.Data
 
         public static bool IsValidRangeOnMap(Range range, int floorNumber)
         {
-            if (range.StartX >= 0 && range.EndX <= 500)
+            if (range.StartX >= 0 && range.EndX<= 500)
             {
                 if (floorNumber >= -10 && floorNumber <= 100)
                 {
@@ -37,11 +37,14 @@ namespace KimTower.Data
                 }
                 return false;
             }
-            if ((room is Lobby))
+            if (!(room is Lobby))
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
+
+
+        
     }
 }
