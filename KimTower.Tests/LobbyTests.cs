@@ -10,7 +10,7 @@ namespace KimTower.Tests
         [Test, TestCase(ExpectedResult = 8)]
         public int TotalSegmentsIncrease()
         {
-            var lobby = new Lobby(0, 1);
+            var lobby = new LobbyFloor(0, 1);
             lobby.ExtendSegments();
             return lobby.TotalSegments;
         }

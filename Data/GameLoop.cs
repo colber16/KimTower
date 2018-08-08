@@ -116,7 +116,7 @@ namespace KimTower.Data
             return true;
         }
 
-
+        ///fix this 
         public bool BuildStructure(StructureTypes? structure, int startX, int floorNumber, string[] inputs)
         {
             Floor floor;
@@ -128,14 +128,18 @@ namespace KimTower.Data
                     return ProcessFloor(new Range(startX, endX), floorNumber);
 
                 case StructureTypes.Lobby:
-                    var lobby = GetRoom(structure, startX, floorNumber);
-                    floor = GetExistingFloor(new Range(startX, startX + lobby.Segments), floorNumber);
-
-                    if(!floor.IsLobbyFloor())
+                    if (!IsLobbyFloor(floorNumber))
                     {
                         Console.WriteLine("Lobby must be on first floor.");
                         return false;
                     }
+                    var lobby = GetRoom(structure, startX, floorNumber);
+                    floor = GetExistingFloor(new Range(startX, startX + lobby.Segments), floorNumber);
+                    if(floor ==null)
+                    {
+                        ProcessFloor(new Range(startX, startX + lobby.Segments), floorNumber);
+                    }
+                   
                     if(!floor.HasLobby())
                     {
                         floor.AddRoom(lobby);
@@ -161,7 +165,7 @@ namespace KimTower.Data
                     tower.AddFloor(floor);
                     return true;
                     
-                default:
+                default: ////;looooook
                     return false;
             }
         }
@@ -177,11 +181,7 @@ namespace KimTower.Data
 
             if(floor ==null)
             {
-                if(tower.IsNextFloorNumber(floorNumber))
-                {
-                    floor = new Floor(range, floorNumber);
-                    tower.AddFloor(floor);
-                }
+                floor = GetNewFloorAndAddToTower(range, floorNumber, floor);
             }
             ///////////
             //var floor = GetFloor(range, floorNumber);
@@ -202,6 +202,17 @@ namespace KimTower.Data
             }
 
             return true;
+        }
+
+        private Floor GetNewFloorAndAddToTower(Range range, int floorNumber, Floor floor)
+        {
+            if (tower.IsNextFloorNumber(floorNumber))
+            {
+                floor = new Floor(range, floorNumber);
+                tower.AddFloor(floor);
+            }
+
+            return floor;
         }
 
         private bool IsPositionGivenInInput(string[] inputs)
@@ -240,7 +251,7 @@ namespace KimTower.Data
             switch (desiredRoom)
             {
                 case StructureTypes.Lobby:
-                    return new Lobby(x, tower.SetFloorNumber());
+                    return new Lobby(x, tower.CalculateFloorNumber());
                 case StructureTypes.Office:
                     return new Office(x, floorNumber);
                 case StructureTypes.Condo:
@@ -256,7 +267,7 @@ namespace KimTower.Data
         private Floor GetFloorOne(Range range, int floorNumber)
         {
             //var floor = tower.GetExistingFloor(floorNumber) ?? new Floor(range);
-            //floor.FloorNumber = tower.SetFloorNumber();
+            //floor.FloorNumber = tower.Calculate();
             //return floor;
 
             if (!tower.IsValidExistingFloorNumber(floorNumber))
@@ -266,7 +277,7 @@ namespace KimTower.Data
                     Console.WriteLine("What the heck is this floor number?!");
                     return null;
                 }
-                return new Floor(range, tower.SetFloorNumber());
+                return new Floor(range, tower.CalculateFloorNumber());
 
             }
             return tower.Floors[floorNumber - 1];
@@ -283,5 +294,6 @@ namespace KimTower.Data
             return tower.Floors[floorNumber - 1];
 
         }
+        public bool IsLobbyFloor(int floorNumber) => floorNumber == 1;
     }
 }

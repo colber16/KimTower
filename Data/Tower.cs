@@ -118,9 +118,9 @@ namespace KimTower.Data
 
         }
 
-        public int SetFloorNumber() => this.Floors.Count + 1;
+        public int CalculateFloorNumber() => this.Floors.Count + 1;
 
-        public bool IsNextFloorNumber(int requestedNumber) => (requestedNumber == SetFloorNumber());
+        public bool IsNextFloorNumber(int requestedNumber) => (requestedNumber == CalculateFloorNumber());
 
         public bool HasLobby()
         {
