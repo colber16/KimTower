@@ -27,7 +27,7 @@ namespace KimTower.Tests
             var office = (StructureTypes)'o';
             var tower = new Tower();
 
-            tower.AddFloor(new Floor(new Range(1, 9)));
+            tower.AddFloor(new Floor(new Range(1, 9), 1));
 
             gameLoop.BuildStructure(office, 1, 2, new string[] { "0000" });
             var parentFloor = tower.GetParentFloor(2);
@@ -41,7 +41,7 @@ namespace KimTower.Tests
             var office = (StructureTypes)'o';
             var tower = new Tower();
 
-            tower.AddFloor(new Floor(new Range(1, 9)));
+            tower.AddFloor(new Floor(new Range(1, 9), 1));
 
             gameLoop.BuildStructure(office, 1, 3, new string[] { "0000" });
             var parentFloor = tower.GetParentFloor(3);

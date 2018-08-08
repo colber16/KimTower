@@ -14,17 +14,17 @@ namespace KimTower.Data
 
         public List<StairCase> Stairs { get; set; }
 
-        public Position Position { get; private set; }
+        public Range Position { get; private set; }
        
         public bool IsPreexisting { get; set; }
 
         public Range Range { get; set; }
 
 
-        public Floor(Range range)
+        public Floor(Range range, int floorNumber)
         {
             this.Rooms = new List<IRoom>();
-           // this.FloorNumber = floorNumber; 
+            this.FloorNumber = floorNumber; 
             this.Ledger = new Ledger();
             this.Stairs = new List<StairCase>();
             this.IsPreexisting = false;

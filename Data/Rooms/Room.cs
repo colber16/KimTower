@@ -35,5 +35,10 @@
             }
 
         }
+        //get floornumber from floor
+        public void GetFloorNumber(int floorNumber)
+        {
+            this.FloorNumber = floorNumber;
+        }
     }
 }   

@@ -69,9 +69,22 @@ namespace KimTower.Data
 
             int.TryParse(inputs[1], out floorNumber);
 
-            //if(!tower.IsFloorNumberCorrect(floorNumber))
+            //validate floor number
+            if(!tower.IsValidExistingFloorNumber(floorNumber))
+            {
+                if(!tower.IsNextFloorNumber(floorNumber))
+                {
+                    Console.WriteLine("What the heck is this floor number.");
+                    return false;
+                }
+                //create floor
+            }
+            //get floor
+            //if (floorNumber != tower.SetFloorNumber())
             //{
+            //    Console.WriteLine("Incorrect floor number.");
             //    return false;
+
             //}
             var structure = ConsoleStuff.GetStructureFromInput(desiredStructure);
 
@@ -116,10 +129,11 @@ namespace KimTower.Data
 
                 case StructureTypes.Lobby:
                     var lobby = GetRoom(structure, startX, floorNumber);
-                    floor = GetFloor(new Range(startX, startX + lobby.Segments), floorNumber);
+                    floor = GetExistingFloor(new Range(startX, startX + lobby.Segments), floorNumber);
 
                     if(!floor.IsLobbyFloor())
                     {
+                        Console.WriteLine("Lobby must be on first floor.");
                         return false;
                     }
                     if(!floor.HasLobby())
@@ -137,7 +151,8 @@ namespace KimTower.Data
 
                 case StructureTypes.Office: 
                     var office = GetRoom(structure, startX, floorNumber);
-                    floor = GetFloor(new Range(startX, startX + office.Segments), floorNumber);
+                    floor = GetFloorOne(new Range(startX, startX + office.Segments), floorNumber);
+                    ((Room)office).GetFloorNumber(floor.FloorNumber); ///ummm.... 
                     if (floor.IsLobbyFloor())
                     {
                         return false;
@@ -158,12 +173,23 @@ namespace KimTower.Data
                 Console.WriteLine("Invalid position within map.");
                 return false;
             }
-            var floor = GetFloor(range, floorNumber);
+            var floor = GetExistingFloor(range, floorNumber);
 
-            if (!floor.IsPreexisting)
+            if(floor ==null)
             {
-                tower.AddFloor(floor);
+                if(tower.IsNextFloorNumber(floorNumber))
+                {
+                    floor = new Floor(range, floorNumber);
+                    tower.AddFloor(floor);
+                }
             }
+            ///////////
+            //var floor = GetFloor(range, floorNumber);
+
+            //if (!floor.IsPreexisting)
+            //{
+            //    tower.AddFloor(floor);
+            //}
             else
             {
                 if (!FloorValidation.IsFloorPositionPreexisting(range, floor))
@@ -214,7 +240,7 @@ namespace KimTower.Data
             switch (desiredRoom)
             {
                 case StructureTypes.Lobby:
-                    return new Lobby(x, floorNumber);
+                    return new Lobby(x, tower.SetFloorNumber());
                 case StructureTypes.Office:
                     return new Office(x, floorNumber);
                 case StructureTypes.Condo:
@@ -227,13 +253,35 @@ namespace KimTower.Data
             }
 
         }
-        private Floor GetFloor(Range range, int floorNumber)
+        private Floor GetFloorOne(Range range, int floorNumber)
         {
-            var floor = tower.GetExistingFloor(floorNumber) ?? new Floor(range);
-            floor.FloorNumber = tower.SetFloorNumber();
-            return floor;
+            //var floor = tower.GetExistingFloor(floorNumber) ?? new Floor(range);
+            //floor.FloorNumber = tower.SetFloorNumber();
+            //return floor;
+
+            if (!tower.IsValidExistingFloorNumber(floorNumber))
+            {
+                if (!tower.IsNextFloorNumber(floorNumber))
+                {
+                    Console.WriteLine("What the heck is this floor number?!");
+                    return null;
+                }
+                return new Floor(range, tower.SetFloorNumber());
+
+            }
+            return tower.Floors[floorNumber - 1];
+
         }
 
+        private Floor GetExistingFloor(Range range, int floorNumber)
+        {
+            if (!tower.IsValidExistingFloorNumber(floorNumber))
+            {
+                return null;
 
+            }
+            return tower.Floors[floorNumber - 1];
+
+        }
     }
 }

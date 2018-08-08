@@ -59,6 +59,21 @@ namespace KimTower.Data
             return null;
         }
 
+        public bool IsValidExistingFloorNumber(int floorNumber)
+        {
+            if (this.Floors.Count != 0)
+            {
+                foreach (var existingFloor in this.Floors)
+                {
+                    if (existingFloor.FloorNumber == floorNumber)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public void CollectRent(Time time)
         {
             if (time.Day == Day.WeekdayTwo)
@@ -105,7 +120,7 @@ namespace KimTower.Data
 
         public int SetFloorNumber() => this.Floors.Count + 1;
 
-        public bool IsFloorNumberCorrect(int requestedNumber) => (requestedNumber == SetFloorNumber());
+        public bool IsNextFloorNumber(int requestedNumber) => (requestedNumber == SetFloorNumber());
 
         public bool HasLobby()
         {
