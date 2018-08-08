@@ -33,5 +33,19 @@ namespace KimTower.Tests
             var parentFloor = tower.GetParentFloor(2);
             Assert.AreEqual(1, parentFloor.FloorNumber);
         }
+
+        [Test]
+        public void ParentFloorIsNull()
+        {
+            var gameLoop = new GameLoop();
+            var office = (StructureTypes)'o';
+            var tower = new Tower();
+
+            tower.AddFloor(new Floor(new Range(1, 9)));
+
+            gameLoop.BuildStructure(office, 1, 3, new string[] { "0000" });
+            var parentFloor = tower.GetParentFloor(3);
+            Assert.IsNull(parentFloor);
+        }
     }
 }

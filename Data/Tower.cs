@@ -91,15 +91,30 @@ namespace KimTower.Data
 
         public Floor GetParentFloor(int floorNumber)
         {
-            if(!(floorNumber > 1))
+            if (!(floorNumber > 1))
+            {
+                return null;
+            }
+            if(this.Floors.Count < floorNumber - 1)
             {
                 return null;
             }
             return this.Floors[floorNumber - 2];
+
         }
 
-        public int SetFloorNumber() =>  this.Floors.Count + 1;
-        
+        public int SetFloorNumber() => this.Floors.Count + 1;
+
         public bool IsFloorNumberCorrect(int requestedNumber) => (requestedNumber == SetFloorNumber());
+
+        public bool HasLobby()
+        {
+            if(this.Floors.Count > 0)
+            {
+                return (this.Floors[0].Rooms.Any(l => l.Equals(StructureTypes.Lobby))) ;
+            }
+            return false;
+        }
     }
+
 }

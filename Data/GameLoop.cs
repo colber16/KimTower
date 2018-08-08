@@ -91,14 +91,11 @@ namespace KimTower.Data
             }
             return BuildStructure(structure, startX, floorNumber, inputs);
 
-        
-           
         }
 
-        private bool IsLobbyBuilt()
-        {
-            //if (!tower.HasLobby && !structure.Equals(StructureTypes.Lobby))
-            if(tower.Floors[0] != null)
+        public bool IsLobbyBuilt()
+        { 
+            if (!tower.HasLobby())
             {
                 Console.WriteLine("Must create lobby first");
                 return false;
