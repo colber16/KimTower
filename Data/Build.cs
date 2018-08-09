@@ -2,9 +2,6 @@
 {
     public class Build
     {
-        public Build()
-        {
-            
-        }
+       
     }
 }
