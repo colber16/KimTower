@@ -26,19 +26,13 @@
 
         }
 
-
-        public void SetOccupancy(Tower tower)
+        public void SetOccupancy(Tower tower, int floorNumber)
         {
-            if (tower.HasFirstFloorAccess(this.FloorNumber))
+            if (tower.HasFirstFloorAccess(floorNumber))
             {
                 this.Occupied = true;
             }
 
-        }
-        //get floornumber from floor
-        public void GetFloorNumber(int floorNumber)
-        {
-            this.FloorNumber = floorNumber;
         }
     }
 }   

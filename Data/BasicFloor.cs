@@ -7,8 +7,6 @@ namespace KimTower.Data
     {
         public List<IRoom> Rooms { get; set; }
 
-        public int FloorNumber { get; set; }
-
         public Ledger Ledger { get; private set; }
 
         public List<StairCase> Stairs { get; set; }
@@ -16,17 +14,11 @@ namespace KimTower.Data
         public Range Range { get; set; }
 
 
-        public BasicFloor(Range range, int floorNumber)
+        public BasicFloor(Range range)
         {
             this.Rooms = new List<IRoom>();
-            this.FloorNumber = floorNumber;
             this.Ledger = new Ledger();
             this.Stairs = new List<StairCase>();
-            this.Range = range;
-        }
-
-        public void ExtendRange(Range range)
-        {
             this.Range = range;
         }
 
@@ -46,11 +38,6 @@ namespace KimTower.Data
 
         }
 
-        public int GetSegments()
-        {
-            return Range.EndX - Range.StartX;
-        }
-
         public Range GetExtendedFloorRange(Range range)
         {
             int smallestX = this.Range.StartX;
@@ -60,14 +47,25 @@ namespace KimTower.Data
             {
                 smallestX = range.StartX;
 
-                if (range.EndX >= this.Range.EndX)
-                {
-                    largestX2 = range.EndX;
-                }
+            }
+
+            if (range.EndX >= this.Range.EndX)
+            {
+                largestX2 = range.EndX;
             }
 
             return new Range(smallestX, largestX2);
 
+        }
+
+        public void ExtendRange(Range range)
+        {
+            this.Range = range;
+        }
+
+        public int GetSegments()
+        {
+            return Range.EndX - Range.StartX;
         }
 
         public void AddStairs(int bottomFloor)
@@ -75,18 +73,6 @@ namespace KimTower.Data
             this.Stairs.Add(new StairCase(bottomFloor));
 
         }
-
-        public void AddRoom(IRoom room)
-        {
-            if (IsRangeAvailable(room.Range))
-            {
-                this.Rooms.Add(room);
-            }
-
-        }
-
-
-       // public bool HasLobby() => Rooms.Any(l => l is Lobby);
 
 
     }

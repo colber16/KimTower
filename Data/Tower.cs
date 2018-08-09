@@ -7,13 +7,13 @@ namespace KimTower.Data
 
     public class Tower
     {
-        public List<Floor> Floors { get; set; }
+        public List<IFloor> Floors { get; set; }
 
         public Ledger Ledger { get; set; }
 
         public Tower()
         {
-            this.Floors = new List<Floor>();
+            this.Floors = new List<IFloor>();
             this.Ledger = new Ledger();
         }
 
@@ -47,11 +47,11 @@ namespace KimTower.Data
             return stairCount == floorNumber;
         }
 
-        public Floor GetExistingFloor(int floorNumber)
+        public IFloor GetExistingFloor(int floorNumber)
         {
             foreach (var existingFloor in this.Floors)
             {
-                if (existingFloor.FloorNumber == floorNumber)
+                if (this.Floors.IndexOf(existingFloor) == floorNumber)
                 {
                     return existingFloor;
                 }
@@ -61,75 +61,57 @@ namespace KimTower.Data
 
         public bool IsValidExistingFloorNumber(int floorNumber)
         {
-            if (this.Floors.Count != 0)
-            {
-                foreach (var existingFloor in this.Floors)
-                {
-                    if (existingFloor.FloorNumber == floorNumber)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return this.Floors.Count != 0 && this.Floors.Count >= floorNumber;
         }
+
 
         public void CollectRent(Time time)
         {
             if (time.Day == Day.WeekdayTwo)
             {
-                foreach (var floor in this.Floors)
+                 foreach (var floor in this.Floors)
                 {
-                    foreach (var room in floor.Rooms)
+                    foreach (var room in  floor.Rooms)
                     {
-                        if (room is Office)
-                        {
-                            ((Room)room).SetOccupancy(this);
-                            if (((Room)room).Occupied)
-                            {
-                                floor.Ledger.TotalProfit += ((Office)room).PayRent();
-                            }
+                        //should be elsewhere
+                        room.SetOccupancy(this, this.Floors.IndexOf(floor));
 
+                        if (room.Occupied)
+                        {
+                            floor.Ledger.TotalProfit += ((Office)room).PayRent();
                         }
+
+
                     }
                 }
             }
             this.UpdateLedger();
         }
-
-        public void AddFloor(Floor floor)
+        public void AddFloor(IFloor floor)
         {
-            this.Floors.Add(floor);
-            floor.FloorNumber = Floors.IndexOf(floor) + 1;
-            floor.IsPreexisting = true;
+            this.Floors.Insert(this.Floors.Count, floor);
         }
 
-        public Floor GetParentFloor(int floorNumber)
+        public IFloor GetParentFloor(IFloor floor)
         {
-            if (!(floorNumber > 1))
+            if (!(this.Floors.IndexOf(floor) == 0))
             {
                 return null;
             }
-            if(this.Floors.Count < floorNumber - 1)
+            if (this.Floors.Count < (this.Floors.IndexOf(floor) - 1))
             {
                 return null;
             }
-            return this.Floors[floorNumber - 2];
+            return this.Floors[(this.Floors.IndexOf(floor)- 1)];
 
         }
 
-        public int CalculateFloorNumber() => this.Floors.Count + 1;
+        public bool IsNextFloorNumber(int requestedNumber) => (requestedNumber == this.Floors.Count);
 
-        public bool IsNextFloorNumber(int requestedNumber) => (requestedNumber == CalculateFloorNumber());
-
-        public bool HasLobby()
+        public bool IsLobbyBuilt()
         {
-            if(this.Floors.Count > 0)
-            {
-                return (this.Floors[0].Rooms.Any(l => l.Equals(StructureTypes.Lobby))) ;
-            }
-            return false;
+            return this.Floors.Count > 0;
+
         }
     }
-
 }

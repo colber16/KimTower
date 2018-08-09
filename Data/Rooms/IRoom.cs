@@ -9,6 +9,9 @@
         int Segments { get; }
 
         Range Range { get; set; }
-      
+
+        bool Occupied { get; set; }
+
+        void SetOccupancy(Tower tower, int floorNumber);
     }
 }

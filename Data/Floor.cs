@@ -4,11 +4,10 @@ namespace KimTower.Data
     using System.Collections.Generic;
     using System.Linq;
 
-    public class Floor : BasicFloor
+    public class Floor : BasicFloor, IFloor
     {
 
-
-        public Floor(Range range, int floorNumber) : base(range, floorNumber)
+        public Floor(Range range) : base(range)
         {
             
         }
@@ -22,10 +21,5 @@ namespace KimTower.Data
 
         }
 
-        public bool HasLobby() => Rooms.Any(l => l is Lobby);
-
-
-
-       
     }
 }

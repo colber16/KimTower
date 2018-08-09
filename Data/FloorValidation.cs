@@ -3,11 +3,11 @@ namespace KimTower.Data
 {
     public static class FloorValidation
     {
-        public static bool IsFloorPositionPreexisting(Range range, Floor floor)
+        public static bool IsFloorRangePreexisting(Range range, IFloor floor)
         {
             if (range.StartX >= floor.Range.StartX)
             {
-                if (range.EndX <= floor.Range.EndX)
+                if (range.EndX >= floor.Range.EndX)
                 {
                     return false;
                 }
@@ -15,7 +15,7 @@ namespace KimTower.Data
             return true;
         }
 
-        public static bool IsValidRangeOnMap(Range range, int floorNumber)
+        public static bool IsValidSpaceOnMap(Range range, int floorNumber)
         {
             if (range.StartX >= 0 && range.EndX<= 500)
             {
@@ -43,6 +43,7 @@ namespace KimTower.Data
             }
             return false;
         }
+
 
 
         
