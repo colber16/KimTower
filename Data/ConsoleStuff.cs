@@ -119,7 +119,7 @@ namespace KimTower.Data
     {
         Lobby = 'l', 
         Office = 'o',
-        Stairs = 's',
+        StairCase = 's',
         Restaurant = 'r',
         Condo = 'c',
         Elevator = 'e',

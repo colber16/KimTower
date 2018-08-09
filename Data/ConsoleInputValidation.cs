@@ -5,7 +5,7 @@ namespace KimTower.Data
 
     public static class ConsoleInputValidation
     {
-        static bool IsRangeGivenInInput(string[] inputs)
+        public static bool IsValidInputLength(string[] inputs)
         {
             if (inputs.Length < 3)
             {
@@ -15,19 +15,19 @@ namespace KimTower.Data
             return true;
         }
 
-        static bool IsStructureGiven(StructureTypes? structure)
-        {
-            if (structure == null)
-            {
-                Console.WriteLine("Invalid structure.");
-                return false;
-            }
-            return true;
-        }
+        //static bool IsStructureGiven(StructureTypes? structure)
+        //{
+        //    if (structure == null)
+        //    {
+        //        Console.WriteLine("Invalid structure.");
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
-        public static bool IsInputSortaValid(string[] inputs, StructureTypes? structure)
-        {
-            return IsRangeGivenInInput(inputs) && IsStructureGiven(structure);
-        }
+        //public static bool IsInputSortaValid(string[] inputs, StructureTypes? structure)
+        //{
+        //    return IsRangeGivenInInput(inputs) && IsStructureGiven(structure);
+        //}
     }
 }

@@ -11,11 +11,11 @@ namespace KimTower.Tests
         [Test]
         public void ParentFloorOflobbyIsNull()
         {
-            var gameLoop = new GameLoop();
+            var builder = new Builder();
             var lobby = (StructureTypes)'l';
             var tower = new Tower();
 
-            var floor = gameLoop.ProcessFloor(0, 4, 0, lobby);
+            var floor = builder.BuildFloor(new Range(4, 0), 0, lobby,false, tower);
             var parentFloor = tower.GetParentFloor(floor);
             Assert.IsNull(parentFloor);
         }

@@ -61,7 +61,7 @@ namespace KimTower.Data
 
         public bool IsValidExistingFloorNumber(int floorNumber)
         {
-            return this.Floors.Count != 0 && this.Floors.Count >= floorNumber;
+            return this.Floors.Count != 0 && this.Floors.Count > floorNumber;
         }
 
 

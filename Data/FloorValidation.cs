@@ -1,8 +1,23 @@
 ﻿
 namespace KimTower.Data
 {
+    using System;
+    using System.Collections.Generic;
+
     public static class FloorValidation
     {
+        public static Dictionary<StructureTypes, int> structureSegments = new Dictionary<StructureTypes, int>
+        {
+            {StructureTypes.Lobby, 4},
+            {StructureTypes.Office, 6},
+            {StructureTypes.StairCase, 6},
+            {StructureTypes.Restaurant, 10},
+            {StructureTypes.Condo, 8}
+
+        };
+
+        public static bool IsLobbyFloor(int floorNumber) => floorNumber == 0;
+
         public static bool IsFloorRangePreexisting(Range range, IFloor floor)
         {
             if (range.StartX >= floor.Range.StartX)
@@ -15,36 +30,49 @@ namespace KimTower.Data
             return true;
         }
 
-        public static bool IsValidSpaceOnMap(Range range, int floorNumber)
-        {
-            if (range.StartX >= 0 && range.EndX<= 500)
-            {
-                if (floorNumber >= -10 && floorNumber <= 100)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        public static bool IsValidRangeOnMap(Range range) => (range.StartX >= 0 && range.EndX <= 500);
 
-        public static bool IsRoomValidForFloor(IRoom room, int floorNumber)
+
+        public static bool IsValidFloorForMap( int floorNumber) => (floorNumber >= -10 && floorNumber <= 100);
+
+
+        public static bool IsValidRange(Range range, int floorNumber, StructureTypes structure, bool existingFloor, Tower tower)
         {
-            if (floorNumber == 1)
+            //if (!FloorValidation.IsValidSpaceOnMap(range, floorNumber))
+            //{
+            //    Console.WriteLine("Invalid position within map.");
+            //    return false;
+            //}
+
+            //if (IsLobbyFloor(floorNumber) && (!(structure is StructureTypes.Lobby)))
+            //{
+            //    Console.WriteLine("Lobby must be on first floor.");
+            //    return false;
+            //}
+
+            //bool existingFloor = false;
+
+            //if (!tower.IsValidExistingFloorNumber(floorNumber))
+            //{
+            //    if (!tower.IsNextFloorNumber(floorNumber))
+            //    {
+            //        Console.WriteLine("Floor does not existing and preceding floor has not be created.");
+            //        return false;
+            //    }
+            //}
+            //else
+            //{
+            //    existingFloor = true;
+            //}
+
+
+            if (existingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
             {
-                if (room is Lobby)
-                {
-                    return true;
-                }
+                Console.WriteLine("Invalid position. Must be larger than current floor position");
                 return false;
             }
-            if (!(room is Lobby))
-            {
-                return true;
-            }
-            return false;
+            return true;
         }
-
-
 
         
     }

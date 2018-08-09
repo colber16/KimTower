@@ -14,7 +14,7 @@ namespace KimTower.Data
         public Range Range { get; set; }
 
 
-        public BasicFloor(Range range)
+        protected BasicFloor(Range range)
         {
             this.Rooms = new List<IRoom>();
             this.Ledger = new Ledger();

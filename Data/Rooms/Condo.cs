@@ -4,8 +4,8 @@
 
     public class Condo : Room, IRoom
     {
-
-        static int segments = 8;
+        //.........
+        static int segments = FloorValidation.structureSegments[StructureTypes.Lobby];
         static int cost = 100000;
         int salePrice = 300000;
 
