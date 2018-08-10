@@ -3,12 +3,13 @@ namespace KimTower.Data
 {
     using System;
     using System.Collections.Generic;
+    using KimTower.Data.Rooms;
 
     public class Office : Room, IRoom
     {
-        static int segments = 6;
+        static int segments = StructureInfo.officeInfo.Segments;
         int rent = 1000;
-        static int cost = 10000;
+        static int cost = StructureInfo.officeInfo.Cost;
 
         public int Rent => rent;
 

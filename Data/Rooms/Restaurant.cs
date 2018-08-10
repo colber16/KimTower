@@ -1,13 +1,16 @@
 ﻿
-namespace KimTower.Data
+namespace KimTower.Data.Rooms
 {
     using System;
     using System.Collections.Generic;
+    using KimTower.Data.Rooms;
 
     public class Restaurant : Room, IRoom
     {
-        static int segments = 10;
-        static int cost = 30000;
+        static int segments = StructureInfo.restaurantInfo.Segments;
+        static int cost = StructureInfo.restaurantInfo.Cost;
+
+        //this can change, in the future.
         int rent = 3000;
 
         public int Rent => rent;

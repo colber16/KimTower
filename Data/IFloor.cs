@@ -2,6 +2,7 @@
 namespace KimTower.Data
 {
     using System.Collections.Generic;
+    using KimTower.Data.Rooms;
 
     public interface IFloor
     {

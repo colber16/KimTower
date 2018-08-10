@@ -1,10 +1,12 @@
 ﻿
 namespace KimTower.Data
 {
+    using KimTower.Data.Rooms;
+
     public class Lobby : BasicFloor, IFloor
     {
-        static int segments = 4;
-        static int cost = 1500;
+        static int segments = StructureInfo.lobbyInfo.Segments;
+        static int cost = StructureInfo.lobbyInfo.Cost;
 
         public Lobby(int x) : base(new Range(x, x + segments))
         {

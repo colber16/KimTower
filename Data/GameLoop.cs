@@ -4,6 +4,7 @@ namespace KimTower.Data
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using KimTower.Data.Rooms;
 
     public class GameLoop
     {
@@ -170,7 +171,8 @@ namespace KimTower.Data
             }
             else
             {
-                endX = startX + FloorValidation.structureSegments[structure];
+                var structureInfo = StructureInfo.structureSegments[structure];
+                endX = startX + structureInfo.Segments;
             }
             return endX;
         }
