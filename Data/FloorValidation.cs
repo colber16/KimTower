@@ -38,44 +38,5 @@ namespace KimTower.Data
         public static bool IsValidFloorForMap( int floorNumber) => (floorNumber >= -10 && floorNumber <= 100);
 
 
-        //public static bool IsValidRange(Range range, int floorNumber, StructureTypes structure, bool existingFloor, Tower tower)
-        //{
-        //    //if (!FloorValidation.IsValidSpaceOnMap(range, floorNumber))
-        //    //{
-        //    //    Console.WriteLine("Invalid position within map.");
-        //    //    return false;
-        //    //}
-
-        //    //if (IsLobbyFloor(floorNumber) && (!(structure is StructureTypes.Lobby)))
-        //    //{
-        //    //    Console.WriteLine("Lobby must be on first floor.");
-        //    //    return false;
-        //    //}
-
-        //    //bool existingFloor = false;
-
-        //    //if (!tower.IsValidExistingFloorNumber(floorNumber))
-        //    //{
-        //    //    if (!tower.IsNextFloorNumber(floorNumber))
-        //    //    {
-        //    //        Console.WriteLine("Floor does not existing and preceding floor has not be created.");
-        //    //        return false;
-        //    //    }
-        //    //}
-        //    //else
-        //    //{
-        //    //    existingFloor = true;
-        //    //}
-
-
-        ////    if (existingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
-        ////    {
-        ////        Console.WriteLine("Invalid position. Must be larger than current floor position");
-        ////        return false;
-        ////    }
-        ////    return true;
-        //}
-
-        
     }
 }
