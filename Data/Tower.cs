@@ -61,7 +61,7 @@ namespace KimTower.Data
 
         public bool IsValidExistingFloorNumber(int floorNumber)
         {
-            return this.Floors.Count != 0 && this.Floors.Count >= floorNumber;
+            return this.Floors.Count != 0 && this.Floors.Count > floorNumber;
         }
 
 
@@ -94,7 +94,7 @@ namespace KimTower.Data
 
         public IFloor GetParentFloor(IFloor floor)
         {
-            if (!(this.Floors.IndexOf(floor) == 0))
+            if (this.Floors.IndexOf(floor) == 0)
             {
                 return null;
             }
@@ -102,7 +102,7 @@ namespace KimTower.Data
             {
                 return null;
             }
-            return this.Floors[(this.Floors.IndexOf(floor)- 1)];
+            return this.Floors[(this.Floors.IndexOf(floor) - 1)];
 
         }
 

@@ -11,6 +11,7 @@
     <Compile Remove="Office %28copy%29.cs" />
     <Compile Remove="Position.cs" />
     <Compile Remove="Range_1.cs" />
+    <Compile Remove="StandardSegments.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Rooms\" />

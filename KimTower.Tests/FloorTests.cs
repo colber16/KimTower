@@ -67,6 +67,27 @@ namespace KimTower.Tests
 
             return FloorValidation.IsFloorRangePreexisting(new Range(startX, endX), lobby);
         }
+        [TestCase(1, 4, ExpectedResult = true)]
+        public bool IsFloorRangePreexistingOnParentFloorReturnsTrue(int startX, int endX)
+        {
+            var lobby = new Lobby(1);
+            var tower = new Tower();
+            tower.AddFloor(lobby);
+
+
+            return FloorValidation.IsFloorRangePreexisting(new Range(startX, endX), lobby);
+        }
+        [TestCase(3, 7, ExpectedResult = false)]
+        public bool IsFloorRangePreexistingOnParentFloorReturnsFalse(int startX, int endX)
+        {
+            var lobby = new Lobby(1);
+            var tower = new Tower();
+            tower.AddFloor(lobby);
+
+
+            return FloorValidation.IsFloorRangePreexisting(new Range(startX, endX), lobby);
+        }
+
         static List<TestCaseData> Ranges = new List<TestCaseData> 
         {
             new TestCaseData(new Range(1, 2)).Returns(1), 
@@ -83,9 +104,9 @@ namespace KimTower.Tests
         static List<TestCaseData> ExtendedReturnRanges = new List<TestCaseData>
         {
 
-            new TestCaseData(new Range(0, 1), 1, new Range(0, 2)).Returns(new Range(0, 2)),
-            new TestCaseData(new Range(10, 12), 1, new Range(8, 20)).Returns(new Range(8, 20)),
-            new TestCaseData(new Range(10, 12), 1, new Range(8, 12)).Returns(new Range(8, 12))
+            new TestCaseData(new Range(0, 1), new Range(0, 2)).Returns(new Range(0, 2)),
+            new TestCaseData(new Range(10, 12), new Range(8, 20)).Returns(new Range(8, 20)),
+            new TestCaseData(new Range(10, 12),  new Range(8, 12)).Returns(new Range(8, 12))
         };
     }
 }
