@@ -29,7 +29,7 @@ namespace KimTower.Data
 
             var room = GetRoom(structure, range.StartX, floorNumber);
           
-            floor = BuildFloor(range, floorNumber, structure, existingFloor, tower);
+            floor = BuildFloor(range, floorNumber, StructureTypes.Floor, existingFloor, tower);
 
             ((Floor)floor).AddRoom(room);
             return true;

@@ -72,7 +72,7 @@ namespace KimTower.Data
                 Console.WriteLine("Not enough input");
                 return false;
             }
-           
+
             //0th input
             var nullableStructure = ConsoleStuff.GetStructureFromInput(desiredStructure);
 
@@ -94,15 +94,21 @@ namespace KimTower.Data
             //1st input
             int.TryParse(inputs[1], out floorNumber);
 
-            if(!FloorValidation.IsValidFloorForMap(floorNumber))
+            if (!FloorValidation.IsValidFloorForMap(floorNumber))
             {
                 Console.WriteLine("Floor is too large or small.");
-                return false; 
-            }
-            if (!FloorValidation.IsLobbyFloor(floorNumber) && (!(structure is StructureTypes.Lobby)))
-            {
-                Console.WriteLine("Lobby must be on first floor.");
                 return false;
+            }
+            if (FloorValidation.IsLobbyFloor(floorNumber))
+            {
+                if (!(structure is StructureTypes.Lobby))
+                {
+                    if (!(structure is StructureTypes.StairCase))
+                    {
+                        Console.WriteLine("Lobby must be on first floor.");
+                        return false;
+                    }
+                }
             }
             var isExistingFloor = tower.IsValidExistingFloorNumber(floorNumber);
 
@@ -116,6 +122,7 @@ namespace KimTower.Data
             }
             //2nd input
             int.TryParse(inputs[2], out startX);
+            //3rd input if any
             var endX = GetEndX(inputs, startX, structure);
             var range = new Range(startX, endX);
             //validate range
@@ -124,11 +131,29 @@ namespace KimTower.Data
                 Console.WriteLine("Invalid range on map.");
                 return false;
             }
+            //range exists on parent floor
 
-            if (isExistingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
+            if(structure != StructureTypes.StairCase)
             {
-                Console.WriteLine("Invalid range. Must be larger than current floor range");
-                return false;
+                if (isExistingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
+                {
+                    Console.WriteLine("Invalid range. Must be larger than current floor range");
+                    return false;
+                } 
+                if (structure != StructureTypes.Lobby && !FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber - 1]))
+                {
+                    Console.WriteLine("Invalid range. Bottom floor does not have this range.");
+                    return false;
+                }
+
+            }
+            else
+            {
+                if (!tower.IsValidExistingFloorNumber(floorNumber) || !tower.IsValidExistingFloorNumber(floorNumber + 1))
+                {
+                    Console.WriteLine("Top or Bottom floor does not exist.");
+                    return false;
+                }
             }
 
             //Make Stuff
@@ -149,5 +174,6 @@ namespace KimTower.Data
             }
             return endX;
         }
+      
     }
 }
