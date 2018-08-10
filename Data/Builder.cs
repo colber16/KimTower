@@ -2,6 +2,7 @@
 namespace KimTower.Data
 {
     using System;
+    using KimTower.Data.Rooms;
 
     public class Builder
     {

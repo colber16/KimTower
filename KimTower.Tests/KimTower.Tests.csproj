@@ -15,5 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="PositionTests.cs" />
+    <Compile Remove=":Users:kiacolbert:Projects:KimTower:Data:Rooms:StructureTypeInfo.cs" />
   </ItemGroup>
 </Project>

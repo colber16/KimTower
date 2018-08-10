@@ -4,17 +4,35 @@ namespace KimTower.Data.Rooms
     using System;
     using System.Collections.Generic;
 
-    public static class RoomInfo
+    public static class StructureInfo
     {
-       
-        public static Dictionary<StructureTypes, int> structureSegments = new Dictionary<StructureTypes, int>
+        public static readonly StructureTypeInfo restaurantInfo = new StructureTypeInfo(10, 30000);
+        public static readonly StructureTypeInfo officeInfo = new StructureTypeInfo(6, 10000);
+        public static readonly StructureTypeInfo condoInfo = new StructureTypeInfo(8, 100000);
+        public static readonly StructureTypeInfo lobbyInfo = new StructureTypeInfo(4, 5000);
+        public static readonly StructureTypeInfo stairCaseInfo = new StructureTypeInfo(6, 1000);
+
+        public static Dictionary<StructureTypes, StructureTypeInfo> structureSegments = new Dictionary<StructureTypes, StructureTypeInfo>
         {
-            {StructureTypes.Lobby, 4},
-            {StructureTypes.Office, 6},
-            {StructureTypes.StairCase, 6},
-            {StructureTypes.Restaurant, 10},
-            {StructureTypes.Condo, 8}
+            {StructureTypes.Lobby, lobbyInfo},
+            {StructureTypes.Office, officeInfo},
+            {StructureTypes.StairCase, stairCaseInfo},
+            {StructureTypes.Restaurant, restaurantInfo},
+            {StructureTypes.Condo, condoInfo}
 
         };
+    }
+
+    public class StructureTypeInfo
+    {
+        public int Segments { get; private set; }
+
+        public int Cost { get; private set; }
+
+        public StructureTypeInfo(int segments, int cost)
+        {
+            this.Segments = segments;
+            this.Cost = cost;
+        }
     }
 }
