@@ -16,10 +16,6 @@ namespace KimTower.Data
             {
                 return BuildStairs(floorNumber, tower);
             }
-            if (FloorValidation.IsLobbyFloor(floorNumber))
-            {
-                return false;
-            }
             return BuildRoom(structure, range, floorNumber, existingFloor, tower);
         }
 
@@ -33,6 +29,7 @@ namespace KimTower.Data
             floor = BuildFloor(range, floorNumber, StructureTypes.Floor, existingFloor, tower);
 
             ((Floor)floor).AddRoom(room);
+           
             return true;
 
         }

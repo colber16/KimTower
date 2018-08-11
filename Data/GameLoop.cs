@@ -11,6 +11,7 @@ namespace KimTower.Data
         Builder builder = new Builder();
         Time time = new Time(0);
         public Tower tower = new Tower();
+        GlobalProperties globalProperties = new GlobalProperties();
 
         public void Run()
         {
@@ -51,7 +52,7 @@ namespace KimTower.Data
 
         private void Render()
         {
-            ConsoleStuff.PrintGameStats(tower, time);
+            ConsoleStuff.PrintGameStats(tower, time, globalProperties);
         }
 
         private void Update()
@@ -59,6 +60,8 @@ namespace KimTower.Data
             this.time = time.RunTime();
 
             tower.CollectRent(time);
+
+
         }
 
         public bool ProcessInput(string input)
@@ -158,7 +161,14 @@ namespace KimTower.Data
             }
 
             //Make Stuff
-            return builder.BuildStuff(inputs, floorNumber, range, structure, isExistingFloor, tower);
+            if(!builder.BuildStuff(inputs, floorNumber, range, structure, isExistingFloor, tower))
+            {
+                Console.WriteLine("Something has gone terribily wrong.");
+                return false;
+            }
+
+            globalProperties.SubtractCostForStructures(structure);
+            return true;
 
         }
 
@@ -171,8 +181,7 @@ namespace KimTower.Data
             }
             else
             {
-                var structureInfo = StructureInfo.structureSegments[structure];
-                endX = startX + structureInfo.Segments;
+                endX = startX + StructureInfo.AllTheInfo[structure].Segments;
             }
             return endX;
         }
