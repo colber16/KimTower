@@ -6,11 +6,6 @@
 
         public int TotalCost { get; set; }
 
-        public Ledger()
-        {
-
-        }
-
         public Ledger(int profit, int cost)
         {
             this.TotalProfit = profit;
