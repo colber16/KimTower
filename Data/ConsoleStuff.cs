@@ -104,15 +104,17 @@ namespace KimTower.Data
         {
             return inputs.Contains("s");
         }
-        public static void PrintGameStats(Tower tower, Time time)
+        public static void PrintGameStats(Tower tower, Time time, GlobalProperties globalproperties)
         {
+            Console.WriteLine($"Funds: {globalproperties.Money}");
+
             for (int i = 0; i < tower.Floors.Count; i++)
             {
                 Console.WriteLine($"Floor Number:{i}, Segments: {tower.Floors[i].GetSegments()}, Rooms Count: {tower.Floors[i].Rooms.Count}");
 
             }
             Console.WriteLine(time.ToString());
-            Console.WriteLine($"Money: {tower.Ledger.TotalProfit}");
+            Console.WriteLine($"Profit: {tower.Ledger.TotalProfit}");
         }
     }
     public enum StructureTypes

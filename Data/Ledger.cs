@@ -10,6 +10,7 @@
         {
 
         }
+
         public Ledger(int profit, int cost)
         {
             this.TotalProfit = profit;

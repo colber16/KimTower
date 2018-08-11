@@ -14,7 +14,7 @@ namespace KimTower.Data
         public Tower()
         {
             this.Floors = new List<IFloor>();
-            this.Ledger = new Ledger();
+            this.Ledger = new Ledger(0, 0);
         }
 
         public void UpdateLedger()
