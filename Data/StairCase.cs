@@ -6,7 +6,7 @@ namespace KimTower.Data
     public class StairCase
     {
         static int segments = StructureInfo.stairCaseInfo.Segments;
-        static int cost = StructureInfo.stairCaseInfo.Cost;
+        static int cost = StructureInfo.stairCaseInfo.ConstructionCost;
 
         public int BottomFloor { get; set; }
 

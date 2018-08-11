@@ -8,7 +8,7 @@ namespace KimTower.Data.Rooms
     public class Restaurant : Room, IRoom
     {
         static int segments = StructureInfo.restaurantInfo.Segments;
-        static int cost = StructureInfo.restaurantInfo.Cost;
+        static int cost = StructureInfo.restaurantInfo.ConstructionCost;
 
         //this can change, in the future.
         int rent = 3000;

@@ -9,7 +9,7 @@ namespace KimTower.Data
     {
         static int segments = StructureInfo.officeInfo.Segments;
         int rent = 1000;
-        static int cost = StructureInfo.officeInfo.Cost;
+        static int cost = StructureInfo.officeInfo.ConstructionCost;
 
         public int Rent => rent;
 

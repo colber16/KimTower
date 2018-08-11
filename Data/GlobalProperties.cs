@@ -1,7 +1,6 @@
 ﻿
 namespace KimTower.Data
 {
-    using KimTower.Data.Rooms;
 
     public class GlobalProperties
     {
@@ -24,7 +23,7 @@ namespace KimTower.Data
 
         public void SubtractCostForStructures(StructureTypes structure)
         {
-            this.Money -= StructureInfo.AllTheInfo[structure].Cost;
+            this.Money -= StructureInfo.AllTheInfo[structure].ConstructionCost;
         }
 
         public void AddIncome(int profits)

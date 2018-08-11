@@ -7,7 +7,7 @@
     {
         
         static int segments = StructureInfo.condoInfo.Segments;
-        static int cost = StructureInfo.condoInfo.Cost;
+        static int cost = StructureInfo.condoInfo.ConstructionCost;
         int salePrice = 300000;
 
         public int SalePrice => salePrice;
