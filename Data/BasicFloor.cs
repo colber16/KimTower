@@ -18,7 +18,7 @@ namespace KimTower.Data
         protected BasicFloor(Range range)
         {
             this.Rooms = new List<IRoom>();
-            this.Ledger = new Ledger();
+            this.Ledger = new Ledger(0, 0);
             this.Stairs = new List<StairCase>();
             this.Range = range;
         }

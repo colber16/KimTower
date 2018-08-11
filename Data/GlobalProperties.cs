@@ -27,14 +27,14 @@ namespace KimTower.Data
             this.Money -= StructureInfo.AllTheInfo[structure].Cost;
         }
 
-        public void AddIncome(Tower tower)
+        public void AddIncome(int profits)
         {
-            this.Money += tower.Ledger.TotalProfit;
+            this.Money += profits;
         }
 
-        public void SubtractCostForMaintenance(Tower tower)
+        public void SubtractCostForMaintenance(int costs)
         {
-            this.Money -= tower.Ledger.TotalCost;
+            this.Money -= costs;
         }
     }
 }
