@@ -20,7 +20,7 @@ namespace KimTower.Tests
 
         [Test, TestCase(StructureTypes.Office, ExpectedResult = 6)]
         [TestCase(StructureTypes.Condo, ExpectedResult = 2)]
-        public int PopulationIncreasesWhenStructureIsAdded(StructureTypes structure)
+        public int PopulationIncreasesWhenRoomIsAdded(StructureTypes structure)
         {
             var tower = new Tower();
             var builder = new Builder();

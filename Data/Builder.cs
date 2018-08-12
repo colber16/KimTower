@@ -30,11 +30,8 @@ namespace KimTower.Data
 
             ((Floor)floor).AddRoom(room);
 
-            ///Population herrreee maybe....
-            tower.UpdatePopulation(floorNumber, room.Population);
+            tower.UpdatePopulation(room.Population);
 
-
-           
             return true;
 
         }

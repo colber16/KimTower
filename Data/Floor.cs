@@ -5,8 +5,7 @@ namespace KimTower.Data
 
     public class Floor : BasicFloor, IFloor
     {
-       
-
+        
         public int Population { get; set; }
 
         public Floor(Range range) : base(range)
@@ -20,9 +19,8 @@ namespace KimTower.Data
             {
                 this.Rooms.Add(room);
             }
+            this.Population += room.Population;
 
         }
-
-
     }
 }

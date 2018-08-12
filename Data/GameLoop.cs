@@ -60,7 +60,7 @@ namespace KimTower.Data
             this.time = time.RunTime();
 
             tower.CollectRent(time);
-            tower.UpdateTowerByFloor();
+            tower.UpdateLedgerByFloor();
             globalProperties.AddIncome(tower.Ledger.TotalProfit);
 
 
