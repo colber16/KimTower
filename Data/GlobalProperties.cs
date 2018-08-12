@@ -21,7 +21,7 @@ namespace KimTower.Data
             this.Money = startingBalance;
         }
 
-        public void SubtractCostForStructures(StructureTypes structure)
+        public void SubtractConstructionCosts(StructureTypes structure)
         {
             this.Money -= StructureInfo.AllTheInfo[structure].ConstructionCost;
         }
@@ -31,7 +31,7 @@ namespace KimTower.Data
             this.Money += profits;
         }
 
-        public void SubtractCostForMaintenance(int costs)
+        public void SubtractMaintenanceCosts(int costs)
         {
             this.Money -= costs;
         }

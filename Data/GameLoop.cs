@@ -14,6 +14,8 @@ namespace KimTower.Data
         {
             ConsoleStuff.PrintTitle();
 
+            ConsoleStuff.FormatAndPrint(ConsoleStuff.structureList);
+
             var play = true;
             var newInput = true;
 
@@ -165,7 +167,7 @@ namespace KimTower.Data
                 return false;
             }
 
-            globalProperties.SubtractCostForStructures(structure);
+            globalProperties.SubtractConstructionCosts(structure);
             return true;
 
         }
