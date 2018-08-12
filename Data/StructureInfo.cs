@@ -1,5 +1,5 @@
 ﻿
-namespace KimTower.Data.Rooms
+namespace KimTower.Data
 {
     using System;
     using System.Collections.Generic;
@@ -8,13 +8,15 @@ namespace KimTower.Data.Rooms
     {
         public static readonly StructureTypeInfo restaurantInfo = new StructureTypeInfo(10, 30000);
         public static readonly StructureTypeInfo officeInfo = new StructureTypeInfo(6, 40000);
-        public static readonly StructureTypeInfo condoInfo = new StructureTypeInfo(8, 100000);
+        public static readonly StructureTypeInfo condoInfo = new StructureTypeInfo(16, 80000);
         public static readonly StructureTypeInfo lobbyInfo = new StructureTypeInfo(4, 20000);
-        public static readonly StructureTypeInfo stairCaseInfo = new StructureTypeInfo(6, 1000);
+        public static readonly StructureTypeInfo stairCaseInfo = new StructureTypeInfo(8, 5000);
+        public static readonly StructureTypeInfo floorInfo = new StructureTypeInfo(1, 500);
 
         public static Dictionary<StructureTypes, StructureTypeInfo> AllTheInfo = new Dictionary<StructureTypes, StructureTypeInfo>
         {
             {StructureTypes.Lobby, lobbyInfo},
+            {StructureTypes.Floor, floorInfo},
             {StructureTypes.Office, officeInfo},
             {StructureTypes.StairCase, stairCaseInfo},
             {StructureTypes.Restaurant, restaurantInfo},
@@ -27,12 +29,14 @@ namespace KimTower.Data.Rooms
     {
         public int Segments { get; private set; }
 
-        public int Cost { get; private set; }
+        public int ConstructionCost { get; private set; }
 
-        public StructureTypeInfo(int segments, int cost)
+        public int MaintenanceCost { get; private set; }
+
+        public StructureTypeInfo(int segments, int constructionCost)
         {
             this.Segments = segments;
-            this.Cost = cost;
+            this.ConstructionCost = constructionCost;
         }
     }
 }

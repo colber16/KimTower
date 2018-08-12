@@ -12,6 +12,8 @@
 
         bool Occupied { get; set; }
 
+        int Population { get; }
+
         void SetOccupancy(Tower tower, int floorNumber);
     }
 }

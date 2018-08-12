@@ -10,15 +10,16 @@ namespace KimTower.Data
         const string inputRequest = "\n Enter: Structure Type | Floor Number | Starting Point | (Floor Only) Ending Point";
         const string continueRequest = "\n Build more stuff? (y/n) OR continue (down arrow)";
         const string farewell = "\n ___Game Over___";
+        public const string structureList = "\nStructure List: \nLobby = 'l', Office = 'o', StairCase = 's', Restaurant = 'r', \nCondo = 'c', Elevator = 'e', Floor = 'f'";
 
         static List<ConsoleKey> AcceptableKeys = new List<ConsoleKey> { ConsoleKey.Y, ConsoleKey.N, ConsoleKey.DownArrow };
     
         public static void PrintInputRequest()
         {
-            FormatPrint(inputRequest);
+            FormatAndPrint(inputRequest);
         }
 
-        private static void FormatPrint(string input)
+        public static void FormatAndPrint(string input)
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
@@ -76,7 +77,7 @@ namespace KimTower.Data
                     if (someMoreInput.Key == ConsoleKey.N)
                     {
                         play = false;
-                        FormatPrint(farewell);
+                        FormatAndPrint(farewell);
 
                     }
 
@@ -92,7 +93,7 @@ namespace KimTower.Data
 
         public static void PrintContinueRequest()
         {
-            FormatPrint(continueRequest);
+            FormatAndPrint(continueRequest);
         }
 
         public static bool IsFloorRequest(string[] inputs)
@@ -106,7 +107,7 @@ namespace KimTower.Data
         }
         public static void PrintGameStats(Tower tower, Time time, GlobalProperties globalproperties)
         {
-            Console.WriteLine($"Funds: {globalproperties.Money}");
+            Console.WriteLine($"Funds: {globalproperties.Money}  Population: {tower.Population}");
 
             for (int i = 0; i < tower.Floors.Count; i++)
             {

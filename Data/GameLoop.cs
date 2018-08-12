@@ -2,9 +2,6 @@
 namespace KimTower.Data
 {
     using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using KimTower.Data.Rooms;
 
     public class GameLoop
     {
@@ -12,10 +9,13 @@ namespace KimTower.Data
         Time time = new Time(0);
         public Tower tower = new Tower();
         GlobalProperties globalProperties = new GlobalProperties();
+        int previousRoomCount = 0;
 
         public void Run()
         {
             ConsoleStuff.PrintTitle();
+
+            ConsoleStuff.FormatAndPrint(ConsoleStuff.structureList);
 
             var play = true;
             var newInput = true;
@@ -60,6 +60,7 @@ namespace KimTower.Data
             this.time = time.RunTime();
 
             tower.CollectRent(time);
+            tower.UpdateLedgerByFloor();
             globalProperties.AddIncome(tower.Ledger.TotalProfit);
 
 
@@ -167,8 +168,7 @@ namespace KimTower.Data
                 Console.WriteLine("Something has gone terribily wrong.");
                 return false;
             }
-
-            globalProperties.SubtractCostForStructures(structure);
+            globalProperties.SubtractConstructionCosts(structure);
             return true;
 
         }

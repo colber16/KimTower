@@ -11,17 +11,20 @@ namespace KimTower.Data
 
         public Ledger Ledger { get; set; }
 
+        public int Population { get; set; }
+
         public Tower()
         {
             this.Floors = new List<IFloor>();
             this.Ledger = new Ledger(0, 0);
         }
 
-        public void UpdateLedger()
+        public void UpdateLedgerByFloor()
         {
             foreach (var floor in this.Floors)
             {
                 this.Ledger += floor.Ledger;
+
             }
 
         }
@@ -85,7 +88,7 @@ namespace KimTower.Data
                     }
                 }
             }
-            this.UpdateLedger();
+
         }
         public void AddFloor(IFloor floor)
         {
@@ -112,6 +115,11 @@ namespace KimTower.Data
         {
             return this.Floors.Count > 0;
 
+        }
+
+        public void UpdatePopulation(int roomPopulation)
+        {
+            this.Population += roomPopulation;
         }
     }
 }

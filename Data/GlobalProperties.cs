@@ -1,7 +1,6 @@
 ﻿
 namespace KimTower.Data
 {
-    using KimTower.Data.Rooms;
 
     public class GlobalProperties
     {
@@ -15,16 +14,14 @@ namespace KimTower.Data
 
         public int Rating { get; set; }
 
-        public int Population { get; set; }
-
         public GlobalProperties()
         {
             this.Money = startingBalance;
         }
 
-        public void SubtractCostForStructures(StructureTypes structure)
+        public void SubtractConstructionCosts(StructureTypes structure)
         {
-            this.Money -= StructureInfo.AllTheInfo[structure].Cost;
+            this.Money -= StructureInfo.AllTheInfo[structure].ConstructionCost;
         }
 
         public void AddIncome(int profits)
@@ -32,9 +29,10 @@ namespace KimTower.Data
             this.Money += profits;
         }
 
-        public void SubtractCostForMaintenance(int costs)
+        public void SubtractMaintenanceCosts(int costs)
         {
             this.Money -= costs;
         }
+
     }
 }

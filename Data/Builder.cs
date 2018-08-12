@@ -29,7 +29,9 @@ namespace KimTower.Data
             floor = BuildFloor(range, floorNumber, StructureTypes.Floor, existingFloor, tower);
 
             ((Floor)floor).AddRoom(room);
-           
+
+            tower.UpdatePopulation(room.Population);
+
             return true;
 
         }

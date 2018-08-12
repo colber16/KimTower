@@ -13,6 +13,8 @@ namespace KimTower.Data
         List<StairCase> Stairs { get; set; }
 
         Range Range { get; set; }
+       
+        int Population { get; set; }
 
         void AddStairs(int bottomFloor);
         Range GetExtendedFloorRange(Range range);
