@@ -10,10 +10,11 @@ namespace KimTower.Data
         static int segments = StructureInfo.officeInfo.Segments;
         int rent = 1000;
         static int cost = StructureInfo.officeInfo.ConstructionCost;
+        static int population = 6;
 
         public int Rent => rent;
 
-        public Office(int x, int floorNumber) : base(segments, cost, x, floorNumber)
+        public Office(int x, int floorNumber) : base(segments, cost, x, floorNumber, population)
         {
 
         }

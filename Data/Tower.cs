@@ -11,17 +11,20 @@ namespace KimTower.Data
 
         public Ledger Ledger { get; set; }
 
+        public int Population { get; set; }
+
         public Tower()
         {
             this.Floors = new List<IFloor>();
             this.Ledger = new Ledger(0, 0);
         }
 
-        public void UpdateLedger()
+        public void UpdateTowerByFloor()
         {
             foreach (var floor in this.Floors)
             {
                 this.Ledger += floor.Ledger;
+
             }
 
         }
@@ -45,6 +48,15 @@ namespace KimTower.Data
 
             }
             return stairCount == floorNumber;
+        }
+
+        public void UpdatePopulation(int floorNumber, int roomPop)
+        {
+            //do I need to store population on floors??
+            //this.Floors[floorNumber].Population += roomPop;
+            //this.Population += this.Floors[floorNumber].Population;
+
+            this.Population +=  roomPop;
         }
 
         public IFloor GetExistingFloor(int floorNumber)
@@ -85,7 +97,7 @@ namespace KimTower.Data
                     }
                 }
             }
-            this.UpdateLedger();
+
         }
         public void AddFloor(IFloor floor)
         {

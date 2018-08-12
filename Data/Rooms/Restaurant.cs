@@ -12,10 +12,11 @@ namespace KimTower.Data.Rooms
 
         //this can change, in the future.
         int rent = 3000;
+        static int population = 10;
 
         public int Rent => rent;
 
-        public Restaurant(int x, int floorNumber) : base(segments, cost, x, floorNumber)
+        public Restaurant(int x, int floorNumber) : base(segments, cost, x, floorNumber, population)
         {
            
 

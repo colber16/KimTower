@@ -9,6 +9,7 @@ namespace KimTower.Data
         Time time = new Time(0);
         public Tower tower = new Tower();
         GlobalProperties globalProperties = new GlobalProperties();
+        int previousRoomCount = 0;
 
         public void Run()
         {
@@ -59,6 +60,7 @@ namespace KimTower.Data
             this.time = time.RunTime();
 
             tower.CollectRent(time);
+            tower.UpdateTowerByFloor();
             globalProperties.AddIncome(tower.Ledger.TotalProfit);
 
 
@@ -166,7 +168,6 @@ namespace KimTower.Data
                 Console.WriteLine("Something has gone terribily wrong.");
                 return false;
             }
-
             globalProperties.SubtractConstructionCosts(structure);
             return true;
 

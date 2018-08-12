@@ -34,5 +34,6 @@ namespace KimTower.Tests
             globalProperties.SubtractMaintenanceCosts(cost);
             return globalProperties.Money;
         }
+
     }
 }

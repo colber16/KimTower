@@ -107,7 +107,7 @@ namespace KimTower.Data
         }
         public static void PrintGameStats(Tower tower, Time time, GlobalProperties globalproperties)
         {
-            Console.WriteLine($"Funds: {globalproperties.Money}");
+            Console.WriteLine($"Funds: {globalproperties.Money}  Population: {tower.Population}");
 
             for (int i = 0; i < tower.Floors.Count; i++)
             {

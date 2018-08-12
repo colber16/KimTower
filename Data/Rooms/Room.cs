@@ -16,13 +16,16 @@
 
         public int FloorNumber { get; set; }
 
-        protected Room(int segments, int cost, int x, int floorNumber)
+        public int Population { get; }
+
+        protected Room(int segments, int cost, int x, int floorNumber, int population)
         {
             this.People = new List<Person>();
             this.Segments = segments;
             this.Cost = cost;
             this.Range = new Range(x, x + segments);
             this.FloorNumber = floorNumber;
+            this.Population = population;
 
         }
 

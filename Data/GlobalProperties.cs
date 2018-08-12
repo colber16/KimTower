@@ -14,8 +14,6 @@ namespace KimTower.Data
 
         public int Rating { get; set; }
 
-        public int Population { get; set; }
-
         public GlobalProperties()
         {
             this.Money = startingBalance;
@@ -35,5 +33,6 @@ namespace KimTower.Data
         {
             this.Money -= costs;
         }
+
     }
 }
