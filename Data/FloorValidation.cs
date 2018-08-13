@@ -22,6 +22,9 @@ namespace KimTower.Data
 
         public static bool IsValidFloorForMap( int floorNumber) => (floorNumber >= -10 && floorNumber <= 100);
 
-
+        public static bool IsRangeExistingOnParent(Range childRange, Range parentRange)
+        {
+            return (childRange.StartX < parentRange.StartX) && (childRange.EndX > parentRange.EndX);
+        }
     }
 }
