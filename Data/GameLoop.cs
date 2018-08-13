@@ -9,7 +9,6 @@ namespace KimTower.Data
         Time time = new Time(0);
         public Tower tower = new Tower();
         GlobalProperties globalProperties = new GlobalProperties();
-        int previousRoomCount = 0;
 
         public void Run()
         {
@@ -146,7 +145,7 @@ namespace KimTower.Data
                     Console.WriteLine("Invalid range. Must be larger than current floor range");
                     return false;
                 } 
-                if (structure != StructureTypes.Lobby && !FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber - 1]))
+                if (structure != StructureTypes.Lobby && FloorValidation.IsRangeExistingOnParent(range, tower.Floors[floorNumber -1].Range))
                 {
                     Console.WriteLine("Invalid range. Bottom floor does not have this range.");
                     return false;
@@ -163,7 +162,7 @@ namespace KimTower.Data
             }
 
             //Make Stuff
-            if(!builder.BuildStuff(inputs, floorNumber, range, structure, isExistingFloor, tower))
+            if(!builder.BuildStuff(floorNumber, range, structure, isExistingFloor, tower))
             {
                 Console.WriteLine("Something has gone terribily wrong.");
                 return false;

@@ -77,6 +77,23 @@ namespace KimTower.Tests
 
             return FloorValidation.IsFloorRangePreexisting(new Range(startX, endX), lobby);
         }
+
+        [TestCase(0, 6, ExpectedResult = true)]
+        public bool IsFloorRangePreexistingOnParentSecondFloorReturnsTrue(int startX, int endX)
+        {
+            var builder = new Builder();
+            var lobby = new Lobby(1);
+            var tower = new Tower();
+            var range = new Range(startX, endX);
+
+            tower.AddFloor(lobby);
+
+            builder.BuildStuff(1, range, StructureTypes.Office, false, tower);
+            builder.BuildStuff(2, range, StructureTypes.Office, false, tower);
+
+            return FloorValidation.IsRangeExistingOnParent(range, tower.Floors[1].Range);
+        }
+
         [TestCase(3, 7, ExpectedResult = false)]
         public bool IsFloorRangePreexistingOnParentFloorReturnsFalse(int startX, int endX)
         {
