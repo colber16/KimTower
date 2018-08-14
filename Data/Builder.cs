@@ -6,7 +6,7 @@ namespace KimTower.Data
 
     public class Builder
     {
-        public bool BuildStuff(string[] inputs, int floorNumber,Range range, StructureTypes structure, bool existingFloor, Tower tower)
+        public bool BuildStuff(int floorNumber,Range range, StructureTypes structure, bool existingFloor, Tower tower)
         {
             if (structure is StructureTypes.Lobby || structure is StructureTypes.Floor)
             {
