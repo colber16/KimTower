@@ -24,7 +24,7 @@ namespace KimTower.Data
 
         public static bool IsRangeExistingOnParent(Range childRange, Range parentRange)
         {
-            return (childRange.StartX < parentRange.StartX) && (childRange.EndX > parentRange.EndX);
+            return (childRange.StartX <= parentRange.StartX) && (childRange.EndX >= parentRange.EndX);
         }
     }
 }

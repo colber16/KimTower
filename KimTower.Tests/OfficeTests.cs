@@ -32,6 +32,7 @@ namespace KimTower.Tests
             Assert.That(office.Occupied, Is.EqualTo(true));
 
         }
+
         [Test]
         public void SecondFloorOfficeAdds()
         {

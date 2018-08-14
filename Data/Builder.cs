@@ -31,7 +31,7 @@ namespace KimTower.Data
             ((Floor)floor).AddRoom(room);
 
             tower.UpdatePopulation(room.Population);
-
+            //needs to be evaluated if stairs are created also. 
             room.SetOccupancy(tower, floorNumber);
 
 
@@ -72,12 +72,17 @@ namespace KimTower.Data
             return floor;
         }
 
-        private bool BuildStairs(int floorNumber, Tower tower)
+        public bool BuildStairs(int floorNumber, Tower tower)
         {
             var stairCount = tower.Floors[floorNumber].Stairs.Count;
 
             tower.Floors[floorNumber].AddStairs(floorNumber);
             tower.Floors[floorNumber + 1].AddStairs(floorNumber);
+            ////Hmmmm......
+            foreach(var room in tower.Floors[floorNumber + 1].Rooms)
+            {
+                room.SetOccupancy(tower, floorNumber + 1);
+            }
 
             return stairCount + 1 == tower.Floors[floorNumber].Stairs.Count;
         }

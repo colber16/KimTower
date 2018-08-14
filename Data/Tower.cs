@@ -71,15 +71,14 @@ namespace KimTower.Data
         public void CollectRent(Time time)
         {
             if (time.Day == Day.WeekdayTwo)
-            {
+            {//don't need to check lobby
                  foreach (var floor in this.Floors)
                 {
                     foreach (var room in  floor.Rooms)
                     {
-
-                        if (room.Occupied)
+                        if (room is IRentable && room.Occupied)
                         {
-                            floor.Ledger.TotalProfit += ((Office)room).PayRent();
+                            floor.Ledger.TotalProfit += ((IRentable)room).PayRent();
                         }
 
 
