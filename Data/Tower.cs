@@ -76,8 +76,6 @@ namespace KimTower.Data
                 {
                     foreach (var room in  floor.Rooms)
                     {
-                        //should be elsewhere
-                        room.SetOccupancy(this, this.Floors.IndexOf(floor));
 
                         if (room.Occupied)
                         {

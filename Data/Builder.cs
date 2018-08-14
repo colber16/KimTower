@@ -32,6 +32,9 @@ namespace KimTower.Data
 
             tower.UpdatePopulation(room.Population);
 
+            room.SetOccupancy(tower, floorNumber);
+
+
             return true;
 
         }

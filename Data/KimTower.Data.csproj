@@ -12,6 +12,7 @@
     <Compile Remove="Position.cs" />
     <Compile Remove="Range_1.cs" />
     <Compile Remove="StandardSegments.cs" />
+    <Compile Remove="Rooms\Rentable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Rooms\" />
