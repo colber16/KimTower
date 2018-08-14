@@ -5,7 +5,7 @@ namespace KimTower.Data
     using System.Collections.Generic;
     using KimTower.Data.Rooms;
 
-    public class Office : Room, IRoom
+    public class Office : Room, IRoom, IRentable
     {
         static int segments = StructureInfo.officeInfo.Segments;
         int rent = 1000;
@@ -19,12 +19,10 @@ namespace KimTower.Data
 
         }
 
-
         public int PayRent()
         {
             //paid every weekday2
             return this.Rent;
         }
-       
     }
 }

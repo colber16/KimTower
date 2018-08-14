@@ -5,9 +5,9 @@ namespace KimTower.Data
     {
         int Rent { get; }
 
-        int Cost { get; }
-
         bool Occupied { get; set; }
+
+        int PayRent();
 
     }
 }
