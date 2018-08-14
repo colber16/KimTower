@@ -5,7 +5,7 @@ namespace KimTower.Data.Rooms
     using System.Collections.Generic;
     using KimTower.Data.Rooms;
 
-    public class Restaurant : Room, IRoom
+    public class Restaurant : Room, IRoom, IRentable
     {
         static int segments = StructureInfo.restaurantInfo.Segments;
         static int cost = StructureInfo.restaurantInfo.ConstructionCost;
