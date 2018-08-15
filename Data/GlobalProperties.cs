@@ -2,36 +2,36 @@
 namespace KimTower.Data
 {
 
-    public class GlobalProperties
+    public static class GlobalProperties
     {
         static int startingBalance = 2000000;
 
-        public int Money { get; private set; }
+        public static int Money { get; private set; } = startingBalance;
 
-        public Time Time { get; set; }
+        public static Time Time { get; set; }
 
        // public MapWindow MapWindow { get; set; }
 
-        public int Rating { get; set; }
+        public static int Rating { get; set; }
 
-        public GlobalProperties()
+        //public GlobalProperties()
+        //{
+        //    this.Money = startingBalance;
+        //}
+
+        public static void SubtractConstructionCosts(StructureTypes structure, int numberOfSegments = 1)
         {
-            this.Money = startingBalance;
+            Money -= StructureInfo.AllTheInfo[structure].ConstructionCost * numberOfSegments;
         }
 
-        public void SubtractConstructionCosts(StructureTypes structure)
+        public static void AddIncome(int profits)
         {
-            this.Money -= StructureInfo.AllTheInfo[structure].ConstructionCost;
+            Money += profits;
         }
 
-        public void AddIncome(int profits)
+        public static void SubtractMaintenanceCosts(int costs)
         {
-            this.Money += profits;
-        }
-
-        public void SubtractMaintenanceCosts(int costs)
-        {
-            this.Money -= costs;
+            Money -= costs;
         }
 
     }

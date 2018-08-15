@@ -1,5 +1,5 @@
 ﻿
-namespace KimTower.Data
+namespace KimTower.Data.Floors
 {
     using System.Collections.Generic;
     using KimTower.Data.Rooms;
@@ -69,9 +69,27 @@ namespace KimTower.Data
             return Range.EndX - Range.StartX;
         }
 
+        public int GetSegments(Range range)
+        {
+            return range.EndX - range.StartX;
+        }
+
         public void AddStairs(int bottomFloor)
         {
             this.Stairs.Add(new StairCase(bottomFloor));
+
+        }
+
+        public void CostForNewRange(Range unpaidRange, StructureTypes floor)
+        {
+            int segments = GetSegments(unpaidRange);
+
+            if(floor is StructureTypes.Lobby)
+            {
+                segments = segments / 4;
+            }
+
+            GlobalProperties.SubtractConstructionCosts(floor, segments);
 
         }
 

@@ -1,5 +1,5 @@
 ﻿
-namespace KimTower.Data
+namespace KimTower.Data.Floors
 {
     using System.Collections.Generic;
     using KimTower.Data.Rooms;
@@ -20,5 +20,6 @@ namespace KimTower.Data
         Range GetExtendedFloorRange(Range range);
         void ExtendRange(Range range);
         int GetSegments();
+        void CostForNewRange(Range unpaidRange, StructureTypes structure);
     }
 }

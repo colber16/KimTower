@@ -3,6 +3,8 @@ namespace KimTower.Data
 {
     using System;
     using KimTower.Data.Rooms;
+    using KimTower.Data.Floors;
+   
 
     public class Builder
     {
@@ -45,8 +47,13 @@ namespace KimTower.Data
             if (existingFloor)
             {
                 floor = tower.Floors[floorNumber];
-                range = floor.GetExtendedFloorRange(range);
-                floor.ExtendRange(range);
+                var oldRange = tower.Floors[floorNumber].Range;
+                var newRange = floor.GetExtendedFloorRange(range);
+                floor.ExtendRange(newRange);
+                var unpaidRange = newRange - oldRange;
+
+                //need to charge for range + segments in between new range and old range.
+                floor.CostForNewRange((unpaidRange), structure);
             }
             else
             {

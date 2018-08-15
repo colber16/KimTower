@@ -5,6 +5,7 @@ namespace KimTower.Tests
     using NUnit.Framework;
     using KimTower.Data;
     using System.Collections.Generic;
+    using KimTower.Data.Floors;
 
     [TestFixture]
     public class FloorTests
@@ -125,5 +126,19 @@ namespace KimTower.Tests
             new TestCaseData(new Range(10, 12), new Range(8, 20)).Returns(new Range(8, 20)),
             new TestCaseData(new Range(10, 12),  new Range(8, 12)).Returns(new Range(8, 12))
         };
+        [Test]
+        public void ChargesForAllSegments()
+        {
+            var tower = new Tower();
+            var builder = new Builder();
+
+            var existingFloor = new Floor(new Range(0, 10));
+            tower.Floors.Add(existingFloor);
+            tower.Floors.Insert(1, existingFloor);
+
+            builder.BuildFloor(new Range(0, 20), 1, StructureTypes.Floor, true, tower);
+            Assert.That(GlobalProperties.Money, Is.EqualTo(1995000));
+
+        }
     }
 }

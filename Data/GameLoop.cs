@@ -8,7 +8,7 @@ namespace KimTower.Data
         Builder builder = new Builder();
         Time time = new Time(0);
         public Tower tower = new Tower();
-        GlobalProperties globalProperties = new GlobalProperties();
+       // GlobalProperties globalProperties = new GlobalProperties();
 
         public void Run()
         {
@@ -51,7 +51,7 @@ namespace KimTower.Data
 
         private void Render()
         {
-            ConsoleStuff.PrintGameStats(tower, time, globalProperties);
+            ConsoleStuff.PrintGameStats(tower, time);
         }
 
         private void Update()
@@ -60,7 +60,7 @@ namespace KimTower.Data
 
             tower.CollectRent(time);
             tower.UpdateLedgerByFloor();
-            globalProperties.AddIncome(tower.Ledger.TotalProfit);
+            GlobalProperties.AddIncome(tower.Ledger.TotalProfit);
 
 
         }
@@ -167,7 +167,7 @@ namespace KimTower.Data
                 Console.WriteLine("Something has gone terribily wrong.");
                 return false;
             }
-            globalProperties.SubtractConstructionCosts(structure);
+           GlobalProperties.SubtractConstructionCosts(structure);
             return true;
 
         }

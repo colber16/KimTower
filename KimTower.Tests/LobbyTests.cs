@@ -3,6 +3,7 @@ namespace KimTower.Tests
 {
     using NUnit.Framework;
     using KimTower.Data;
+    using KimTower.Data.Floors;
 
     [TestFixture]
     public class LobbyTests
@@ -27,6 +28,27 @@ namespace KimTower.Tests
         {
             var gameLoop = new GameLoop();
             return gameLoop.ProcessInput(input);
+
+        }
+        //[Test,TestCase("l 0 0", "l 0 10", ExpectedResult =)]
+        //public int ConstructionCostsAreChargedPerSegment(string input1, string input2)
+        //{
+        //    var gameLoop = new GameLoop();
+        //    gameLoop.ProcessInput(input1);
+        //    gameLoop.ProcessInput(input2);
+        //}
+
+        [Test]
+        public void ChargesForAllSegments()
+        {
+            var tower = new Tower();
+            var builder = new Builder();
+
+            var existingFloor = new Lobby(0);
+            tower.AddFloor(existingFloor);
+
+            builder.BuildFloor(new Range(0, 20), 0, StructureTypes.Lobby, true, tower);
+            Assert.That(GlobalProperties.Money, Is.EqualTo(1920000));
 
         }
 
