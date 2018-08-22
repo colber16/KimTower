@@ -180,7 +180,7 @@ namespace KimTower.Data
                 Console.WriteLine("Something has gone terribily wrong.");
                 return false;
             }
-            //globalProperties.SubtractConstructionCosts(structure);
+
             return true;
 
         }
@@ -240,16 +240,12 @@ namespace KimTower.Data
                 var newRange = floor.GetExtendedFloorRange(range);
                 var unpaidRange = newRange - oldRange;
 
-                //need to charge for range + segments in between new range and old range.
                 segments = StructureInfo.GetUnpaidSegments(unpaidRange, structure);
-
             }
             else
             {
                 segments = StructureInfo.GetUnpaidSegments(range, structure);
             }
-           
-
             return segments * StructureInfo.AllTheInfo[structure].ConstructionCost;
         }
 
