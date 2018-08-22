@@ -3,7 +3,8 @@ namespace KimTower.Data
 {
     using System;
     using KimTower.Data.Rooms;
-
+    using KimTower.Data.Floors;
+   
     public class Builder
     {
         public bool BuildStuff(int floorNumber,Range range, StructureTypes structure, bool existingFloor, Tower tower)
@@ -45,8 +46,9 @@ namespace KimTower.Data
             if (existingFloor)
             {
                 floor = tower.Floors[floorNumber];
-                range = floor.GetExtendedFloorRange(range);
-                floor.ExtendRange(range);
+                var oldRange = tower.Floors[floorNumber].Range;
+                var newRange = floor.GetExtendedFloorRange(range);
+                floor.ExtendRange(newRange);
             }
             else
             {

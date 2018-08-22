@@ -6,7 +6,7 @@ namespace KimTower.Data
     {
         static int startingBalance = 2000000;
 
-        public int Money { get; private set; }
+        public int Money { get; private set; } = startingBalance;
 
         public Time Time { get; set; }
 
@@ -14,24 +14,19 @@ namespace KimTower.Data
 
         public int Rating { get; set; }
 
-        public GlobalProperties()
+        public void SubtractConstructionCosts(int cost)
         {
-            this.Money = startingBalance;
+            Money -= cost;
         }
 
-        public void SubtractConstructionCosts(StructureTypes structure)
+        public  void AddIncome(int profits)
         {
-            this.Money -= StructureInfo.AllTheInfo[structure].ConstructionCost;
+            Money += profits;
         }
 
-        public void AddIncome(int profits)
+        public  void SubtractMaintenanceCosts(int costs)
         {
-            this.Money += profits;
-        }
-
-        public void SubtractMaintenanceCosts(int costs)
-        {
-            this.Money -= costs;
+            Money -= costs;
         }
 
     }

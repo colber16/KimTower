@@ -1,8 +1,6 @@
 ﻿
-namespace KimTower.Data
+namespace KimTower.Data.Floors
 {
-    using KimTower.Data.Rooms;
-    using System;
 
     public class Lobby : BasicFloor, IFloor
     {
@@ -16,6 +14,6 @@ namespace KimTower.Data
         {
            
         }
-     
+
     }
 }

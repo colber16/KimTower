@@ -1,5 +1,5 @@
 ﻿
-namespace KimTower.Data
+namespace KimTower.Data.Floors
 {
     using KimTower.Data.Rooms;
 
@@ -22,5 +22,6 @@ namespace KimTower.Data
             this.Population += room.Population;
 
         }
+
     }
 }
