@@ -5,7 +5,7 @@ namespace KimTower.Data
     using KimTower.Data.Rooms;
     using KimTower.Data.Floors;
    
-
+    //I need to charge before hand because what if they don't have the money???
     public class Builder
     {
         public bool BuildStuff(int floorNumber,Range range, StructureTypes structure, bool existingFloor, Tower tower)
@@ -53,7 +53,7 @@ namespace KimTower.Data
                 var unpaidRange = newRange - oldRange;
 
                 //need to charge for range + segments in between new range and old range.
-                floor.CostForNewRange((unpaidRange), structure);
+               // floor.GetUnpaidSegments((unpaidRange), structure);
             }
             else
             {

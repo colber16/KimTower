@@ -20,6 +20,6 @@ namespace KimTower.Data.Floors
         Range GetExtendedFloorRange(Range range);
         void ExtendRange(Range range);
         int GetSegments();
-        void CostForNewRange(Range unpaidRange, StructureTypes structure);
+        //int GetUnpaidSegments(Range unpaidRange, StructureTypes structure);
     }
 }

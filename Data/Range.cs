@@ -22,5 +22,10 @@ namespace KimTower.Data
         {
             return new Range(r1.StartX - r2.StartX, r1.EndX - r2.EndX);
         }
+
+        public int GetSegments()
+        {
+            return this.EndX - this.StartX;
+        }
     }
 }

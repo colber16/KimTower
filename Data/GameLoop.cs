@@ -2,16 +2,17 @@
 namespace KimTower.Data
 {
     using System;
+    using KimTower.Data.Floors;
 
     public class GameLoop
     {
         Builder builder = new Builder();
         Time time = new Time(0);
         public Tower tower = new Tower();
-       // GlobalProperties globalProperties = new GlobalProperties();
-
+        GlobalProperties globalProperties = new GlobalProperties();
         public void Run()
         {
+              
             ConsoleStuff.PrintTitle();
 
             ConsoleStuff.FormatAndPrint(ConsoleStuff.structureList);
@@ -51,7 +52,7 @@ namespace KimTower.Data
 
         private void Render()
         {
-            ConsoleStuff.PrintGameStats(tower, time);
+            ConsoleStuff.PrintGameStats(tower, time, globalProperties);
         }
 
         private void Update()
@@ -60,7 +61,7 @@ namespace KimTower.Data
 
             tower.CollectRent(time);
             tower.UpdateLedgerByFloor();
-            GlobalProperties.AddIncome(tower.Ledger.TotalProfit);
+            globalProperties.AddIncome(tower.Ledger.TotalProfit);
 
 
         }
@@ -160,6 +161,14 @@ namespace KimTower.Data
                     return false;
                 }
             }
+            //Test this.
+            ////enough money for stuff
+            var cost = DetermineCost(structure, isExistingFloor, floorNumber, range); //just room just floor or Room plus floor
+            //GetCost(); //floor, room + floor
+            IsBalanceSufficient(cost);
+            globalProperties.SubtractConstructionCosts(cost);
+            ////LinkedList<int> list = new LinkedList<int>();
+            ////list.
 
             //Make Stuff
             if(!builder.BuildStuff(floorNumber, range, structure, isExistingFloor, tower))
@@ -167,9 +176,59 @@ namespace KimTower.Data
                 Console.WriteLine("Something has gone terribily wrong.");
                 return false;
             }
-           GlobalProperties.SubtractConstructionCosts(structure);
+            //globalProperties.SubtractConstructionCosts(structure);
             return true;
 
+        }
+
+        public bool IsBalanceSufficient(int cost)
+        {
+            return globalProperties.Money - cost > 0;
+        }
+
+        public int DetermineCost(StructureTypes structure, bool isExistingFloor, int floorNumber, Range range)
+        {
+            var cost = 0;
+
+            if(structure != StructureTypes.Floor && structure != StructureTypes.Lobby)
+            {
+               cost += GetNonFloorCost(structure);
+
+                if (!isExistingFloor)
+                {
+                    cost += GetFloorCost(StructureTypes.Floor, floorNumber, range, false);
+                }
+            }
+            else
+            {
+                cost += GetFloorCost(structure, floorNumber, range, isExistingFloor);
+            }
+            return cost;
+        }
+
+        public int GetNonFloorCost(StructureTypes structure)
+        {
+            return StructureInfo.AllTheInfo[structure].ConstructionCost;
+
+        }
+        public int GetFloorCost(StructureTypes structure, int floorNumber, Range range, bool isExistingFloor)
+        {
+            int segments;
+
+            if (isExistingFloor)
+            {
+                var floor = tower.Floors[floorNumber];
+                var oldRange = tower.Floors[floorNumber].Range;
+                var newRange = floor.GetExtendedFloorRange(range);
+                var unpaidRange = newRange - oldRange;
+
+                //need to charge for range + segments in between new range and old range.
+                segments = StructureInfo.GetUnpaidSegments(unpaidRange, structure);
+
+            }
+            segments = StructureInfo.GetUnpaidSegments(range, structure);
+
+            return segments * StructureInfo.AllTheInfo[structure].ConstructionCost;
         }
 
         private int GetEndX(string[] inputs, int startX, StructureTypes structure)

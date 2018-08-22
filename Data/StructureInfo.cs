@@ -23,6 +23,18 @@ namespace KimTower.Data
             {StructureTypes.Condo, condoInfo}
 
         };
+
+        public static int GetUnpaidSegments(Range unpaidRange, StructureTypes floorType)
+        {
+            int segments = unpaidRange.GetSegments();
+
+            if (floorType is StructureTypes.Lobby)
+            {
+                segments = segments / 4;
+            }
+            return segments;
+
+        }
     }
 
     public class StructureTypeInfo
@@ -39,4 +51,6 @@ namespace KimTower.Data
             this.ConstructionCost = constructionCost;
         }
     }
+
+
 }

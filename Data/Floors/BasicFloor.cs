@@ -80,18 +80,7 @@ namespace KimTower.Data.Floors
 
         }
 
-        public void CostForNewRange(Range unpaidRange, StructureTypes floor)
-        {
-            int segments = GetSegments(unpaidRange);
 
-            if(floor is StructureTypes.Lobby)
-            {
-                segments = segments / 4;
-            }
-
-            GlobalProperties.SubtractConstructionCosts(floor, segments);
-
-        }
 
 
     }

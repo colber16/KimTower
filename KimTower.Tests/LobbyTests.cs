@@ -16,7 +16,7 @@ namespace KimTower.Tests
             return lobby.GetSegments();
         }
 
-        [Test, TestCase("f 1 2 ",ExpectedResult = false)]
+        [Test, TestCase("f 1 2 ", ExpectedResult = false)]
         public bool ReturnsFalseWhenLobbyIsNotBuilt(string input)
         {
             var gameLoop = new GameLoop();
@@ -43,14 +43,22 @@ namespace KimTower.Tests
         {
             var tower = new Tower();
             var builder = new Builder();
-
+            var globalProperties = new GlobalProperties();
             var existingFloor = new Lobby(0);
             tower.AddFloor(existingFloor);
 
-            builder.BuildFloor(new Range(0, 20), 0, StructureTypes.Lobby, true, tower);
-            Assert.That(GlobalProperties.Money, Is.EqualTo(1920000));
+           // builder.BuildFloor(new Range(0, 20), 0, StructureTypes.Lobby, true, tower);
+
+            var range = new Range(0,20);
+            var gameLoop = new GameLoop();
+            var cost = gameLoop.DetermineCost(StructureTypes.Lobby, false, 0, range); //just room just floor or Room plus floor
+
+            gameLoop.IsBalanceSufficient(cost);
+            globalProperties.SubtractConstructionCosts(cost);
+            Assert.That(globalProperties.Money, Is.EqualTo(1900000));
 
         }
 
     }
+
 }
