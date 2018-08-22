@@ -12,13 +12,11 @@ namespace KimTower.Tests
         public int SubtractConstructionCostsReducesMoneyBalance(StructureTypes structure, bool isExistingFloor, int floorNumber, int startX, int endX)
         {
             var range = new Range(startX, endX);
-            var globalProperties = new GlobalProperties();
+            //var globalProperties = new GlobalProperties();
             var gameLoop = new GameLoop();
-            var cost = gameLoop.DetermineCost(structure, isExistingFloor, floorNumber, range); //just room just floor or Room plus floor
+            var cost = gameLoop.PayForStructure(structure, isExistingFloor, floorNumber, range); //just room just floor or Room plus floor
            
-            gameLoop.IsBalanceSufficient(cost);
-            globalProperties.SubtractConstructionCosts(cost);
-            return globalProperties.Money;
+            return gameLoop.GlobalProperties.Money;
         }
 
         [Test, TestCase(200000, ExpectedResult = 2200000)]

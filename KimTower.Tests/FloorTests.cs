@@ -140,12 +140,9 @@ namespace KimTower.Tests
 
             var range = new Range(0, 20);
             var gameLoop = new GameLoop();
-            var cost = gameLoop.DetermineCost(StructureTypes.Floor, false, 0, range); //just room just floor or Room plus floor
+            gameLoop.PayForStructure(StructureTypes.Floor, false, 0, range); //just room just floor or Room plus floor
 
-            gameLoop.IsBalanceSufficient(cost);
-            globalProperties.SubtractConstructionCosts(cost);
-
-            Assert.That(globalProperties.Money, Is.EqualTo(1990000));
+            Assert.That(gameLoop.GlobalProperties.Money, Is.EqualTo(1990000));
 
         }
     }

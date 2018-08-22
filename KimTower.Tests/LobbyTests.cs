@@ -43,7 +43,6 @@ namespace KimTower.Tests
         {
             var tower = new Tower();
             var builder = new Builder();
-            var globalProperties = new GlobalProperties();
             var existingFloor = new Lobby(0);
             tower.AddFloor(existingFloor);
 
@@ -51,11 +50,10 @@ namespace KimTower.Tests
 
             var range = new Range(0,20);
             var gameLoop = new GameLoop();
-            var cost = gameLoop.DetermineCost(StructureTypes.Lobby, false, 0, range); //just room just floor or Room plus floor
+            gameLoop.PayForStructure(StructureTypes.Lobby, false, 0, range); 
 
-            gameLoop.IsBalanceSufficient(cost);
-            globalProperties.SubtractConstructionCosts(cost);
-            Assert.That(globalProperties.Money, Is.EqualTo(1900000));
+          
+            Assert.That(gameLoop.GlobalProperties.Money, Is.EqualTo(1900000));
 
         }
 

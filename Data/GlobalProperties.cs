@@ -14,11 +14,6 @@ namespace KimTower.Data
 
         public int Rating { get; set; }
 
-        //public GlobalProperties()
-        //{
-        //    this.Money = startingBalance;
-        //}
-
         public void SubtractConstructionCosts(int cost)
         {
             Money -= cost;
