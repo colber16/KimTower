@@ -10,16 +10,11 @@ namespace KimTower.Data
         const int fourStarPopulation = 5000;
         const int fiveStarPopulation = 10000;
 
-        public bool OneStar { get; private set; }
-        public bool TwoStar { get; private set; }
-        public bool ThreeStar { get; private set; }
-        public bool FourStar { get; private set; }
-        public bool FiveStar { get; private set; }
-        public bool Tower { get; private set; }
+        public Stars Stars { get; set; }
 
         public Rating()
         {
-            this.OneStar = true;
+            this.Stars = Stars.One;
         }
 
         //properties ratings
@@ -67,5 +62,15 @@ namespace KimTower.Data
             throw new NotImplementedException();
 
         }
+       
+    }
+    public enum Stars
+    {
+        One,
+        Two,
+        Three,
+        Four,
+        Five,
+        Tower
     }
 }
