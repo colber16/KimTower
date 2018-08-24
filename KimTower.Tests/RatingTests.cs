@@ -6,18 +6,20 @@
     [TestFixture]
     public class RatingTests
     {
-        [TestCase(ExpectedResult = true)]
-        public bool InitialTowerHasOneStarRatingSetToTrue()
+        [TestCase(ExpectedResult = Stars.One)]
+        public Stars InitialTowerHasOneStarRatingSetToTrue()
         {
             var tower = new Tower();
-            return tower.Rating.OneStar;
+            return tower.Rating.Stars;
                  
         }
-        [TestCase(ExpectedResult = false)]
-        public bool InitialTowerHasTwoStarRatingSetToFalse()
+
+        [TestCase(ExpectedResult = "One")]
+        public string RatingToStringReturnsString()
         {
             var tower = new Tower();
-            return tower.Rating.TwoStar;
+            var rating = tower.Rating.Stars.ToString();
+            return rating;
 
         }
     }
