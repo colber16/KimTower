@@ -7,11 +7,18 @@
     public class RatingTests
     {
         [TestCase(ExpectedResult = true)]
-        public bool InitialTowerHasOneStarRating()
+        public bool InitialTowerHasOneStarRatingSetToTrue()
         {
             var tower = new Tower();
             return tower.Rating.OneStar;
                  
+        }
+        [TestCase(ExpectedResult = false)]
+        public bool InitialTowerHasTwoStarRatingSetToFalse()
+        {
+            var tower = new Tower();
+            return tower.Rating.TwoStar;
+
         }
     }
 }
