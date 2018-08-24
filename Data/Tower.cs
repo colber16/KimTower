@@ -14,10 +14,13 @@ namespace KimTower.Data
 
         public int Population { get; set; }
 
+        public Rating Rating { get; set; }
+
         public Tower()
         {
             this.Floors = new List<IFloor>();
             this.Ledger = new Ledger(0, 0);
+            this.Rating = new Rating();
         }
 
         public void UpdateLedgerByFloor()
