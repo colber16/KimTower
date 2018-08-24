@@ -1,5 +1,5 @@
 ﻿
-namespace KimTower.Data
+namespace KimTower.Data.Floors
 {
     using System.Collections.Generic;
     using KimTower.Data.Rooms;
@@ -69,11 +69,18 @@ namespace KimTower.Data
             return Range.EndX - Range.StartX;
         }
 
+        public int GetSegments(Range range)
+        {
+            return range.EndX - range.StartX;
+        }
+
         public void AddStairs(int bottomFloor)
         {
             this.Stairs.Add(new StairCase(bottomFloor));
 
         }
+
+
 
 
     }

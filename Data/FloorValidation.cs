@@ -1,6 +1,8 @@
 ﻿
 namespace KimTower.Data
 {
+    using KimTower.Data.Floors;
+
     public static class FloorValidation
     {
         public static bool IsLobbyFloor(int floorNumber) => floorNumber == 0;

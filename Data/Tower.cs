@@ -4,6 +4,7 @@ namespace KimTower.Data
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using KimTower.Data.Floors;
 
     public class Tower
     {

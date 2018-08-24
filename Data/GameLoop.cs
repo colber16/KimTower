@@ -2,16 +2,23 @@
 namespace KimTower.Data
 {
     using System;
+    using KimTower.Data.Floors;
 
     public class GameLoop
     {
         Builder builder = new Builder();
         Time time = new Time(0);
         public Tower tower = new Tower();
-        GlobalProperties globalProperties = new GlobalProperties();
+        public GlobalProperties GlobalProperties { get; }
+
+        public GameLoop()
+        {
+            this.GlobalProperties = new GlobalProperties();
+        }
 
         public void Run()
         {
+              
             ConsoleStuff.PrintTitle();
 
             ConsoleStuff.FormatAndPrint(ConsoleStuff.structureList);
@@ -51,7 +58,7 @@ namespace KimTower.Data
 
         private void Render()
         {
-            ConsoleStuff.PrintGameStats(tower, time, globalProperties);
+            ConsoleStuff.PrintGameStats(tower, time, this.GlobalProperties);
         }
 
         private void Update()
@@ -60,7 +67,7 @@ namespace KimTower.Data
 
             tower.CollectRent(time);
             tower.UpdateLedgerByFloor();
-            globalProperties.AddIncome(tower.Ledger.TotalProfit);
+            this.GlobalProperties.AddIncome(tower.Ledger.TotalProfit);
 
 
         }
@@ -138,14 +145,14 @@ namespace KimTower.Data
             }
             //range exists on parent floor
 
-            if(structure != StructureTypes.StairCase)
+            if (structure != StructureTypes.StairCase)
             {
                 if (isExistingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
                 {
                     Console.WriteLine("Invalid range. Must be larger than current floor range");
                     return false;
-                } 
-                if (structure != StructureTypes.Lobby && FloorValidation.IsRangeExistingOnParent(range, tower.Floors[floorNumber -1].Range))
+                }
+                if (structure != StructureTypes.Lobby && FloorValidation.IsRangeExistingOnParent(range, tower.Floors[floorNumber - 1].Range))
                 {
                     Console.WriteLine("Invalid range. Bottom floor does not have this range.");
                     return false;
@@ -161,15 +168,85 @@ namespace KimTower.Data
                 }
             }
 
+            if(!PayForStructure(structure, isExistingFloor, floorNumber, range))
+            {
+                Console.WriteLine("Insuffient Funds.");
+                return false;
+            }
+
             //Make Stuff
-            if(!builder.BuildStuff(floorNumber, range, structure, isExistingFloor, tower))
+            if (!builder.BuildStuff(floorNumber, range, structure, isExistingFloor, tower))
             {
                 Console.WriteLine("Something has gone terribily wrong.");
                 return false;
             }
-            globalProperties.SubtractConstructionCosts(structure);
+
             return true;
 
+        }
+
+        public bool PayForStructure(StructureTypes structure, bool isExistingFloor, int floorNumber, Range range)
+        {
+            var cost = DetermineCost(structure, isExistingFloor, floorNumber, range);
+            var sufficientBalance = IsBalanceSufficient(cost);
+
+            if(!sufficientBalance)
+            {
+                return false;
+            }
+            this.GlobalProperties.SubtractConstructionCosts(cost);
+
+            return true;
+        }
+
+        private bool IsBalanceSufficient(int cost)
+        {
+            return this.GlobalProperties.Money - cost > 0;
+        }
+
+        private int DetermineCost(StructureTypes structure, bool isExistingFloor, int floorNumber, Range range)
+        {
+            var cost = 0;
+
+            if(structure != StructureTypes.Floor && structure != StructureTypes.Lobby)
+            {
+               cost += GetNonFloorCost(structure);
+
+                if (!isExistingFloor)
+                {
+                    cost += GetFloorCost(StructureTypes.Floor, floorNumber, range, false);
+                }
+            }
+            else
+            {
+                cost += GetFloorCost(structure, floorNumber, range, isExistingFloor);
+            }
+            return cost;
+        }
+
+        private int GetNonFloorCost(StructureTypes structure)
+        {
+            return StructureInfo.AllTheInfo[structure].ConstructionCost;
+
+        }
+        private int GetFloorCost(StructureTypes structure, int floorNumber, Range range, bool isExistingFloor)
+        {
+            int segments;
+
+            if (isExistingFloor)
+            {
+                var floor = tower.Floors[floorNumber];
+                var oldRange = tower.Floors[floorNumber].Range;
+                var newRange = floor.GetExtendedFloorRange(range);
+                var unpaidRange = newRange - oldRange;
+
+                segments = StructureInfo.GetUnpaidSegments(unpaidRange, structure);
+            }
+            else
+            {
+                segments = StructureInfo.GetUnpaidSegments(range, structure);
+            }
+            return segments * StructureInfo.AllTheInfo[structure].ConstructionCost;
         }
 
         private int GetEndX(string[] inputs, int startX, StructureTypes structure)

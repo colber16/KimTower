@@ -4,6 +4,7 @@ namespace KimTower.Tests
     using System;
     using NUnit.Framework;
     using KimTower.Data;
+    using KimTower.Data.Floors;
 
     [TestFixture]
     public class TowerTests

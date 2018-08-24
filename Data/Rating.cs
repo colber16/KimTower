@@ -62,7 +62,7 @@ namespace KimTower.Data
             throw new NotImplementedException();
 
         }
-       
+
     }
     public enum Stars
     {
@@ -72,5 +72,6 @@ namespace KimTower.Data
         Four,
         Five,
         Tower
+
     }
 }
