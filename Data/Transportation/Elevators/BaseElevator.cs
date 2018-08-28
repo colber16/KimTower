@@ -24,10 +24,10 @@
 
         public List<WaitingArea> WaitingAreas { get; set; }
 
-        protected BaseElevator(int segments, int cost, int x, int floorNumber)
+        protected BaseElevator(int segments, int cost, int startingX, int floorNumber)
         {
             this.Segments = segments;
-            this.Range = new Range(x, x + segments);
+            this.Range = new Range(startingX, startingX + segments);
             this.BottomFloor = floorNumber;
             this.TopFloor = floorNumber;
             this.Cars = new List<ElevatorCar> {new ElevatorCar(floorNumber)};

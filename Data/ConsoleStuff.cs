@@ -95,7 +95,7 @@ namespace KimTower.Data
         {
             FormatAndPrint(continueRequest);
         }
-
+        //these can be deleted
         public static bool IsFloorRequest(string[] inputs)
         {
             return inputs.Contains("f");
