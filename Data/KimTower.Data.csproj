@@ -17,5 +17,7 @@
   <ItemGroup>
     <Folder Include="Rooms\" />
     <Folder Include="Floors\" />
+    <Folder Include="Transportation\" />
+    <Folder Include="Transportation\Elevators\" />
   </ItemGroup>
 </Project>
