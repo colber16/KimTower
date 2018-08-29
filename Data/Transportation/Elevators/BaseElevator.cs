@@ -31,7 +31,7 @@
             this.BottomFloor = floorNumber;
             this.TopFloor = floorNumber;
             this.Cars = new List<ElevatorCar> {new ElevatorCar(floorNumber)};
-            this.Cost = cost + this.Cars[0].Cost;
+            this.Cost = cost;
             this.WaitingAreas = new List<WaitingArea> {new WaitingArea(this.Cars[0].Capacity)};
         }
         public int GetPopulationLevel()

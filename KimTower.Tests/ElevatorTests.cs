@@ -27,5 +27,13 @@
             builder.BuildElevator(0, 0, floor);
             Assert.That(floor.Transportations.Count, Is.EqualTo(1));
         }
+
+        [Test]
+        public void ElevatorCarCostIncludedInConstructionCost()
+        {
+            var builder = GetBuilder();
+            var floor = GetFloor();
+           
+        }
     }
 }

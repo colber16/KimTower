@@ -12,7 +12,9 @@ namespace KimTower.Data
         public static readonly StructureTypeInfo lobbyInfo = new StructureTypeInfo(4, 20000);
         public static readonly StructureTypeInfo stairCaseInfo = new StructureTypeInfo(8, 5000);
         public static readonly StructureTypeInfo floorInfo = new StructureTypeInfo(1, 500);
-        public static readonly StructureTypeInfo elevatorInfo = new StructureTypeInfo(4, 200000);
+        public static readonly StructureTypeInfo elevatorCarInfo = new StructureTypeInfo(4, 80000);
+        public static readonly StructureTypeInfo elevatorInfo = new StructureTypeInfo(4, 200000 + elevatorCarInfo.ConstructionCost);
+
 
         public static Dictionary<StructureTypes, StructureTypeInfo> AllTheInfo = new Dictionary<StructureTypes, StructureTypeInfo>
         {
@@ -22,7 +24,8 @@ namespace KimTower.Data
             {StructureTypes.StairCase, stairCaseInfo},
             {StructureTypes.Restaurant, restaurantInfo},
             {StructureTypes.Condo, condoInfo},
-            {StructureTypes.Elevator, elevatorInfo}
+            {StructureTypes.Elevator, elevatorInfo},
+            {StructureTypes.ElevatorCar, elevatorCarInfo}
 
         };
 
