@@ -11,7 +11,7 @@ namespace KimTower.Data.Floors
 
         Ledger Ledger { get; }
 
-        List<ITransportation> Stairs { get; set; }
+        List<ITransportation> Transportations { get; set; }
 
         Range Range { get; set; }
        
@@ -21,6 +21,7 @@ namespace KimTower.Data.Floors
         Range GetExtendedFloorRange(Range range);
         void ExtendRange(Range range);
         int GetSegments();
+        void AddElevator(int startingX, int floorNumber);
         //int GetUnpaidSegments(Range unpaidRange, StructureTypes structure);
     }
 }

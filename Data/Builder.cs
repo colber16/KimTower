@@ -17,6 +17,10 @@ namespace KimTower.Data
             {
                 return BuildStairs(floorNumber, tower);
             }
+            if(structure is StructureTypes.Elevator)
+            {
+                return BuildElevator(range.StartX, floorNumber, tower.Floors[floorNumber]);
+            }
             return BuildRoom(structure, range, floorNumber, existingFloor, tower);
         }
 
@@ -74,9 +78,18 @@ namespace KimTower.Data
             return floor;
         }
 
+        public bool BuildElevator(int startingX, int floorNumber, IFloor floor)
+        {
+            var elevatorCount = floor.Transportations.Count;
+
+            floor.AddElevator(startingX, floorNumber);
+
+            return elevatorCount + 1 == floor.Transportations.Count;
+        }
+
         public bool BuildStairs(int floorNumber, Tower tower)
         {
-            var stairCount = tower.Floors[floorNumber].Stairs.Count;
+            var stairCount = tower.Floors[floorNumber].Transportations.Count;
 
             tower.Floors[floorNumber].AddStairs(floorNumber);
             tower.Floors[floorNumber + 1].AddStairs(floorNumber);
@@ -86,7 +99,7 @@ namespace KimTower.Data
                 room.SetOccupancy(tower, floorNumber + 1);
             }
 
-            return stairCount + 1 == tower.Floors[floorNumber].Stairs.Count;
+            return stairCount + 1 == tower.Floors[floorNumber].Transportations.Count;
         }
 
         public IRoom GetRoom(StructureTypes? desiredRoom, int x, int floorNumber)

@@ -115,7 +115,7 @@ namespace KimTower.Data
             {
                 if (!(structure is StructureTypes.Lobby))
                 {
-                    if (!(structure is StructureTypes.StairCase))
+                    if (!(structure is StructureTypes.StairCase || (structure is StructureTypes.Elevator)))
                     {
                         Console.WriteLine("Lobby must be on first floor.");
                         return false;
@@ -145,7 +145,7 @@ namespace KimTower.Data
             }
             //range exists on parent floor
 
-            if (structure != StructureTypes.StairCase)
+            if (!(structure == StructureTypes.StairCase || structure ==StructureTypes.Elevator))
             {
                 if (isExistingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
                 {
@@ -159,11 +159,17 @@ namespace KimTower.Data
                 }
 
             }
+            //stairs and elevators
             else
             {
-                if (!tower.IsValidExistingFloorNumber(floorNumber) || !tower.IsValidExistingFloorNumber(floorNumber + 1))
+                if(!tower.IsValidExistingFloorNumber(floorNumber))
                 {
-                    Console.WriteLine("Top or Bottom floor does not exist.");
+                    Console.WriteLine("FloorNumber does not exist.");
+                }
+                if (structure ==StructureTypes.StairCase &&
+                    !tower.IsValidExistingFloorNumber(floorNumber + 1))
+                {
+                    Console.WriteLine("Top  floor does not exist.");
                     return false;
                 }
             }

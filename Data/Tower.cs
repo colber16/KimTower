@@ -40,7 +40,7 @@ namespace KimTower.Data
             for (int i = 0; i < floorNumber; i++)
             {
                 //floors need to be set to index number
-                if (Floors[i].Stairs.Count > 0)
+                if (Floors[i].Transportations.Count > 0)
                 {
                     stairCount++;
                     if (stairCount == 0)

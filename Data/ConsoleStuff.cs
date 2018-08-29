@@ -126,7 +126,8 @@ namespace KimTower.Data
         Restaurant = 'r',
         Condo = 'c',
         Elevator = 'e',
-        Floor ='f'
+        Floor ='f',
+        ElevatorCar = 'a'
     }
    
 }
