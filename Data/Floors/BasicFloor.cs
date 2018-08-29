@@ -4,6 +4,7 @@ namespace KimTower.Data.Floors
     using System.Collections.Generic;
     using KimTower.Data.Rooms;
     using KimTower.Data.Transportation;
+    using KimTower.Data.Transportation.Elevators;
 
     public abstract class BasicFloor
     {
@@ -11,7 +12,7 @@ namespace KimTower.Data.Floors
 
         public Ledger Ledger { get; private set; }
 
-        public List<ITransportation> Stairs { get; set; }
+        public List<ITransportation> Transportations { get; set; }
 
         public Range Range { get; set; }
 
@@ -20,7 +21,7 @@ namespace KimTower.Data.Floors
         {
             this.Rooms = new List<IRoom>();
             this.Ledger = new Ledger(0, 0);
-            this.Stairs = new List<ITransportation>();
+            this.Transportations = new List<ITransportation>();
             this.Range = range;
         }
 
@@ -77,7 +78,13 @@ namespace KimTower.Data.Floors
 
         public void AddStairs(int bottomFloor)
         {
-            this.Stairs.Add(new StairCase(bottomFloor));
+            this.Transportations.Add(new StairCase(bottomFloor));
+
+        }
+
+        public void AddElevator(int startingX, int floorNumber)
+        {
+            this.Transportations.Add(new Elevator(startingX, floorNumber));
 
         }
 
