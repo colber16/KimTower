@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public abstract class BaseElevator : IElevator
+    public abstract class BaseElevator : IElevator, ITransportation
     {
 
         public int Segments { get; }

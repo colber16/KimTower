@@ -3,6 +3,7 @@ namespace KimTower.Data.Floors
 {
     using System.Collections.Generic;
     using KimTower.Data.Rooms;
+    using KimTower.Data.Transportation;
 
     public abstract class BasicFloor
     {
@@ -10,7 +11,7 @@ namespace KimTower.Data.Floors
 
         public Ledger Ledger { get; private set; }
 
-        public List<StairCase> Stairs { get; set; }
+        public List<ITransportation> Stairs { get; set; }
 
         public Range Range { get; set; }
 
@@ -19,7 +20,7 @@ namespace KimTower.Data.Floors
         {
             this.Rooms = new List<IRoom>();
             this.Ledger = new Ledger(0, 0);
-            this.Stairs = new List<StairCase>();
+            this.Stairs = new List<ITransportation>();
             this.Range = range;
         }
 

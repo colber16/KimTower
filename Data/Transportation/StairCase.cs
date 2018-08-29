@@ -1,9 +1,8 @@
 ﻿
-namespace KimTower.Data
+namespace KimTower.Data.Transportation
 {
-    using KimTower.Data.Rooms;
 
-    public class StairCase
+    public class StairCase : ITransportation
     {
         static int segments = StructureInfo.stairCaseInfo.Segments;
         static int cost = StructureInfo.stairCaseInfo.ConstructionCost;
