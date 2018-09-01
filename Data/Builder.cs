@@ -4,6 +4,7 @@ namespace KimTower.Data
     using System;
     using KimTower.Data.Rooms;
     using KimTower.Data.Floors;
+    using KimTower.Data.Transportation;
    
     public class Builder
     {
@@ -19,6 +20,11 @@ namespace KimTower.Data
             }
             if(structure is StructureTypes.Elevator)
             {
+                if (isExistingElevator)
+                {
+                    ExtendElevator(floorNumber, topFloor, range, tower);
+
+                }
                 return BuildElevator(range.StartX, floorNumber, tower.Floors[floorNumber]);
             }
             return BuildRoom(structure, range, floorNumber, existingFloor, tower);
@@ -77,14 +83,30 @@ namespace KimTower.Data
             }
             return floor;
         }
-
-        public bool BuildElevator(int startingX, int floorNumber, IFloor floor)
+        //return elevator??
+        public bool BuildElevator(int startingX, int floorNumber, IFloor floor, Range range, bool isExistingElevator)
         {
+       
             var elevatorCount = floor.Transportations.Count;
 
             floor.AddElevator(startingX, floorNumber);
 
             return elevatorCount + 1 == floor.Transportations.Count;
+        }
+
+        private static void ExtendElevator(int bottomFloor, int topFloor, IFloor floor, Range range, Tower tower)
+        {
+            ITransportation elevator;
+
+            floor.Transportations.TryGetValue(range, out elevator);
+            elevator.SetBottomAndTopFloors(bottomFloor, topFloor);
+
+            for (int i = bottomFloor; i <= topFloor; i++)
+            {
+                tower.Floors[i].Transportations.Add(range, elevator);
+            }
+
+
         }
 
         public bool BuildStairs(int floorNumber, Range range, Tower tower)

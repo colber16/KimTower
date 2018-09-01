@@ -19,10 +19,15 @@ namespace KimTower.Data.Transportation
 
         public StairCase(int bottomFloor)
         {
-            this.BottomFloor = bottomFloor;
-            this.TopFloor = bottomFloor + 1;
+            //this.BottomFloor = bottomFloor;
+            //this.TopFloor = bottomFloor + 1;
+            SetBottomAndTopFloors(bottomFloor);
         }
 
-
+        public void SetBottomAndTopFloors(int bottom, int top=1)
+        {
+            this.BottomFloor = bottom;
+            this.TopFloor = top + bottom;
+        }
     }
 }

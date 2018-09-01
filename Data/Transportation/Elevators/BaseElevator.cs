@@ -40,10 +40,10 @@
             throw new NotImplementedException();
         }
         //validate floor number before I get here
-        public void SetTopAndBottomFloors(int newTopFloor, int newBottomFloor)
+        public void SetBottomAndTopFloors(int newBottomFloor, int newTopFloor)
         {
-            this.TopFloor = newTopFloor;
             this.BottomFloor = newBottomFloor;
+            this.TopFloor = newTopFloor;
         }
     }
 }

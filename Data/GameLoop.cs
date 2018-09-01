@@ -137,8 +137,8 @@ namespace KimTower.Data
             //3rd input if any for range
             var endX = GetEndX(inputs, startX, structure);
             var range = new Range(startX, endX);
-            int elevatorNewFloorNumber;
-            bool isExistingElevator;
+            var elevatorNewFloorNumber = 0;
+            var isExistingElevator = false;
 
             // 3rd input for elevator floor number
             if(structure.Equals(structure == StructureTypes.Elevator))
@@ -181,14 +181,20 @@ namespace KimTower.Data
                 {
                     Console.WriteLine("FloorNumber does not exist.");
                 }
-                if (structure ==StructureTypes.StairCase &&
+                if (structure == StructureTypes.StairCase &&
                     !tower.IsValidExistingFloorNumber(floorNumber + 1))
                 {
                     Console.WriteLine("Top  floor does not exist.");
                     return false;
                 }
                 //validate new elevator floor
-                //if (isExistingElevator)
+                if (structure == StructureTypes.Elevator &&
+                      isExistingElevator &&
+                      !tower.IsValidExistingFloorNumber(elevatorNewFloorNumber))
+                {
+                    Console.WriteLine("New elevator floor does not exist.");
+                    return false;
+                }
             }
 
             if(!PayForStructure(structure, isExistingFloor, floorNumber, range))
