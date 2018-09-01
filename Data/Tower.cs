@@ -5,6 +5,7 @@ namespace KimTower.Data
     using System.Linq;
     using System.Collections.Generic;
     using KimTower.Data.Floors;
+    using KimTower.Data.Transportation.Elevators;
 
     public class Tower
     {
@@ -121,6 +122,11 @@ namespace KimTower.Data
         public void UpdatePopulation(int roomPopulation)
         {
             this.Population += roomPopulation;
+        }
+
+        public bool IsExistingElevator(int floorNumber, Range range)
+        {
+            return (this.Floors[floorNumber].Transportations.ContainsKey(range));
         }
     }
 }

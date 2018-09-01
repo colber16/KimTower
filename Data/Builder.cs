@@ -15,7 +15,7 @@ namespace KimTower.Data
             }
             if (structure is StructureTypes.StairCase)
             {
-                return BuildStairs(floorNumber, tower);
+                return BuildStairs(floorNumber, range, tower);
             }
             if(structure is StructureTypes.Elevator)
             {
@@ -87,12 +87,12 @@ namespace KimTower.Data
             return elevatorCount + 1 == floor.Transportations.Count;
         }
 
-        public bool BuildStairs(int floorNumber, Tower tower)
+        public bool BuildStairs(int floorNumber, Range range, Tower tower)
         {
             var stairCount = tower.Floors[floorNumber].Transportations.Count;
 
-            tower.Floors[floorNumber].AddStairs(floorNumber);
-            tower.Floors[floorNumber + 1].AddStairs(floorNumber);
+            tower.Floors[floorNumber].AddStairs(floorNumber, range);
+            tower.Floors[floorNumber + 1].AddStairs(floorNumber, range);
             ////Hmmmm......
             foreach(var room in tower.Floors[floorNumber + 1].Rooms)
             {

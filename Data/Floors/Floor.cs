@@ -1,7 +1,9 @@
 ﻿
 namespace KimTower.Data.Floors
 {
+    using System.Collections.Generic;
     using KimTower.Data.Rooms;
+    using KimTower.Data.Transportation;
 
     public class Floor : BasicFloor, IFloor
     {

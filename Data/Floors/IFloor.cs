@@ -11,13 +11,13 @@ namespace KimTower.Data.Floors
 
         Ledger Ledger { get; }
 
-        List<ITransportation> Transportations { get; set; }
+        Dictionary<Range, ITransportation> Transportations { get; set; }
 
         Range Range { get; set; }
        
         int Population { get; set; }
 
-        void AddStairs(int bottomFloor);
+        void AddStairs(int bottomFloor, Range range);
         Range GetExtendedFloorRange(Range range);
         void ExtendRange(Range range);
         int GetSegments();

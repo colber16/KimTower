@@ -12,5 +12,6 @@ namespace KimTower.Data.Transportation.Elevators
         public Elevator(int startingX, int floorNumber) : base(segments, cost, startingX, floorNumber)
         {
         }
+
     }
 }

@@ -134,9 +134,23 @@ namespace KimTower.Data
             }
             //2nd input
             int.TryParse(inputs[2], out startX);
-            //3rd input if any
+            //3rd input if any for range
             var endX = GetEndX(inputs, startX, structure);
             var range = new Range(startX, endX);
+            int elevatorNewFloorNumber;
+            bool isExistingElevator;
+
+            // 3rd input for elevator floor number
+            if(structure.Equals(structure == StructureTypes.Elevator))
+            {
+                if(tower.IsExistingElevator(floorNumber, range))
+                {
+                    isExistingElevator = true;
+                    elevatorNewFloorNumber = GetThirdInput(inputs); 
+                }
+
+            }
+
             //validate range
             if (!(FloorValidation.IsValidRangeOnMap(range)))
             {
@@ -145,7 +159,7 @@ namespace KimTower.Data
             }
             //range exists on parent floor
 
-            if (!(structure == StructureTypes.StairCase || structure ==StructureTypes.Elevator))
+            if (!(structure == StructureTypes.StairCase || structure == StructureTypes.Elevator))
             {
                 if (isExistingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
                 {
@@ -162,6 +176,7 @@ namespace KimTower.Data
             //stairs and elevators
             else
             {
+                
                 if(!tower.IsValidExistingFloorNumber(floorNumber))
                 {
                     Console.WriteLine("FloorNumber does not exist.");
@@ -172,6 +187,8 @@ namespace KimTower.Data
                     Console.WriteLine("Top  floor does not exist.");
                     return false;
                 }
+                //validate new elevator floor
+                //if (isExistingElevator)
             }
 
             if(!PayForStructure(structure, isExistingFloor, floorNumber, range))
@@ -260,13 +277,23 @@ namespace KimTower.Data
             int endX;
             if (inputs.Length > 3 && structure.Equals(StructureTypes.Floor))
             {
-                int.TryParse(inputs[3], out endX);
+                //int.TryParse(inputs[3], out endX);
+               return GetThirdInput(inputs);
             }
             else
             {
                 endX = startX + StructureInfo.AllTheInfo[structure].Segments;
             }
             return endX;
+        }
+
+        private int GetThirdInput(string[] inputs)
+        {
+            int thirdInput;
+
+            int.TryParse(inputs[3], out thirdInput);
+
+            return thirdInput;
         }
       
     }

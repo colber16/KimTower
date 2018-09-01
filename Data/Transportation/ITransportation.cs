@@ -2,5 +2,6 @@
 {
     public interface ITransportation
     {
+        Range Range { get; set; }
     }
 }

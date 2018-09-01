@@ -15,6 +15,8 @@ namespace KimTower.Data.Transportation
 
         public int Cost => cost;
 
+        public Range Range { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         public StairCase(int bottomFloor)
         {
             this.BottomFloor = bottomFloor;

@@ -7,7 +7,7 @@ namespace KimTower.Data.Transportation.Elevators
     {
         int Segments { get; }
 
-        Range Range { get; set; }
+        Range HorizontalRange { get; set; }
 
         bool Occupied { get; set; }
 

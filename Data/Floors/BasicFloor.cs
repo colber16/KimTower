@@ -1,6 +1,7 @@
 ﻿
 namespace KimTower.Data.Floors
 {
+    using System;
     using System.Collections.Generic;
     using KimTower.Data.Rooms;
     using KimTower.Data.Transportation;
@@ -12,7 +13,7 @@ namespace KimTower.Data.Floors
 
         public Ledger Ledger { get; private set; }
 
-        public List<ITransportation> Transportations { get; set; }
+        public Dictionary<Range, ITransportation> Transportations { get; set; }
 
         public Range Range { get; set; }
 
@@ -21,7 +22,7 @@ namespace KimTower.Data.Floors
         {
             this.Rooms = new List<IRoom>();
             this.Ledger = new Ledger(0, 0);
-            this.Transportations = new List<ITransportation>();
+            this.Transportations = new Dictionary<Range, ITransportation>();
             this.Range = range;
         }
 
@@ -76,15 +77,15 @@ namespace KimTower.Data.Floors
             return range.EndX - range.StartX;
         }
 
-        public void AddStairs(int bottomFloor)
+        public void AddStairs(int bottomFloor, Range range)
         {
-            this.Transportations.Add(new StairCase(bottomFloor));
+            this.Transportations.Add(range, new StairCase(bottomFloor));
 
         }
-
+        //TODO: Range
         public void AddElevator(int startingX, int floorNumber)
         {
-            this.Transportations.Add(new Elevator(startingX, floorNumber));
+            this.Transportations.Add(new Range(startingX, startingX + 4), new Elevator(startingX, floorNumber));
 
         }
 

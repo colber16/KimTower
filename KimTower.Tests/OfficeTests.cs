@@ -24,8 +24,8 @@ namespace KimTower.Tests
             var secondFloor = new Floor(new Range(0, 5));
             tower.Floors.Add(firstFloor);
             tower.Floors.Add(secondFloor);
-            tower.Floors[0].AddStairs(1);
-            tower.Floors[1].AddStairs(1);
+            tower.Floors[0].AddStairs(1, new Range(0, 5));
+            tower.Floors[1].AddStairs(1, new Range(0, 5));
             var office = new Office(x, floorNumber);
 
             office.SetOccupancy(tower, floorNumber);

@@ -43,7 +43,7 @@ namespace KimTower.Tests
             tower.AddFloor(new Floor(range));
 
             builder.BuildRoom(structure, range, 1, true, tower);
-            builder.BuildStairs(0, tower);
+            builder.BuildStairs(0, range, tower);
 
             tower.CollectRent(time);
 
@@ -62,7 +62,7 @@ namespace KimTower.Tests
             tower.AddFloor(new Floor(range));
 
             builder.BuildRoom(structure, range, 1, true, tower);
-            builder.BuildStairs(0, tower);
+            builder.BuildStairs(0, range, tower);
 
             tower.CollectRent(time);
 
