@@ -5,9 +5,9 @@ namespace KimTower.Data
 
     public static class ConsoleInputValidation
     {
-        public static bool IsValidInputLength(string[] inputs)
+        public static bool IsValidInputLength(string[] inputs, int length)
         {
-            if (inputs.Length < 3)
+            if (inputs.Length < length)
             {
                 Console.WriteLine("Invalid input.");
                 return false;

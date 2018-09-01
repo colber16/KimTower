@@ -3,6 +3,8 @@ namespace KimTower.Data
 {
     using System;
     using KimTower.Data.Floors;
+    using KimTower.Data.Transportation;
+    using KimTower.Data.Transportation.Elevators;
 
     public class GameLoop
     {
@@ -18,7 +20,7 @@ namespace KimTower.Data
 
         public void Run()
         {
-              
+
             ConsoleStuff.PrintTitle();
 
             ConsoleStuff.FormatAndPrint(ConsoleStuff.structureList);
@@ -75,11 +77,32 @@ namespace KimTower.Data
         public bool ProcessInput(string input)
         {
             var inputs = input.Split(" ");
+            string[] extentionInputs = null;
+            var inputLength = 3;
+            bool isExtentionRequest = ConsoleStuff.IsExtentionRequest(input);
+
+
+            if (isExtentionRequest)
+            {
+                ConsoleStuff.PrintExtentionInputRequest();
+                var extentionInput = Console.ReadLine();
+                if (Convert.ToChar(extentionInput[0]) == (int)StructureTypes.Elevator)
+                {
+                    extentionInputs = extentionInput.Split(" ");
+                    inputLength = 4;
+                }
+            }
             var desiredStructure = Convert.ToChar(inputs[0]);
             int floorNumber;
             int startX;
+            int endX;
+            int bottomFloor;
+            int topFloor;
+            Range range;
+            bool isExistingFloor;
             //general input
-            if (!ConsoleInputValidation.IsValidInputLength(inputs))
+
+            if (!ConsoleInputValidation.IsValidInputLength(inputs, inputLength))
             {
                 Console.WriteLine("Not enough input");
                 return false;
@@ -103,204 +126,268 @@ namespace KimTower.Data
                     return false;
                 }
             }
-            //1st input
-            int.TryParse(inputs[1], out floorNumber);
 
-            if (!FloorValidation.IsValidFloorForMap(floorNumber))
+            if (isExtentionRequest)
             {
-                Console.WriteLine("Floor is too large or small.");
-                return false;
-            }
-            if (FloorValidation.IsLobbyFloor(floorNumber))
-            {
-                if (!(structure is StructureTypes.Lobby))
+                int.TryParse(extentionInputs[1], out startX);
+                int.TryParse(extentionInputs[2], out endX);
+                int.TryParse(extentionInputs[3], out bottomFloor);
+                int.TryParse(extentionInputs[4], out topFloor);
+                range = new Range(startX, endX);
+                ITransportation elevator = null;
+
+                foreach (var floor in tower.Floors)
                 {
-                    if (!(structure is StructureTypes.StairCase || (structure is StructureTypes.Elevator)))
+                    if (floor.Transportations.ContainsKey(range))
                     {
-                        Console.WriteLine("Lobby must be on first floor.");
+                        elevator = floor.Transportations[range];
+
+                    }
+                    //elevator does not exist
+                    return false;
+                }
+
+                //check to see which floors are different
+                //var currentBottom = elevator?.BottomFloor ?? default(int);
+                //var bottomDiff = currentBottom - bottomFloor;
+
+                //var currentTop = elevator?.TopFloor ?? default(int);
+                //var topDiff = currentTop - topFloor;
+
+                //if (bottomDiff != 0)
+                //{
+                ////}
+                ////check if floor exists
+                //if (bottomDiff > 0)
+                //{
+                for (int i = bottomFloor; i <= topFloor; i++)
+                {
+                    isExistingFloor = tower.IsValidExistingFloorNumber(i);
+
+                    if (!PayForStructure(structure, isExistingFloor, i, range))
+                    {
+                        Console.WriteLine("Insuffient Funds.");
                         return false;
                     }
-                }
-            }
-            var isExistingFloor = tower.IsValidExistingFloorNumber(floorNumber);
+                    if (!isExistingFloor)
+                    {
+                        builder.BuildFloor(range, i, StructureTypes.Floor, false, tower);
+                    }
+                    tower.Floors[i].Transportations.Add(range, new ElevatorShaft(i, range));
 
-            if (!isExistingFloor)
-            {
-                if (!tower.IsNextFloorNumber(floorNumber))
+                    //  }
+                    // }
+                    //pay for shaft extention
+                    //build floor if it doesn't exist
+
+                    //set bottomfloor property on elevator
+                    //}
+                    if (topDiff != 0)
+                    {
+
+                    }
+                    //build floor
+                    //var isExistingFloor = tower.IsValidExistingFloorNumber(floorNumber);
+                }
+                //1st input
+                int.TryParse(inputs[1], out floorNumber);
+
+                if (!FloorValidation.IsValidFloorForMap(floorNumber))
                 {
-                    Console.WriteLine("Floor does not existing and preceding floor has not be created.");
+                    Console.WriteLine("Floor is too large or small.");
                     return false;
                 }
-            }
-            //2nd input
-            int.TryParse(inputs[2], out startX);
-            //3rd input if any for range
-            var endX = GetEndX(inputs, startX, structure);
-            var range = new Range(startX, endX);
-            var elevatorNewFloorNumber = 0;
-            var isExistingElevator = false;
-
-            // 3rd input for elevator floor number
-            if(structure.Equals(structure == StructureTypes.Elevator))
-            {
-                if(tower.IsExistingElevator(floorNumber, range))
+                if (FloorValidation.IsLobbyFloor(floorNumber))
                 {
-                    isExistingElevator = true;
-                    elevatorNewFloorNumber = GetThirdInput(inputs); 
+                    if (!(structure is StructureTypes.Lobby))
+                    {
+                        if (!(structure is StructureTypes.StairCase || (structure is StructureTypes.Elevator)))
+                        {
+                            Console.WriteLine("Lobby must be on first floor.");
+                            return false;
+                        }
+                    }
                 }
-
-            }
-
-            //validate range
-            if (!(FloorValidation.IsValidRangeOnMap(range)))
-            {
-                Console.WriteLine("Invalid range on map.");
-                return false;
-            }
-            //range exists on parent floor
-
-            if (!(structure == StructureTypes.StairCase || structure == StructureTypes.Elevator))
-            {
-                if (isExistingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
-                {
-                    Console.WriteLine("Invalid range. Must be larger than current floor range");
-                    return false;
-                }
-                if (structure != StructureTypes.Lobby && FloorValidation.IsRangeExistingOnParent(range, tower.Floors[floorNumber - 1].Range))
-                {
-                    Console.WriteLine("Invalid range. Bottom floor does not have this range.");
-                    return false;
-                }
-
-            }
-            //stairs and elevators
-            else
-            {
-                
-                if(!tower.IsValidExistingFloorNumber(floorNumber))
-                {
-                    Console.WriteLine("FloorNumber does not exist.");
-                }
-                if (structure == StructureTypes.StairCase &&
-                    !tower.IsValidExistingFloorNumber(floorNumber + 1))
-                {
-                    Console.WriteLine("Top  floor does not exist.");
-                    return false;
-                }
-                //validate new elevator floor
-                if (structure == StructureTypes.Elevator &&
-                      isExistingElevator &&
-                      !tower.IsValidExistingFloorNumber(elevatorNewFloorNumber))
-                {
-                    Console.WriteLine("New elevator floor does not exist.");
-                    return false;
-                }
-            }
-
-            if(!PayForStructure(structure, isExistingFloor, floorNumber, range))
-            {
-                Console.WriteLine("Insuffient Funds.");
-                return false;
-            }
-
-            //Make Stuff
-            if (!builder.BuildStuff(floorNumber, range, structure, isExistingFloor, tower))
-            {
-                Console.WriteLine("Something has gone terribily wrong.");
-                return false;
-            }
-
-            return true;
-
-        }
-
-        public bool PayForStructure(StructureTypes structure, bool isExistingFloor, int floorNumber, Range range)
-        {
-            var cost = DetermineCost(structure, isExistingFloor, floorNumber, range);
-            var sufficientBalance = IsBalanceSufficient(cost);
-
-            if(!sufficientBalance)
-            {
-                return false;
-            }
-            this.GlobalProperties.SubtractConstructionCosts(cost);
-
-            return true;
-        }
-
-        private bool IsBalanceSufficient(int cost)
-        {
-            return this.GlobalProperties.Money - cost > 0;
-        }
-
-        private int DetermineCost(StructureTypes structure, bool isExistingFloor, int floorNumber, Range range)
-        {
-            var cost = 0;
-
-            if(structure != StructureTypes.Floor && structure != StructureTypes.Lobby)
-            {
-               cost += GetNonFloorCost(structure);
+                isExistingFloor = tower.IsValidExistingFloorNumber(floorNumber);
 
                 if (!isExistingFloor)
                 {
-                    cost += GetFloorCost(StructureTypes.Floor, floorNumber, range, false);
+                    if (!tower.IsNextFloorNumber(floorNumber))
+                    {
+                        Console.WriteLine("Floor does not existing and preceding floor has not be created.");
+                        return false;
+                    }
                 }
+                //2nd input
+                int.TryParse(inputs[2], out startX);
+                //3rd input if any for range
+                endX = GetEndX(inputs, startX, structure);
+                range = new Range(startX, endX);
+                var elevatorNewFloorNumber = 0;
+                var isExistingElevator = false;
+
+                // 3rd input for elevator floor number
+                if (structure.Equals(structure == StructureTypes.Elevator))
+                {
+                    if (tower.IsExistingElevator(floorNumber, range))
+                    {
+                        isExistingElevator = true;
+                        elevatorNewFloorNumber = GetThirdInput(inputs);
+                    }
+
+                }
+
+                //validate range
+                if (!(FloorValidation.IsValidRangeOnMap(range)))
+                {
+                    Console.WriteLine("Invalid range on map.");
+                    return false;
+                }
+                //range exists on parent floor
+
+                if (!(structure == StructureTypes.StairCase || structure == StructureTypes.Elevator))
+                {
+                    if (isExistingFloor && FloorValidation.IsFloorRangePreexisting(range, tower.Floors[floorNumber]))
+                    {
+                        Console.WriteLine("Invalid range. Must be larger than current floor range");
+                        return false;
+                    }
+                    if (structure != StructureTypes.Lobby && FloorValidation.IsRangeExistingOnParent(range, tower.Floors[floorNumber - 1].Range))
+                    {
+                        Console.WriteLine("Invalid range. Bottom floor does not have this range.");
+                        return false;
+                    }
+
+                }
+                //stairs and elevators
+                else
+                {
+
+                    if (!tower.IsValidExistingFloorNumber(floorNumber))
+                    {
+                        Console.WriteLine("FloorNumber does not exist.");
+                    }
+                    if (structure == StructureTypes.StairCase &&
+                        !tower.IsValidExistingFloorNumber(floorNumber + 1))
+                    {
+                        Console.WriteLine("Top  floor does not exist.");
+                        return false;
+                    }
+                    //validate new elevator floor
+                    if (structure == StructureTypes.Elevator &&
+                          isExistingElevator &&
+                          !tower.IsValidExistingFloorNumber(elevatorNewFloorNumber))
+                    {
+                        Console.WriteLine("New elevator floor does not exist.");
+                        return false;
+                    }
+                }
+
+                if (!PayForStructure(structure, isExistingFloor, floorNumber, range))
+                {
+                    Console.WriteLine("Insuffient Funds.");
+                    return false;
+                }
+
+                //Make Stuff
+
+                if (!builder.BuildStuff(floorNumber, range, structure, isExistingFloor, isExistingElevator, tower))
+                {
+                    Console.WriteLine("Something has gone terribily wrong.");
+                    return false;
+                }
+
+                return true;
+
             }
-            else
+
+            public bool PayForStructure(StructureTypes structure, bool isExistingFloor, int floorNumber, Range range)
             {
-                cost += GetFloorCost(structure, floorNumber, range, isExistingFloor);
+                var cost = DetermineCost(structure, isExistingFloor, floorNumber, range);
+                var sufficientBalance = IsBalanceSufficient(cost);
+
+                if (!sufficientBalance)
+                {
+                    return false;
+                }
+                this.GlobalProperties.SubtractConstructionCosts(cost);
+
+                return true;
             }
-            return cost;
-        }
 
-        private int GetNonFloorCost(StructureTypes structure)
-        {
-            return StructureInfo.AllTheInfo[structure].ConstructionCost;
-
-        }
-        private int GetFloorCost(StructureTypes structure, int floorNumber, Range range, bool isExistingFloor)
-        {
-            int segments;
-
-            if (isExistingFloor)
+            private bool IsBalanceSufficient(int cost)
             {
-                var floor = tower.Floors[floorNumber];
-                var oldRange = tower.Floors[floorNumber].Range;
-                var newRange = floor.GetExtendedFloorRange(range);
-                var unpaidRange = newRange - oldRange;
-
-                segments = StructureInfo.GetUnpaidSegments(unpaidRange, structure);
+                return this.GlobalProperties.Money - cost > 0;
             }
-            else
+
+            private int DetermineCost(StructureTypes structure, bool isExistingFloor, int floorNumber, Range range)
             {
-                segments = StructureInfo.GetUnpaidSegments(range, structure);
-            }
-            return segments * StructureInfo.AllTheInfo[structure].ConstructionCost;
-        }
+                var cost = 0;
 
-        private int GetEndX(string[] inputs, int startX, StructureTypes structure)
-        {
-            int endX;
-            if (inputs.Length > 3 && structure.Equals(StructureTypes.Floor))
+                if (structure != StructureTypes.Floor && structure != StructureTypes.Lobby)
+                {
+                    cost += GetNonFloorCost(structure);
+
+                    if (!isExistingFloor)
+                    {
+                        cost += GetFloorCost(StructureTypes.Floor, floorNumber, range, false);
+                    }
+                }
+                else
+                {
+                    cost += GetFloorCost(structure, floorNumber, range, isExistingFloor);
+                }
+                return cost;
+            }
+
+            private int GetNonFloorCost(StructureTypes structure)
             {
-                //int.TryParse(inputs[3], out endX);
-               return GetThirdInput(inputs);
+                return StructureInfo.AllTheInfo[structure].ConstructionCost;
+
             }
-            else
+            private int GetFloorCost(StructureTypes structure, int floorNumber, Range range, bool isExistingFloor)
             {
-                endX = startX + StructureInfo.AllTheInfo[structure].Segments;
+                int segments;
+
+                if (isExistingFloor)
+                {
+                    var floor = tower.Floors[floorNumber];
+                    var oldRange = tower.Floors[floorNumber].Range;
+                    var newRange = floor.GetExtendedFloorRange(range);
+                    var unpaidRange = newRange - oldRange;
+
+                    segments = StructureInfo.GetUnpaidSegments(unpaidRange, structure);
+                }
+                else
+                {
+                    segments = StructureInfo.GetUnpaidSegments(range, structure);
+                }
+                return segments * StructureInfo.AllTheInfo[structure].ConstructionCost;
             }
-            return endX;
+
+            private int GetEndX(string[] inputs, int startX, StructureTypes structure)
+            {
+                int endX;
+                if (inputs.Length > 3 && structure.Equals(StructureTypes.Floor))
+                {
+                    //int.TryParse(inputs[3], out endX);
+                    return GetThirdInput(inputs);
+                }
+                else
+                {
+                    endX = startX + StructureInfo.AllTheInfo[structure].Segments;
+                }
+                return endX;
+            }
+
+            private int GetThirdInput(string[] inputs)
+            {
+                int thirdInput;
+
+                int.TryParse(inputs[3], out thirdInput);
+
+                return thirdInput;
+            }
+
         }
-
-        private int GetThirdInput(string[] inputs)
-        {
-            int thirdInput;
-
-            int.TryParse(inputs[3], out thirdInput);
-
-            return thirdInput;
-        }
-      
     }
-}

@@ -6,6 +6,8 @@
 
         public int Capacity = 21;
 
+        public bool Occupied { get; set; }
+
         public int FloorNumber { get; set; }
 
         public ElevatorCar(int floorNumber)

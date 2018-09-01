@@ -8,6 +8,7 @@ namespace KimTower.Data
     public static class ConsoleStuff
     {
         const string inputRequest = "\n Enter: Structure Type | Floor Number | Starting Point | (Floor Only) Ending Point";
+        const string elevatatorExtentionInputRequest = "\n Enter: Structure Type | Range | Bottom Floor | Top Floor";
         const string continueRequest = "\n Build more stuff? (y/n) OR continue (down arrow)";
         const string farewell = "\n ___Game Over___";
         public const string structureList = "\nStructure List: \nLobby = 'l', Office = 'o', StairCase = 's', Restaurant = 'r', \nCondo = 'c', Elevator = 'e', Floor = 'f'";
@@ -17,6 +18,10 @@ namespace KimTower.Data
         public static void PrintInputRequest()
         {
             FormatAndPrint(inputRequest);
+        }
+        public static void PrintExtentionInputRequest()
+        {
+            FormatAndPrint(elevatatorExtentionInputRequest);
         }
 
         public static void FormatAndPrint(string input)
@@ -105,6 +110,15 @@ namespace KimTower.Data
         {
             return inputs.Contains("s");
         }
+
+        public static bool IsElevatorRequest(string[] inputs)
+        {
+            return inputs.Contains("e");
+        }
+        public static bool IsExtentionRequest(string input)
+        {
+            return input.Equals("extend");
+        }
         public static void PrintGameStats(Tower tower, Time time, GlobalProperties globalProperties)
         {
             Console.WriteLine($"Funds: {globalProperties.Money}  Population: {tower.Population}  Rating: {tower.Rating.Stars} Star");
@@ -120,14 +134,15 @@ namespace KimTower.Data
     }
     public enum StructureTypes
     {
-        Lobby = 'l', 
+        Lobby = 'l',
         Office = 'o',
         StairCase = 's',
         Restaurant = 'r',
         Condo = 'c',
         Elevator = 'e',
-        Floor ='f',
-        ElevatorCar = 'a'
+        Floor = 'f',
+        ElevatorCar = 'a',
+        ElevatorShaft = 'v'
     }
    
 }

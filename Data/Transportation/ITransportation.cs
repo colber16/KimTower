@@ -4,10 +4,10 @@
     {
         Range Range { get; set; }
 
-        int TopFloor { get; set; }
+        //int TopFloor { get; set; }
 
-        int BottomFloor { get; set; }
+        //int BottomFloor { get; set; }
 
-        void SetBottomAndTopFloors(int bottom, int top);
+        //void SetBottomAndTopFloors(int bottom, int top);
     }
 }

@@ -7,23 +7,25 @@ namespace KimTower.Data.Transportation.Elevators
     {
         int Segments { get; }
 
-        Range HorizontalRange { get; set; }
+        Range Range { get; set; }
 
-        bool Occupied { get; set; }
+        //bool Occupied { get; set; }
 
-        int PopulationLevel { get; }
+        //int PopulationLevel { get; }
 
         int Cost { get; }
 
-        int BottomFloor { get; set; }
+        //int BottomFloor { get; set; }
 
-        int TopFloor { get; set; }
+        //int TopFloor { get; set; }
 
-        List<ElevatorCar> Cars { get; }
+        //List<ElevatorShaft> Shafts { get; set; }
 
-        List<WaitingArea> WaitingAreas { get; }
+        //List<ElevatorCar> Cars { get; }
 
-        int GetPopulationLevel();
+        //List<WaitingArea> WaitingAreas { get; }
+
+        //int GetPopulationLevel();
 
     }
 }

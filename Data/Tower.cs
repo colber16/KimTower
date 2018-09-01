@@ -17,11 +17,14 @@ namespace KimTower.Data
 
         public Rating Rating { get; set; }
 
+        public Dictionary<string, Elevator> Elevators { get; set; }
+
         public Tower()
         {
             this.Floors = new List<IFloor>();
             this.Ledger = new Ledger(0, 0);
             this.Rating = new Rating();
+            this.Elevators = new Dictionary<string, Elevator>();
         }
 
         public void UpdateLedgerByFloor()
@@ -127,6 +130,18 @@ namespace KimTower.Data
         public bool IsExistingElevator(int floorNumber, Range range)
         {
             return (this.Floors[floorNumber].Transportations.ContainsKey(range));
+        }
+
+        public void AddElevator(Elevator elevator)
+        {
+            var key = CreateKey(elevator.Range, elevator.BottomFloor, elevator.TopFloor);
+            this.Elevators.Add(key, elevator);
+        }
+
+        public string CreateKey(Range range, int bottomFloor, int topFloor)
+        {
+            return "e" + bottomFloor.ToString() + topFloor.ToString() +
+                              range.StartX.ToString() + range.EndX.ToString();
         }
     }
 }
